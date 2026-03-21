@@ -288,6 +288,25 @@ html, body { overflow: auto !important; height: auto !important; }
 .main { overflow: visible !important; }
 .content { overflow: visible !important; height: auto; }
 }
+
+/* ═══ EMAIL / PROSPECTION ═══ */
+.email-card{background:var(–m2);border:1px solid rgba(255,255,255,0.06);border-radius:var(–r);padding:16px;margin-bottom:10px}
+.email-preview{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:14px;font-size:12px;line-height:1.7;color:var(–blanc);white-space:pre-wrap;font-family:‘Outfit’,sans-serif;margin-top:10px;max-height:200px;overflow-y:auto}
+.email-subject{font-size:11px;color:var(–or);font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.msg-template{background:var(–m2);border:1px solid rgba(255,255,255,0.06);border-radius:var(–r);padding:18px;margin-bottom:14px}
+.msg-type-badge{display:inline-flex;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.msg-type-a{background:rgba(61,214,140,0.15);color:var(–vert)}
+.msg-type-b{background:rgba(200,164,90,0.15);color:var(–or)}
+.msg-type-c{background:rgba(78,168,222,0.15);color:var(–bleu)}
+.camp-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.camp-check{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:var(–gris);user-select:none;transition:all .15s}
+.camp-check.sel{border-color:var(–or);background:var(–orD);color:var(–or)}
+.camp-results{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto;padding-right:4px}
+.camp-item{background:var(–m2);border:1px solid rgba(255,255,255,0.05);border-radius:var(–r);padding:12px 14px;display:flex;align-items:center;gap:10px}
+.camp-item-check{width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(255,255,255,0.15);cursor:pointer;flex-shrink:0;display:grid;place-items:center;transition:all .15s}
+.camp-item-check.on{background:var(–or);border-color:var(–or)}
+.camp-item-check.on::after{content:‘✓’;font-size:10px;color:var(–marine);font-weight:700}
+.stat-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600}
 </style>
 
 </head>
@@ -305,6 +324,8 @@ html, body { overflow: auto !important; height: auto !important; }
     <div class="ni" id="n-cl" onclick="gv('clubs')"><span class="ni-ico">🏟</span> Clubs<span class="nc" id="nc">10</span></div>
     <div class="ni" id="n-of" onclick="gv('offres')"><span class="ni-ico">📋</span> Offres & CA<span class="nc nc-vert" id="no">0</span></div>
     <div class="ni" id="n-pr" onclick="gv('prospection')"><span class="ni-ico">📡</span> Prospection</div>
+    <div class="ni" id="n-em" onclick="gv('emailing')"><span class="ni-ico">✉️</span> Emailing</div>
+    <div class="ni" id="n-li" onclick="gv('linkedin')"><span class="ni-ico">💼</span> LinkedIn</div>
     <div class="nav-lbl">Terrain</div>
     <div class="ni" id="n-jo" onclick="gv('alljoueurs')"><span class="ni-ico">🧠</span> Joueurs<span class="nc" id="nj">0</span></div>
     <div class="ni" id="n-in" onclick="gv('interventions')"><span class="ni-ico">📅</span> Interventions<span class="nc" id="nin">0</span></div>
@@ -451,32 +472,111 @@ html, body { overflow: auto !important; height: auto !important; }
 
 <div class="ap" id="ap-offre">
   <div class="abox">
-    <div class="abh"><div class="abt">📋 Nouvelle offre / Contrat</div><button class="xb" onclick="cAP('ap-offre')">✕</button></div>
+    <div class="abh"><div class="abt">📋 Nouvelle offre / Contrat</div><button class="xb" onclick="closeAP('ap-offre')">✕</button></div>
     <div class="abb">
       <div class="fg"><label class="fl">Club *</label><select class="fs" id="ao-club"><option value="">Choisir un club…</option></select></div>
-      <div class="fg2"><div class="fg"><label class="fl">Type d'offre *</label>
-        <select class="fs" id="ao-type" onchange="setOffreMontant()">
-          <option value="">Choisir…</option>
-          <option value="Conférence Signature|490">Conférence Signature — 490€</option>
-          <option value="Atelier Thématique|690">Atelier Thématique — 690€</option>
-          <option value="Mini Cycle 6 sem.|1500">Mini Cycle 6 sem. — 1 500€</option>
-          <option value="Pack Découverte|1200">Pack Découverte — 1 200€</option>
-          <option value="Pack Engagement|2000">Pack Engagement — 2 000€</option>
-          <option value="Pack Performance|4500">Pack Performance — 4 500€</option>
-          <option value="Suivi Saison|4200">Suivi Saison — 4 200€</option>
-          <option value="Programme Saison|9000">Programme Saison — 9 000€</option>
-          <option value="Élite Individuel|0">Élite Individuel — Sur devis</option>
-          <option value="Sur mesure|0">Sur mesure</option>
-        </select>
-      </div>
-      <div class="fg"><label class="fl">Montant signé (€)</label><input class="fi" type="number" id="ao-mt" placeholder="Ex: 4200"></div></div>
-      <div class="fg2"><div class="fg"><label class="fl">Date de signature</label><input class="fi" type="date" id="ao-date"></div><div class="fg"><label class="fl">Statut</label><select class="fs" id="ao-st"><option>En cours</option><option>Terminé</option><option>Renouvelable</option></select></div></div>
-      <div class="fg2"><div class="fg"><label class="fl">Date prochaine intervention</label><input class="fi" type="date" id="ao-nxt"></div><div class="fg"><label class="fl">Nb interventions prévues</label><input class="fi" type="number" id="ao-nbi" placeholder="Ex: 5"></div></div>
-      <div class="fg"><label class="fl">Équipe(s) concernée(s)</label><input class="fi" id="ao-eq" placeholder="Ex: Seniors A, U18, U16…"></div>
-      <div class="fg"><label class="fl">Objectif de l'accompagnement</label><textarea class="fta" id="ao-obj" placeholder="Ex: Réduire l'effondrement émotionnel post-erreur…" style="min-height:52px"></textarea></div>
-      <div class="fg"><label class="fl">Notes / Conditions</label><textarea class="fta" id="ao-notes" placeholder="Conditions particulières, modalités de paiement…" style="min-height:52px"></textarea></div>
+
+```
+  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--or);font-weight:700;margin:14px 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(200,164,90,0.2)">Type d'offre</div>
+  <div class="fg"><label class="fl">Format *</label>
+    <select class="fs" id="ao-type">
+      <option value="">Choisir le format…</option>
+      <option value="Conférence Signature">Conférence Signature — 90 min</option>
+      <option value="Atelier Thématique">Atelier Thématique — 2h à 3h30</option>
+      <option value="Mini Cycle 6 semaines">Mini Cycle — 6 semaines</option>
+      <option value="Pack Découverte">Pack Découverte</option>
+      <option value="Pack Engagement">Pack Engagement</option>
+      <option value="Pack Performance">Pack Performance</option>
+      <option value="Suivi Saison">Suivi Saison — 10 mois</option>
+      <option value="Programme Saison Complet">Programme Saison Complet</option>
+      <option value="Accompagnement Élite Individuel">Accompagnement Élite Individuel</option>
+      <option value="Sur mesure">Sur mesure</option>
+    </select>
+  </div>
+  <div class="fg2">
+    <div class="fg"><label class="fl">Nb équipes concernées</label><input class="fi" type="number" id="ao-nb-equipes" placeholder="Ex: 3" min="1"></div>
+    <div class="fg"><label class="fl">Nb adhérents du club</label><input class="fi" type="number" id="ao-nb-adherents" placeholder="Ex: 250"></div>
+  </div>
+  <div class="fg2">
+    <div class="fg"><label class="fl">Nb interventions prévues</label><input class="fi" type="number" id="ao-nbi" placeholder="Ex: 5"></div>
+    <div class="fg"><label class="fl">Durée totale</label>
+      <select class="fs" id="ao-duree">
+        <option value="">—</option>
+        <option>1 journée</option><option>1 mois</option><option>2 mois</option>
+        <option>3 mois</option><option>6 mois</option><option>10 mois (saison)</option><option>Sur mesure</option>
+      </select>
     </div>
-    <div class="abf"><button class="btn bgh" onclick="cAP('ap-offre')">Annuler</button><button class="btn bg" onclick="sOffre()">✓ Enregistrer</button></div>
+  </div>
+  <div class="fg"><label class="fl">Équipe(s) concernée(s)</label><input class="fi" id="ao-eq" placeholder="Ex: Seniors A, U18, U16…"></div>
+
+  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--or);font-weight:700;margin:14px 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(200,164,90,0.2)">Tarification</div>
+  <div class="fg2">
+    <div class="fg"><label class="fl">Tarif de référence A4P</label>
+      <select class="fs" id="ao-tarif-base" onchange="calcTarif()">
+        <option value="">Tarif de référence…</option>
+        <option value="490">Conférence — 490€</option>
+        <option value="690">Atelier — 690€</option>
+        <option value="1200">Pack Découverte — 1 200€</option>
+        <option value="1500">Mini Cycle — 1 500€</option>
+        <option value="2000">Pack Engagement — 2 000€</option>
+        <option value="4200">Suivi Saison — 4 200€</option>
+        <option value="4500">Pack Performance — 4 500€</option>
+        <option value="9000">Programme Saison — 9 000€</option>
+        <option value="0">Sur devis</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Ajustement contextuel</label>
+      <select class="fs" id="ao-ajustement" onchange="calcTarif()">
+        <option value="0">Aucun ajustement</option>
+        <option value="-20">-20% (petit club, budget serré)</option>
+        <option value="-10">-10% (club amateur motivé)</option>
+        <option value="10">+10% (plusieurs équipes)</option>
+        <option value="20">+20% (club pro / institutionnel)</option>
+        <option value="30">+30% (partenariat long terme)</option>
+      </select>
+    </div>
+  </div>
+  <div style="background:rgba(200,164,90,0.08);border:1px solid rgba(200,164,90,0.2);border-radius:8px;padding:12px;margin-bottom:12px" id="ao-tarif-calc" style="display:none">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--gris);margin-bottom:4px">Estimation calculée</div>
+    <div style="font-size:22px;font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--or)" id="ao-tarif-calc-val">—</div>
+    <div style="font-size:10.5px;color:var(--gris);margin-top:3px" id="ao-tarif-hint"></div>
+  </div>
+  <div class="fg2">
+    <div class="fg">
+      <label class="fl">Montant final négocié (€) *</label>
+      <input class="fi" type="number" id="ao-mt" placeholder="Montant définitif en €">
+    </div>
+    <div class="fg"><label class="fl">Mode de paiement</label>
+      <select class="fs" id="ao-paiement">
+        <option value="">—</option>
+        <option>Paiement unique</option>
+        <option>2 fois (50% / 50%)</option>
+        <option>3 fois</option>
+        <option>Mensuel</option>
+        <option>À définir</option>
+      </select>
+    </div>
+  </div>
+  <div class="fg"><label class="fl">Justification du tarif (notes internes)</label>
+    <textarea class="fta" id="ao-tarif-notes" placeholder="Ex: Club de 300 licenciés, 4 équipes jeunes, budget limité. Tarif ajusté. Fort potentiel renouvellement." style="min-height:52px"></textarea>
+  </div>
+
+  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--or);font-weight:700;margin:14px 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(200,164,90,0.2)">Suivi</div>
+  <div class="fg2">
+    <div class="fg"><label class="fl">Date de signature</label><input class="fi" type="date" id="ao-date"></div>
+    <div class="fg"><label class="fl">Statut</label><select class="fs" id="ao-st"><option>En cours</option><option>Terminé</option><option>Renouvelable</option></select></div>
+  </div>
+  <div class="fg"><label class="fl">Date prochaine intervention</label><input class="fi" type="date" id="ao-nxt"></div>
+  <div class="fg"><label class="fl">Objectif de l'accompagnement</label>
+    <textarea class="fta" id="ao-obj" placeholder="Ex: Réduire l'effondrement post-erreur sur U18 et Seniors A…" style="min-height:52px"></textarea>
+  </div>
+  <div class="fg"><label class="fl">Notes / Conditions</label>
+    <textarea class="fta" id="ao-notes" placeholder="Conditions particulières, contacts clés, modalités…" style="min-height:52px"></textarea>
+  </div>
+</div>
+<div class="abf"><button class="btn bgh" onclick="closeAP('ap-offre')">Annuler</button><button class="btn bg" onclick="sOffre()">✓ Enregistrer</button></div>
+```
+
   </div>
 </div>
 
@@ -569,916 +669,1516 @@ html, body { overflow: auto !important; height: auto !important; }
 
 <script>
 // ═══════════════════════════════
-// STORAGE
+// A4P CRM PRO - ES5 PURE - Safari compatible
 // ═══════════════════════════════
-const SKEY = 'a4p_crm_v3';
 
+var SKEY = 'a4p_crm_v3';
+
+// ─── STORAGE ───
 function saveDB() {
   try {
     localStorage.setItem(SKEY, JSON.stringify(DB));
-    const now = new Date();
-    const t = now.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
-    const el = document.getElementById('save-time');
+    var now = new Date();
+    var h = now.getHours(); var m = now.getMinutes();
+    var t = (h<10?'0':'')+h+':'+(m<10?'0':'')+m;
+    var el = document.getElementById('save-time');
     if(el) el.textContent = 'Sauvegardé à ' + t;
-  } catch(e) { console.warn('localStorage error', e); }
+  } catch(e) {}
 }
 
 function loadDB() {
   try {
-    const raw = localStorage.getItem(SKEY);
+    var raw = localStorage.getItem(SKEY);
     if(raw) {
-      const parsed = JSON.parse(raw);
-      Object.assign(DB, parsed);
+      var parsed = JSON.parse(raw);
+      if(parsed.clubs) DB.clubs = parsed.clubs;
+      if(parsed.equipes) DB.equipes = parsed.equipes;
+      if(parsed.joueurs) DB.joueurs = parsed.joueurs;
+      if(parsed.offres) DB.offres = parsed.offres;
+      if(parsed.interventions) DB.interventions = parsed.interventions;
+      if(parsed._id) DB._id = parsed._id;
     }
-  } catch(e) { console.warn('Load error', e); }
+  } catch(e) {}
 }
 
 function exportData() {
-  const blob = new Blob([JSON.stringify(DB, null, 2)], {type:'application/json'});
-  const a = document.createElement('a');
+  var blob = new Blob([JSON.stringify(DB, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'A4P_CRM_' + new Date().toISOString().split('T')[0] + '.json';
   a.click();
-  toast('Export téléchargé');
+  showToast('Export téléchargé');
 }
 
 function importData(evt) {
-  const file = evt.target.files[0];
+  var file = evt.target.files[0];
   if(!file) return;
-  const reader = new FileReader();
+  var reader = new FileReader();
   reader.onload = function(e) {
     try {
-      const parsed = JSON.parse(e.target.result);
-      Object.assign(DB, parsed);
-      saveDB();
-      toast('✓ Données importées');
-      updCounts();
-      rView(S.view);
-    } catch(err) { alert('Fichier invalide. Vérifie qu'il s'agit d'un export A4P.'); }
+      var parsed = JSON.parse(e.target.result);
+      if(parsed.clubs) DB.clubs = parsed.clubs;
+      if(parsed.equipes) DB.equipes = parsed.equipes;
+      if(parsed.joueurs) DB.joueurs = parsed.joueurs;
+      if(parsed.offres) DB.offres = parsed.offres;
+      if(parsed.interventions) DB.interventions = parsed.interventions;
+      if(parsed._id) DB._id = parsed._id;
+      saveDB(); showToast('Données importées'); updCounts(); rView(S.view);
+    } catch(err) { alert('Fichier invalide.'); }
   };
   reader.readAsText(file);
   evt.target.value = '';
 }
 
-// ═══════════════════════════════
-// DATA
-// ═══════════════════════════════
-const DB = {
+// ─── DATA ───
+var DB = {
   clubs: [
-    {id:1,nom:"Racing 92",sport:"Rugby",ville:"Nanterre (92)",contact:"Directeur Sportif",email:"",tel:"",niveau:"Pro",statut:"🔴 Froid",potentiel:5,source:"Réseau",message:"Type A — Pro/Semi-pro",action:"Envoyer message LinkedIn Type A",commentaire:"Club pro — approche institutionnelle. Piste ASVEL.",site:"",
-     decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},
-     equipes:[],offres:[],interventions:[]},
-    {id:2,nom:"RC Suresnes",sport:"Rugby",ville:"Suresnes (92)",contact:"Président",email:"",tel:"",niveau:"Amateur",statut:"🔴 Froid",potentiel:4,source:"Recherche",message:"Type B — Amateur",action:"Envoyer message LinkedIn Type B",commentaire:"",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]},
-    {id:3,nom:"Rueil AC",sport:"Rugby",ville:"Rueil-Malmaison (92)",contact:"Responsable perf.",email:"",tel:"",niveau:"Amateur",statut:"🔴 Froid",potentiel:4,source:"Recherche",message:"Type B — Amateur",action:"Envoyer message LinkedIn Type B",commentaire:"",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]},
-    {id:4,nom:"Clamart Rugby 92",sport:"Rugby",ville:"Clamart (92)",contact:"Entraîneur",email:"",tel:"",niveau:"Amateur",statut:"🔴 Froid",potentiel:3,source:"Recherche",message:"Type B — Amateur",action:"Envoyer message LinkedIn Type B",commentaire:"",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]},
-    {id:5,nom:"Nanterre 92",sport:"Basket",ville:"Nanterre (92)",contact:"Directeur Sportif",email:"",tel:"",niveau:"Pro",statut:"🔴 Froid",potentiel:5,source:"Réseau",message:"Type A — Pro/Semi-pro",action:"Envoyer message LinkedIn Type A",commentaire:"",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]},
-    {id:6,nom:"Levallois SC",sport:"Basket",ville:"Levallois (92)",contact:"Resp. formation",email:"",tel:"",niveau:"Semi-pro",statut:"🔴 Froid",potentiel:4,source:"Recherche",message:"Type B — Amateur",action:"Envoyer message LinkedIn Type B",commentaire:"",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]},
-    {id:7,nom:"Suresnes Basket Club",sport:"Basket",ville:"Suresnes (92)",contact:"Président",email:"",tel:"",niveau:"Amateur",statut:"🔴 Froid",potentiel:3,source:"Recherche",message:"Type B — Amateur",action:"Envoyer message LinkedIn Type B",commentaire:"",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]},
-    {id:8,nom:"SFOC Courbevoie",sport:"Natation",ville:"Courbevoie (92)",contact:"Entraîneur principal",email:"",tel:"",niveau:"Amateur",statut:"🔴 Froid",potentiel:3,source:"Recherche",message:"Type B — Amateur",action:"Envoyer message LinkedIn Type B",commentaire:"",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]},
-    {id:9,nom:"Club des Phœnix Antony",sport:"Natation",ville:"Antony (92)",contact:"Directeur technique",email:"",tel:"",niveau:"Amateur",statut:"🔴 Froid",potentiel:3,source:"Recherche",message:"Type B — Amateur",action:"Envoyer message LinkedIn Type B",commentaire:"",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]},
-    {id:10,nom:"Comité 92 Tennis",sport:"Tennis",ville:"Hauts-de-Seine (92)",contact:"Directeur",email:"",tel:"",niveau:"Institutionnel",statut:"🔴 Froid",potentiel:4,source:"Stratégique",message:"Type C — Institutionnel",action:"Envoyer message LinkedIn Type C",commentaire:"Contact institutionnel stratégique",site:"",decouverte:{president:"",directeur:"",nbAd:"",nbEq:"",budget:"",vision1:"",vision5:"",adn:"",defis:"",fonctionneBien:"",bloque:"",prepaMentale:"",travailleStress:"",travailleCohesion:"",ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]}
+    {id:1,nom:'Racing 92',sport:'Rugby',ville:'Nanterre (92)',contact:'Directeur Sportif',email:'',tel:'',niveau:'Pro',statut:'🔴 Froid',potentiel:5,source:'Réseau',message:'Type A — Pro/Semi-pro',action:'Envoyer message LinkedIn Type A',commentaire:'Club pro — piste ASVEL.',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:2,nom:'RC Suresnes',sport:'Rugby',ville:'Suresnes (92)',contact:'Président',email:'',tel:'',niveau:'Amateur',statut:'🔴 Froid',potentiel:4,source:'Recherche',message:'Type B — Amateur',action:'Envoyer message LinkedIn Type B',commentaire:'',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:3,nom:'Rueil AC',sport:'Rugby',ville:'Rueil-Malmaison (92)',contact:'Responsable perf.',email:'',tel:'',niveau:'Amateur',statut:'🔴 Froid',potentiel:4,source:'Recherche',message:'Type B — Amateur',action:'Envoyer message LinkedIn Type B',commentaire:'',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:4,nom:'Clamart Rugby 92',sport:'Rugby',ville:'Clamart (92)',contact:'Entraîneur',email:'',tel:'',niveau:'Amateur',statut:'🔴 Froid',potentiel:3,source:'Recherche',message:'Type B — Amateur',action:'Envoyer message LinkedIn Type B',commentaire:'',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:5,nom:'Nanterre 92',sport:'Basket',ville:'Nanterre (92)',contact:'Directeur Sportif',email:'',tel:'',niveau:'Pro',statut:'🔴 Froid',potentiel:5,source:'Réseau',message:'Type A — Pro/Semi-pro',action:'Envoyer message LinkedIn Type A',commentaire:'',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:6,nom:'Levallois SC',sport:'Basket',ville:'Levallois (92)',contact:'Resp. formation',email:'',tel:'',niveau:'Semi-pro',statut:'🔴 Froid',potentiel:4,source:'Recherche',message:'Type B — Amateur',action:'Envoyer message LinkedIn Type B',commentaire:'',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:7,nom:'Suresnes Basket Club',sport:'Basket',ville:'Suresnes (92)',contact:'Président',email:'',tel:'',niveau:'Amateur',statut:'🔴 Froid',potentiel:3,source:'Recherche',message:'Type B — Amateur',action:'Envoyer message LinkedIn Type B',commentaire:'',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:8,nom:'SFOC Courbevoie',sport:'Natation',ville:'Courbevoie (92)',contact:'Entraîneur principal',email:'',tel:'',niveau:'Amateur',statut:'🔴 Froid',potentiel:3,source:'Recherche',message:'Type B — Amateur',action:'Envoyer message LinkedIn Type B',commentaire:'',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:9,nom:'Club des Phœnix Antony',sport:'Natation',ville:'Antony (92)',contact:'Directeur technique',email:'',tel:'',niveau:'Amateur',statut:'🔴 Froid',potentiel:3,source:'Recherche',message:'Type B — Amateur',action:'Envoyer message LinkedIn Type B',commentaire:'',site:'',decouverte:{},equipes:[],offres:[],interventions:[]},
+    {id:10,nom:'Comité 92 Tennis',sport:'Tennis',ville:'Hauts-de-Seine (92)',contact:'Directeur',email:'',tel:'',niveau:'Institutionnel',statut:'🔴 Froid',potentiel:4,source:'Stratégique',message:'Type C — Institutionnel',action:'Envoyer message LinkedIn Type C',commentaire:'Contact institutionnel stratégique',site:'',decouverte:{},equipes:[],offres:[],interventions:[]}
   ],
-  equipes: [],
-  joueurs: [],
-  offres: [],
-  interventions: [],
+  equipes: [], joueurs: [], offres: [], interventions: [],
   _id: 200
 };
 
-const S = {view:'dashboard',clubId:null,equipeId:null,joueurId:null,clf:'all',jf:'all',off:'all',
+var S = {view:'dashboard',clubId:null,equipeId:null,joueurId:null,clf:'all',jf:'all',off:'all',
   pendEq:null,pendJou:null,pendMi:null,pendObj:null};
 
-// ═══════════════════════════════
-// UTILS
-// ═══════════════════════════════
-function uid(){return ++DB._id}
-function av(n){return(n||'?').split(' ').map(p=>p[0]||'').join('').substring(0,2).toUpperCase()}
-function st(n){return'★'.repeat(n)+'☆'.repeat(5-n)}
-function fmt(n){return new Intl.NumberFormat('fr-FR').format(n)+'€'}
+// ─── UTILS ───
+function uid() { return ++DB._id; }
 
-function bst(s){const m={'🔴 Froid':'f','🟡 En cours':'e','🟢 Client':'c2','🔵 À contacter':'a','⚫ Abandonné':'g2'};return`<span class="bdg b${m[s]||'g2'}">${s}</span>`}
-function bph(p){const m={'Lucidité':'l','Régulation':'r','Performance':'p','Autonomie':'a'};return`<span class="bdg bp${m[p]||'l'}">${p}</span>`}
-function boff(s){const m={'En cours':'enc','Terminé':'done','Renouvelable':'ren'};return`<span class="offre-badge offre-${m[s]||'done'}">${s}</span>`}
-
-function toast(m){const t=document.getElementById('toast');t.textContent='✓ '+m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500)}
-function oAP(id){document.getElementById(id).classList.add('open')}
-function cAP(id){document.getElementById(id).classList.remove('open')}
-document.querySelectorAll('.ap').forEach(p=>p.addEventListener('click',e=>{if(e.target===p)p.classList.remove('open')}));
-
-function selP(btn,val){
-  btn.closest('.prow').querySelectorAll('.pbtn').forEach(b=>b.className='pbtn');
-  const m={'Lucidité':'psl','Régulation':'psr','Performance':'psp','Autonomie':'psa'};
-  btn.classList.add(m[val]);
-  const h=btn.closest('.abb').querySelector('[id$="-ph"]');if(h)h.value=val
-}
-function ss(id,d,force){
-  const i=document.getElementById(id),dp=document.getElementById(id+'-d');
-  let v=force!==undefined?force:parseInt(i.value||5)+d;
-  v=Math.max(0,Math.min(10,v));i.value=v;dp.textContent=v
-}
-function uf(arr,id,field,val){const o=arr.find(x=>x.id===id);if(o){o[field]=val;saveDB()}}
-function updCounts(){
-  document.getElementById('nc').textContent=DB.clubs.length;
-  document.getElementById('nj').textContent=DB.joueurs.length;
-  document.getElementById('no').textContent=DB.offres.length;
-  document.getElementById('nin').textContent=DB.interventions.length;
+function av(n) {
+  var parts = ((n||'?')).split(' ');
+  var r = '';
+  for(var i=0;i<parts.length;i++) { if(parts[i]) r += parts[i][0]; }
+  return r.substring(0,2).toUpperCase();
 }
 
-function totalCA(){return DB.offres.reduce((s,o)=>s+(parseInt(o.montant)||0),0)}
+function st(n) {
+  var r = '';
+  for(var i=0;i<n;i++) r += '★';
+  for(var j=n;j<5;j++) r += '☆';
+  return r;
+}
 
+function fmt(n) {
+  return n.toLocaleString('fr-FR') + '€';
+}
 
-// Safari-safe helper functions
-function mkOpts(arr, selected) {
-  var h = '';
-  for (var i=0; i<arr.length; i++) {
-    var s = arr[i];
-    h += '<option value="' + s + '"' + (s===selected?' selected':'') + '>' + s + '</option>';
+function bst(s) {
+  var m = {'🔴 Froid':'f','🟡 En cours':'e','🟢 Client':'c2','🔵 À contacter':'a','⚫ Abandonné':'g2'};
+  return '<span class="bdg b'+(m[s]||'g2')+'">'+s+'</span>';
+}
+
+function bph(p) {
+  var m = {'Lucidité':'l','Régulation':'r','Performance':'p','Autonomie':'a'};
+  return '<span class="bdg bp'+(m[p]||'l')+'">'+p+'</span>';
+}
+
+function boff(s) {
+  var m = {'En cours':'enc','Terminé':'done','Renouvelable':'ren'};
+  return '<span class="offre-badge offre-'+(m[s]||'done')+'">'+s+'</span>';
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = '✓ ' + msg;
+  t.className = 'toast on';
+  setTimeout(function(){ t.className = 'toast'; }, 2500);
+}
+
+function oAP(id) { document.getElementById(id).className = document.getElementById(id).className + ' open'; }
+function cAP(id) { document.getElementById(id).className = document.getElementById(id).className.replace(' open','').replace('open',''); }
+
+function openAP(id) {
+  var el = document.getElementById(id);
+  if(el.className.indexOf('open') < 0) el.className += ' open';
+}
+function closeAP(id) {
+  var el = document.getElementById(id);
+  el.className = el.className.replace(/\s*open/g,'');
+}
+
+// Close panels on overlay click
+function initPanels() {
+  var panels = document.querySelectorAll('.ap');
+  for(var i=0;i<panels.length;i++) {
+    (function(p){
+      p.addEventListener('click', function(e){ if(e.target===p) closeAP(p.id); });
+    })(panels[i]);
   }
-  return h;
 }
-function mkOptsV(pairs, selected) {
-  // pairs = [{v,l}]
-  var h = '';
-  for (var i=0; i<pairs.length; i++) {
-    var v=pairs[i].v, l=pairs[i].l||v;
-    h += '<option value="' + v + '"' + (v===selected?' selected':'') + '>' + l + '</option>';
+
+function selP(btn, val) {
+  var row = btn.parentNode;
+  var btns = row.querySelectorAll('.pbtn');
+  for(var i=0;i<btns.length;i++) btns[i].className = 'pbtn';
+  var m = {'Lucidité':'psl','Régulation':'psr','Performance':'psp','Autonomie':'psa'};
+  btn.className = 'pbtn ' + (m[val]||'psl');
+  var box = btn.parentNode;
+  while(box && box.className.indexOf('abb') < 0) box = box.parentNode;
+  if(box) {
+    var hid = box.querySelector('[id$="-ph"]');
+    if(hid) hid.value = val;
   }
-  return h;
-}
-function h(tag, attrs, content) {
-  var a='';
-  if(attrs){for(var k in attrs){if(attrs[k]!==null&&attrs[k]!==undefined&&attrs[k]!==false)a+=' '+k+'="'+attrs[k]+'"'}}
-  return '<'+tag+a+'>'+content+'</'+tag+'>';
-}
-function iff(cond, html) { return cond ? html : ''; }
-function div(cls, content) { return '<div class="'+cls+'">'+content+'</div>'; }
-
-// ═══════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════
-function gv(name){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  const el=document.getElementById('v-'+name);if(el)el.classList.add('on');
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
-  const nm={dashboard:'n-db',clubs:'n-cl','club-detail':'n-cl','equipe-detail':'n-cl','joueur-detail':'n-cl',alljoueurs:'n-jo',offres:'n-of',prospection:'n-pr',interventions:'n-in'};
-  const ni=document.getElementById(nm[name]);if(ni)ni.classList.add('on');
-  S.view=name;updBC();rBtn();rView(name)
 }
 
-function updBC(){
-  var bc=document.getElementById('bc');
-  var v=S.view;
-  var parts=[];
+function ss(id, d, force) {
+  var inp = document.getElementById(id);
+  var dp = document.getElementById(id+'-d');
+  var v = (force !== undefined) ? force : parseInt(inp.value||5) + d;
+  if(v < 0) v = 0; if(v > 10) v = 10;
+  inp.value = v; dp.textContent = v;
+}
+
+function uf(arr, id, field, val) {
+  for(var i=0;i<arr.length;i++) {
+    if(arr[i].id === id) { arr[i][field] = val; saveDB(); return; }
+  }
+}
+
+function find(arr, id) {
+  for(var i=0;i<arr.length;i++) if(arr[i].id===id) return arr[i];
+  return null;
+}
+
+function filter(arr, fn) {
+  var r = [];
+  for(var i=0;i<arr.length;i++) if(fn(arr[i])) r.push(arr[i]);
+  return r;
+}
+
+function totalCA() {
+  var t = 0;
+  for(var i=0;i<DB.offres.length;i++) t += parseInt(DB.offres[i].montant)||0;
+  return t;
+}
+
+function updCounts() {
+  document.getElementById('nc').textContent = DB.clubs.length;
+  document.getElementById('nj').textContent = DB.joueurs.length;
+  document.getElementById('no').textContent = DB.offres.length;
+  document.getElementById('nin').textContent = DB.interventions.length;
+}
+
+// ─── NAVIGATION ───
+function gv(name) {
+  var views = document.querySelectorAll('.view');
+  for(var i=0;i<views.length;i++) views[i].className = views[i].className.replace(' on','').replace('on','').trim();
+  var el = document.getElementById('v-'+name);
+  if(el) el.className += ' on';
+
+  var nis = document.querySelectorAll('.ni');
+  for(var j=0;j<nis.length;j++) nis[j].className = nis[j].className.replace(' on','').replace(/\bon\b/,'').trim();
+  var navMap = {
+    'dashboard':'n-db','clubs':'n-cl','club-detail':'n-cl','equipe-detail':'n-cl','joueur-detail':'n-cl',
+    'alljoueurs':'n-jo','offres':'n-of','prospection':'n-pr','interventions':'n-in',
+    'emailing':'n-em','linkedin':'n-li'
+  };
+  var navEl = document.getElementById(navMap[name]);
+  if(navEl) navEl.className += ' on';
+
+  S.view = name;
+  updBC(); rBtn(); rView(name);
+}
+
+function bcNav(fn) {
+  if(!fn) return;
+  if(fn === 'dashboard') gv('dashboard');
+  else if(fn === 'clubs') gv('clubs');
+  else if(fn.indexOf('club:')===0) opCl(parseInt(fn.substring(5)));
+  else if(fn.indexOf('eq:')===0) opEq(parseInt(fn.substring(3)));
+  else gv(fn);
+}
+
+function updBC() {
+  var bc = document.getElementById('bc');
+  var v = S.view;
+  var parts = [];
+
   parts.push({t:'Dashboard',fn:'dashboard',on:v==='dashboard'});
   if(v==='clubs'||v==='club-detail'||v==='equipe-detail'||v==='joueur-detail')
     parts.push({t:'Clubs',fn:'clubs',on:v==='clubs'});
-  if(v==='alljoueurs')parts.push({t:'Joueurs',fn:null,on:true});
-  if(v==='offres')parts.push({t:'Offres & CA',fn:null,on:true});
-  if(v==='prospection')parts.push({t:'Prospection',fn:null,on:true});
-  if(v==='interventions')parts.push({t:'Interventions',fn:null,on:true});
-  if((v==='club-detail'||v==='equipe-detail'||v==='joueur-detail')&&S.clubId){
-    var bc_c=DB.clubs.find(function(x){return x.id===S.clubId});
-    if(bc_c)parts.push({t:bc_c.nom,fn:'club:'+S.clubId,on:v==='club-detail'});
+  if(v==='alljoueurs') parts.push({t:'Joueurs',fn:null,on:true});
+  if(v==='offres') parts.push({t:'Offres & CA',fn:null,on:true});
+  if(v==='prospection') parts.push({t:'Prospection',fn:null,on:true});
+  if(v==='emailing') parts.push({t:'Emailing',fn:null,on:true});
+  if(v==='linkedin') parts.push({t:'Messages LinkedIn',fn:null,on:true});
+  if(v==='interventions') parts.push({t:'Interventions',fn:null,on:true});
+
+  if((v==='club-detail'||v==='equipe-detail'||v==='joueur-detail')&&S.clubId) {
+    var bc_c = find(DB.clubs,S.clubId);
+    if(bc_c) parts.push({t:bc_c.nom,fn:'club:'+S.clubId,on:v==='club-detail'});
   }
-  if((v==='equipe-detail'||v==='joueur-detail')&&S.equipeId){
-    var bc_e=DB.equipes.find(function(x){return x.id===S.equipeId});
-    if(bc_e)parts.push({t:bc_e.nom,fn:'eq:'+S.equipeId,on:v==='equipe-detail'});
+  if((v==='equipe-detail'||v==='joueur-detail')&&S.equipeId) {
+    var bc_e = find(DB.equipes,S.equipeId);
+    if(bc_e) parts.push({t:bc_e.nom,fn:'eq:'+S.equipeId,on:v==='equipe-detail'});
   }
-  if(v==='joueur-detail'&&S.joueurId){
-    var bc_j=DB.joueurs.find(function(x){return x.id===S.joueurId});
-    if(bc_j)parts.push({t:bc_j.nom,fn:null,on:true});
+  if(v==='joueur-detail'&&S.joueurId) {
+    var bc_j = find(DB.joueurs,S.joueurId);
+    if(bc_j) parts.push({t:bc_j.nom,fn:null,on:true});
   }
-  var html=[];
-  for(var i=0;i<parts.length;i++){
-    var p=parts[i];
-    var sep=i>0?'<span class="bcs">&#8250;</span>':'';
-    var cls='class="bci'+(p.on?' on':'')+'"';
-    var oc=(!p.on&&p.fn)?(' onclick="bcNav(''+p.fn+'')"'):'';
-    html.push(sep+'<span '+cls+oc+'>'+p.t+'</span>');
+
+  var html = '';
+  for(var i=0;i<parts.length;i++) {
+    var p = parts[i];
+    if(i>0) html += '<span class="bcs">&#8250;</span>';
+    var cls = 'bci' + (p.on?' on':'');
+    var oc = (!p.on&&p.fn) ? ' onclick="bcNav(\''+p.fn+'\')"' : '';
+    html += '<span class="'+cls+'"'+oc+'>'+p.t+'</span>';
   }
-  bc.innerHTML=html.join('');
+  bc.innerHTML = html;
 }
 
-function rBtn(){
-  const b=document.getElementById('btnx');
-  const lm={dashboard:'+ Club',clubs:'+ Club','club-detail':'+ Équipe','equipe-detail':'+ Joueur','joueur-detail':'+ Objectif',alljoueurs:'+ Joueur',offres:'+ Offre',prospection:'',interventions:'+ Intervention'};
-  const l=lm[S.view];b.style.display=l===''?'none':'';b.textContent=l||'+ Ajouter'
+function rBtn() {
+  var b = document.getElementById('btnx');
+  var labels = {
+    'dashboard':'+ Club','clubs':'+ Club','club-detail':'+ Équipe',
+    'equipe-detail':'+ Joueur','joueur-detail':'+ Objectif',
+    'alljoueurs':'+ Joueur','offres':'+ Offre','prospection':'','interventions':'+ Intervention',
+    'emailing':'','linkedin':''
+  };
+  var l = labels[S.view];
+  b.style.display = (l==='') ? 'none' : '';
+  b.textContent = l || '+ Ajouter';
 }
 
-function hAdd(){
-  const v=S.view;
-  if(v==='dashboard'||v==='clubs')oAP('ap-club');
-  else if(v==='club-detail'){S.pendEq=S.clubId;oAP('ap-equipe')}
-  else if(v==='equipe-detail'){S.pendJou=S.equipeId;oAP('ap-joueur')}
-  else if(v==='joueur-detail'){S.pendObj=S.joueurId;oAP('ap-objectif')}
-  else if(v==='alljoueurs')oAP('ap-joueur');
-  else if(v==='offres'){popOffreClubs();oAP('ap-offre')}
-  else if(v==='interventions'){popInterClubs();oAP('ap-inter')}
+function hAdd() {
+  var v = S.view;
+  if(v==='dashboard'||v==='clubs') openAP('ap-club');
+  else if(v==='club-detail') { S.pendEq=S.clubId; openAP('ap-equipe'); }
+  else if(v==='equipe-detail') { S.pendJou=S.equipeId; openAP('ap-joueur'); }
+  else if(v==='joueur-detail') { S.pendObj=S.joueurId; openAP('ap-objectif'); }
+  else if(v==='alljoueurs') openAP('ap-joueur');
+  else if(v==='offres') { popOffreClubs(); openAP('ap-offre'); }
+  else if(v==='interventions') { popInterClubs(); openAP('ap-inter'); }
 }
 
-function popOffreClubs(){
-  const sel=document.getElementById('ao-club');
-  sel.innerHTML='<option value="">Choisir un club…</option>'+DB.clubs.map(c=>`<option value="${c.id}">${c.nom}</option>`).join('')
+function popOffreClubs() {
+  var sel = document.getElementById('ao-club');
+  var h = '<option value="">Choisir un club...</option>';
+  for(var i=0;i<DB.clubs.length;i++) h += '<option value="'+DB.clubs[i].id+'">'+DB.clubs[i].nom+'</option>';
+  sel.innerHTML = h;
 }
-function popInterClubs(){
-  const sel=document.getElementById('ai-club');
-  sel.innerHTML='<option value="">Choisir…</option>'+DB.clubs.map(c=>`<option value="${c.id}">${c.nom}</option>`).join('')
+function popInterClubs() {
+  var sel = document.getElementById('ai-club');
+  var h = '<option value="">Choisir...</option>';
+  for(var i=0;i<DB.clubs.length;i++) h += '<option value="'+DB.clubs[i].id+'">'+DB.clubs[i].nom+'</option>';
+  sel.innerHTML = h;
 }
-
-function setOffreMontant(){
-  const v=document.getElementById('ao-type').value;
-  if(v){const parts=v.split('|');document.getElementById('ao-mt').value=parts[1]||''}
-}
-
-// ═══════════════════════════════
-// RENDER ROUTER
-// ═══════════════════════════════
-function rView(n){
-  if(n==='dashboard')rDash();
-  else if(n==='clubs')rClubs();
-  else if(n==='alljoueurs')rAJ();
-  else if(n==='offres')rOffres();
-  else if(n==='prospection')rProsp();
-  else if(n==='interventions')rInter();
+function setOffreMontant() {
+  var v = document.getElementById('ao-type').value;
+  if(v) { var parts = v.split('|'); document.getElementById('ao-mt').value = parts[1]||''; }
 }
 
-// ═══════════════════════════════
-// DASHBOARD
-// ═══════════════════════════════
-function rDash(){
-  const cl=DB.clubs,jo=DB.joueurs,of=DB.offres,it=DB.interventions;
-  const ca=totalCA();
-  document.getElementById('kd-c').textContent=cl.length;
-  document.getElementById('kd-ca').textContent=ca>=1000?(ca/1000).toFixed(1)+'k€':ca+'€';
-  document.getElementById('kd-j').textContent=jo.length;
-  document.getElementById('kd-i').textContent=it.length;
+// ─── RENDER ROUTER ───
+function rView(n) {
+  if(n==='dashboard') rDash();
+  else if(n==='clubs') rClubs();
+  else if(n==='alljoueurs') rAJ();
+  else if(n==='offres') rOffres();
+  else if(n==='prospection') rProsp();
+  else if(n==='interventions') rInter();
+  else if(n==='emailing') { genCampagne(); }
+  else if(n==='linkedin') { loadLinkedin(); }
+}
 
-  // Pipeline
-  const froid=cl.filter(c=>c.statut==='🔴 Froid').length;
-  const enc=cl.filter(c=>c.statut==='🟡 En cours').length;
-  const acon=cl.filter(c=>c.statut==='🔵 À contacter').length;
-  const cli=cl.filter(c=>c.statut==='🟢 Client').length;
-  const tot=cl.length||1;
-  document.getElementById('d-pipe').innerHTML=[
+// ─── DASHBOARD ───
+function rDash() {
+  var cl = DB.clubs, jo = DB.joueurs, of = DB.offres, it = DB.interventions;
+  var ca = totalCA();
+  document.getElementById('kd-c').textContent = cl.length;
+  document.getElementById('kd-ca').textContent = ca >= 1000 ? (Math.round(ca/100)/10)+'k€' : ca+'€';
+  document.getElementById('kd-j').textContent = jo.length;
+  document.getElementById('kd-i').textContent = it.length;
+
+  var froid=0, enc=0, acon=0, cli=0;
+  for(var i=0;i<cl.length;i++) {
+    if(cl[i].statut==='🔴 Froid') froid++;
+    else if(cl[i].statut==='🟡 En cours') enc++;
+    else if(cl[i].statut==='🔵 À contacter') acon++;
+    else if(cl[i].statut==='🟢 Client') cli++;
+  }
+  var tot = cl.length||1;
+  var pipeItems = [
     {l:'🔴 Froid',n:froid,c:'var(--rouge)'},{l:'🔵 À contacter',n:acon,c:'var(--bleu)'},
     {l:'🟡 En cours',n:enc,c:'var(--ora)'},{l:'🟢 Client',n:cli,c:'var(--vert)'}
-  ].map(it=>`<div class="pbar-wrap"><div class="pbar-lbl"><span>${it.l}</span><span style="font-family:'DM Mono',monospace;color:var(--blanc);font-weight:600">${it.n}</span></div><div class="pbar"><div class="pfill" style="width:${it.n/tot*100}%;background:${it.c}"></div></div></div>`).join('')+
-  `<div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--gris)">Taux conversion : <span style="color:var(--vert);font-weight:700">${tot?Math.round(cli/tot*100):0}%</span></div>`;
-
-  // CA par offre
-  const ofTypes={};
-  of.forEach(o=>{const t=(o.type||'Autre').split('|')[0];ofTypes[t]=(ofTypes[t]||0)+(parseInt(o.montant)||0)});
-  const maxCA=Math.max(...Object.values(ofTypes),1);
-  document.getElementById('d-ca').innerHTML = Object.keys(ofTypes).length ?
-    `<div style="font-size:11px;color:var(--gris);margin-bottom:8px">CA total : <span style="color:var(--vert);font-weight:700;font-size:14px">${fmt(ca)}</span></div>`+
-    Object.entries(ofTypes).map(([k,v])=>`<div class="pbar-wrap"><div class="pbar-lbl"><span style="font-size:10.5px">${k}</span><span style="color:var(--vert);font-weight:600;font-size:11px">${fmt(v)}</span></div><div class="pbar"><div class="pfill" style="width:${v/maxCA*100}%;background:var(--vert)"></div></div></div>`).join('') :
-    '<div style="font-size:12px;color:var(--gris);text-align:center;padding:20px 0">Aucune offre signée</div>';
-
-  // Top clubs
-  const top=[...cl].sort((a,b)=>b.potentiel-a.potentiel).slice(0,5);
-  document.getElementById('d-clubs').innerHTML=top.map(c=>`<div class="cr" style="grid-template-columns:2fr 1fr 1fr 1fr 70px" onclick="opCl(${c.id})"><div class="cnc"><div class="ava">${av(c.nom)}</div><div><div class="cn">${c.nom}</div><div class="cs">${c.ville}</div></div></div><div><span class="bdg bsp">${c.sport}</span></div><div>${bst(c.statut)}</div><div><span class="sor">${st(c.potentiel)}</span></div><div><button class="btn bgh bsm" onclick="event.stopPropagation();opCl(${c.id})">→</button></div></div>`).join('');
-
-  // Dernières offres
-  const lastOf=[...of].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,5);
-  document.getElementById('d-offres').innerHTML=lastOf.length?
-    lastOf.map(o=>{const c=DB.clubs.find(x=>x.id==o.clubId);return`<div class="cr" style="grid-template-columns:1fr 1fr 80px 60px" onclick="gv('offres')"><div><div class="cn" style="font-size:12px">${c?c.nom:'—'}</div><div class="cs">${(o.type||'').split('|')[0]}</div></div><div>${boff(o.statut)}</div><div style="color:var(--vert);font-family:'DM Mono',monospace;font-size:12px">${fmt(parseInt(o.montant)||0)}</div><div class="cm">${o.date?o.date.slice(0,7):'—'}</div></div>`}).join('') :
-    '<div style="font-size:12px;color:var(--gris);text-align:center;padding:20px 0">Aucune offre encore</div>';
-}
-
-// ═══════════════════════════════
-// CLUBS LIST
-// ═══════════════════════════════
-function rClubs(f){
-  f=f||S.clf||'all';
-  const data=f==='all'?DB.clubs:DB.clubs.filter(c=>c.statut===f);
-  const el=document.getElementById('cl-list');
-  if(!data.length){el.innerHTML=`<div class="empty"><div class="eico">🏟</div><div class="etxt">Aucun club</div></div>`;return}
-  el.innerHTML=data.map(c=>{ const nbOf=DB.offres.filter(o=>o.clubId==c.id).length;
-    return`<div class="cr" style="grid-template-columns:2.2fr 1fr 1.1fr 1.1fr 1fr 85px" onclick="opCl(${c.id})">
-    <div class="cnc"><div class="ava">${av(c.nom)}</div><div><div class="cn">${c.nom}</div><div class="cs">${c.ville}${nbOf?' · '+nbOf+' offre'+(nbOf>1?'s':''):''}</div></div></div>
-    <div><span class="bdg bsp">${c.sport}</span></div><div class="cm">${c.ville}</div><div>${bst(c.statut)}</div>
-    <div><span class="sor">${st(c.potentiel)}</span></div>
-    <div><button class="btn bgh bsm" onclick="event.stopPropagation();opCl(${c.id})">Ouvrir →</button></div></div>`}).join('')
-}
-function fcl(f,el){S.clf=f;document.querySelectorAll('#v-clubs .tab').forEach(t=>t.classList.remove('on'));if(el)el.classList.add('on');rClubs(f)}
-
-// ═══════════════════════════════
-// OPEN CLUB
-// ═══════════════════════════════
-function opCl(id){S.clubId=id;S.equipeId=null;S.joueurId=null;const c=DB.clubs.find(x=>x.id===id);if(!c)return;rClDet(c);gv('club-detail')}
-
-function rClDet(c){
-  var eqs=DB.equipes.filter(function(e){return e.clubId===c.id});
-  var totJ=eqs.reduce(function(s,e){return s+DB.joueurs.filter(function(j){return j.equipeId===e.id}).length},0);
-  var offs=DB.offres.filter(function(o){return o.clubId===c.id});
-  var ints=DB.interventions.filter(function(i){return i.clubId===c.id});
-  var caClub=offs.reduce(function(s,o){return s+(parseInt(o.montant)||0)},0);
-  var d=c.decouverte||{};
-  var el=document.getElementById('v-club-detail');
-
-  function bstEq(s){var m={'Suivi actif':'c2','Découverte':'e','Prospect':'a','En pause':'g2','Terminé':'f'};return '<span class="bdg b'+(m[s]||'g2')+'">'+s+'</span>'}
-
-  // HERO
-  var html='';
-  html+='<div class="hero"><div class="hero2">';
-  html+='<div style="display:flex;align-items:flex-start;gap:13px;flex:1">';
-  html+='<div class="biga">'+av(c.nom)+'</div>';
-  html+='<div><div class="htitle">'+c.nom+'</div>';
-  html+='<div class="hmeta">'+bst(c.statut)+'<span class="bdg bsp">'+c.sport+'</span>';
-  html+='<span style="font-size:11.5px;color:var(--gris)">'+c.ville+'</span>';
-  html+='<span class="sor">'+st(c.potentiel)+'</span></div></div></div>';
-  html+='<div class="hactions">';
-  html+='<button class="btn bgh bsm" onclick="S.pendEq='+c.id+';oAP(\'ap-equipe\')">+ Équipe</button>';
-  html+='<button class="btn bgh bsm" onclick="addOffreFor('+c.id+')">+ Offre</button>';
-  html+='<button class="btn bgh bsm" onclick="addInterFor('+c.id+')">+ Intervention</button>';
-  html+='<button class="btn bg bsm" onclick="svCl('+c.id+')">Enregistrer</button>';
-  html+='</div></div></div>';
-
-  // STATS ROW
-  html+='<div class="srow">';
-  var stats=[{n:eqs.length,l:'Équipes'},{n:totJ,l:'Joueurs'},{n:offs.length,l:'Offres'},{n:ints.length,l:'Interventions'},{n:caClub?fmt(caClub):'—',l:'CA'}];
-  for(var si=0;si<stats.length;si++){
-    html+='<div class="sc"><div class="scv">'+stats[si].n+'</div><div class="scl">'+stats[si].l+'</div></div>';
+  ];
+  var ph = '';
+  for(var p=0;p<pipeItems.length;p++) {
+    var it2 = pipeItems[p];
+    ph += '<div class="pbar-wrap"><div class="pbar-lbl"><span>'+it2.l+'</span>';
+    ph += '<span style="font-family:\'DM Mono\',monospace;color:var(--blanc);font-weight:600">'+it2.n+'</span></div>';
+    ph += '<div class="pbar"><div class="pfill" style="width:'+Math.round(it2.n/tot*100)+'%;background:'+it2.c+'"></div></div></div>';
   }
-  html+='</div>';
+  ph += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--gris)">Taux conversion : <span style="color:var(--vert);font-weight:700">'+Math.round(cli/tot*100)+'%</span></div>';
+  document.getElementById('d-pipe').innerHTML = ph;
+
+  var ofTypes = {};
+  for(var oi=0;oi<of.length;oi++) {
+    var typeName = (of[oi].type||'Autre').split('|')[0];
+    ofTypes[typeName] = (ofTypes[typeName]||0) + (parseInt(of[oi].montant)||0);
+  }
+  var caKeys = Object.keys(ofTypes);
+  var maxCA = 1;
+  for(var ci=0;ci<caKeys.length;ci++) if(ofTypes[caKeys[ci]]>maxCA) maxCA=ofTypes[caKeys[ci]];
+  var cah = '<div style="font-size:11px;color:var(--gris);margin-bottom:8px">CA total : <span style="color:var(--vert);font-weight:700;font-size:14px">'+fmt(ca)+'</span></div>';
+  if(caKeys.length) {
+    for(var ck=0;ck<caKeys.length;ck++) {
+      cah += '<div class="pbar-wrap"><div class="pbar-lbl"><span style="font-size:10.5px">'+caKeys[ck]+'</span>';
+      cah += '<span style="color:var(--vert);font-weight:600;font-size:11px">'+fmt(ofTypes[caKeys[ck]])+'</span></div>';
+      cah += '<div class="pbar"><div class="pfill" style="width:'+Math.round(ofTypes[caKeys[ck]]/maxCA*100)+'%;background:var(--vert)"></div></div></div>';
+    }
+  } else {
+    cah += '<div style="font-size:12px;color:var(--gris);text-align:center;padding:20px 0">Aucune offre signée</div>';
+  }
+  document.getElementById('d-ca').innerHTML = cah;
+
+  var topClubs = cl.slice().sort(function(a,b){return b.potentiel-a.potentiel}).slice(0,5);
+  var dch = '';
+  for(var dc=0;dc<topClubs.length;dc++) {
+    var c2 = topClubs[dc];
+    dch += '<div class="cr" style="grid-template-columns:2fr 1fr 1fr 1fr 70px" onclick="opCl('+c2.id+')">';
+    dch += '<div class="cnc"><div class="ava">'+av(c2.nom)+'</div><div><div class="cn">'+c2.nom+'</div><div class="cs">'+c2.ville+'</div></div></div>';
+    dch += '<div><span class="bdg bsp">'+c2.sport+'</span></div>';
+    dch += '<div>'+bst(c2.statut)+'</div>';
+    dch += '<div><span class="sor">'+st(c2.potentiel)+'</span></div>';
+    dch += '<div><button class="btn bgh bsm" onclick="event.stopPropagation();opCl('+c2.id+')">→</button></div>';
+    dch += '</div>';
+  }
+  document.getElementById('d-clubs').innerHTML = dch;
+
+  var sortedOf = of.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date)}).slice(0,5);
+  var doh = '';
+  for(var do2=0;do2<sortedOf.length;do2++) {
+    var o = sortedOf[do2];
+    var oc2 = find(DB.clubs, o.clubId);
+    doh += '<div class="cr" style="grid-template-columns:1fr 1fr 80px 60px" onclick="gv(\'offres\')">';
+    doh += '<div><div class="cn" style="font-size:12px">'+(oc2?oc2.nom:'—')+'</div><div class="cs">'+((o.type||'').split('|')[0])+'</div></div>';
+    doh += '<div>'+boff(o.statut)+'</div>';
+    doh += '<div style="color:var(--vert);font-family:\'DM Mono\',monospace;font-size:12px">'+fmt(parseInt(o.montant)||0)+'</div>';
+    doh += '<div class="cm">'+(o.date?o.date.slice(0,7):'—')+'</div>';
+    doh += '</div>';
+  }
+  if(!sortedOf.length) doh = '<div style="font-size:12px;color:var(--gris);text-align:center;padding:20px 0">Aucune offre encore</div>';
+  document.getElementById('d-offres').innerHTML = doh;
+}
+
+// ─── CLUBS LIST ───
+function rClubs(f) {
+  if(f) S.clf = f;
+  var data = S.clf==='all' ? DB.clubs : filter(DB.clubs, function(c){return c.statut===S.clf});
+  var el = document.getElementById('cl-list');
+  if(!data.length) { el.innerHTML='<div class="empty"><div class="eico">🏟</div><div class="etxt">Aucun club</div></div>'; return; }
+  var h = '';
+  for(var i=0;i<data.length;i++) {
+    var c = data[i];
+    var nbOf = filter(DB.offres, function(o){return o.clubId==c.id}).length;
+    h += '<div class="cr" style="grid-template-columns:2.2fr 1fr 1.1fr 1.1fr 1fr 85px" onclick="opCl('+c.id+')">';
+    h += '<div class="cnc"><div class="ava">'+av(c.nom)+'</div>';
+    h += '<div><div class="cn">'+c.nom+'</div><div class="cs">'+c.ville+(nbOf?' · '+nbOf+' offre'+(nbOf>1?'s':''):'')+'</div></div></div>';
+    h += '<div><span class="bdg bsp">'+c.sport+'</span></div>';
+    h += '<div class="cm">'+c.ville+'</div>';
+    h += '<div>'+bst(c.statut)+'</div>';
+    h += '<div><span class="sor">'+st(c.potentiel)+'</span></div>';
+    h += '<div><button class="btn bgh bsm" onclick="event.stopPropagation();opCl('+c.id+')">Ouvrir →</button></div>';
+    h += '</div>';
+  }
+  el.innerHTML = h;
+}
+
+function fcl(f, el) {
+  S.clf = f;
+  var tabs = document.querySelectorAll('#v-clubs .tab');
+  for(var i=0;i<tabs.length;i++) tabs[i].className = tabs[i].className.replace(' on','').replace(/\bon\b/,'').trim();
+  if(el) el.className += ' on';
+  rClubs(f);
+}
+
+// ─── OPEN CLUB ───
+function opCl(id) {
+  S.clubId = id; S.equipeId = null; S.joueurId = null;
+  var c = find(DB.clubs, id);
+  if(!c) return;
+  rClDet(c);
+  gv('club-detail');
+}
+
+function showClubTab(tabId, btn) {
+  var tabs = document.querySelectorAll('[id^="tab-"]');
+  for(var i=0;i<tabs.length;i++) tabs[i].style.display = 'none';
+  var el = document.getElementById('tab-'+tabId);
+  if(el) el.style.display = 'block';
+  var allTabs = document.querySelectorAll('#v-club-detail .tab');
+  for(var j=0;j<allTabs.length;j++) allTabs[j].className = allTabs[j].className.replace(' on','').replace(/\bon\b/,'').trim();
+  if(btn) btn.className += ' on';
+}
+
+function updDisc(cid, field, val) {
+  var c = find(DB.clubs, cid);
+  if(!c) return;
+  if(!c.decouverte) c.decouverte = {};
+  c.decouverte[field] = val;
+  saveDB();
+}
+
+function svCl(id) {
+  var c = find(DB.clubs, id);
+  saveDB();
+  showToast('Club "'+c.nom+'" enregistré');
+}
+
+function addOffreFor(clubId) {
+  popOffreClubs();
+  document.getElementById('ao-club').value = clubId;
+  document.getElementById('ao-date').value = new Date().toISOString().split('T')[0];
+  openAP('ap-offre');
+}
+function addInterFor(clubId) {
+  popInterClubs();
+  document.getElementById('ai-club').value = clubId;
+  document.getElementById('ai-date').value = new Date().toISOString().split('T')[0];
+  openAP('ap-inter');
+}
+
+function rClDet(c) {
+  var eqs = filter(DB.equipes, function(e){return e.clubId===c.id});
+  var totJ = 0;
+  for(var ti=0;ti<eqs.length;ti++) totJ += filter(DB.joueurs, function(j){return j.equipeId===eqs[ti].id}).length;
+  var offs = filter(DB.offres, function(o){return o.clubId===c.id});
+  var ints = filter(DB.interventions, function(i){return i.clubId===c.id});
+  var caClub = 0; for(var ci=0;ci<offs.length;ci++) caClub += parseInt(offs[ci].montant)||0;
+  var d = c.decouverte||{};
+  var el = document.getElementById('v-club-detail');
+
+  var sports = ['Rugby','Basket','Natation','Tennis','Football','Handball','Athlétisme','Autre'];
+  var niveaux = ['Pro','Semi-pro','Amateur','Institutionnel'];
+  var statuts = ['🔴 Froid','🔵 À contacter','🟡 En cours','🟢 Client','⚫ Abandonné'];
+  var msgs = ['Type A — Pro/Semi-pro','Type B — Amateur','Type C — Institutionnel'];
+  var srcs = ['Réseau','Recherche','Recommandation','Stratégique'];
+  var potLabels = ['Faible','Moyen','Bon','Fort','Prioritaire'];
+
+  function mkSel(arr, sel, field) {
+    var h = '';
+    for(var i=0;i<arr.length;i++) h += '<option'+(arr[i]===sel?' selected':'')+'>'+arr[i]+'</option>';
+    return h;
+  }
+
+  var html = '';
+  // HERO
+  html += '<div class="hero"><div class="hero2">';
+  html += '<div style="display:flex;align-items:flex-start;gap:13px;flex:1">';
+  html += '<div class="biga">'+av(c.nom)+'</div>';
+  html += '<div><div class="htitle">'+c.nom+'</div>';
+  html += '<div class="hmeta">'+bst(c.statut)+'<span class="bdg bsp">'+c.sport+'</span>';
+  html += '<span style="font-size:11.5px;color:var(--gris)">'+c.ville+'</span>';
+  html += '<span class="sor">'+st(c.potentiel)+'</span></div></div></div>';
+  html += '<div class="hactions">';
+  html += '<button class="btn bgh bsm" onclick="S.pendEq='+c.id+';openAP(\'ap-equipe\')">+ Équipe</button>';
+  html += '<button class="btn bgh bsm" onclick="addOffreFor('+c.id+')">+ Offre</button>';
+  html += '<button class="btn bgh bsm" onclick="addInterFor('+c.id+')">+ Intervention</button>';
+  html += '<button class="btn bg bsm" onclick="svCl('+c.id+')">Enregistrer</button>';
+  html += '</div></div></div>';
+
+  // STATS
+  html += '<div class="srow">';
+  html += '<div class="sc"><div class="scv">'+eqs.length+'</div><div class="scl">Équipes</div></div>';
+  html += '<div class="sc"><div class="scv">'+totJ+'</div><div class="scl">Joueurs</div></div>';
+  html += '<div class="sc"><div class="scv">'+offs.length+'</div><div class="scl">Offres</div></div>';
+  html += '<div class="sc"><div class="scv">'+ints.length+'</div><div class="scl">Interventions</div></div>';
+  html += '<div class="sc"><div class="scv">'+(caClub?fmt(caClub):'—')+'</div><div class="scl">CA</div></div>';
+  html += '</div>';
 
   // TABS
-  html+='<div style="display:flex;gap:2px;background:rgba(255,255,255,0.03);border-radius:8px;padding:3px;margin:14px 28px 0">';
-  html+='<button class="tab on" onclick="showClubTab(\'infos\',this)">Infos</button>';
-  html+='<button class="tab" onclick="showClubTab(\'decouverte\',this)">Découverte</button>';
-  html+='<button class="tab" onclick="showClubTab(\'offres-tab\',this)">Offres</button>';
-  html+='<button class="tab" onclick="showClubTab(\'interventions-tab\',this)">Interventions</button>';
-  html+='<button class="tab" onclick="showClubTab(\'equipes-tab\',this)">Équipes</button>';
-  html+='</div>';
+  html += '<div style="display:flex;gap:2px;background:rgba(255,255,255,0.03);border-radius:8px;padding:3px;margin:14px 28px 0">';
+  html += '<button class="tab on" onclick="showClubTab(\'infos\',this)">Infos</button>';
+  html += '<button class="tab" onclick="showClubTab(\'decouverte\',this)">Découverte</button>';
+  html += '<button class="tab" onclick="showClubTab(\'offres-tab\',this)">Offres</button>';
+  html += '<button class="tab" onclick="showClubTab(\'interventions-tab\',this)">Interventions</button>';
+  html += '<button class="tab" onclick="showClubTab(\'equipes-tab\',this)">Équipes</button>';
+  html += '</div>';
 
   // TAB INFOS
-  html+='<div id="tab-infos" style="display:block">';
-  html+='<div class="isec"><div class="stitle">Identité</div><div class="igrid">';
-  html+='<div class="ifield"><div class="ilbl">Nom</div><input class="ied" value="'+c.nom+'" onchange="uf(DB.clubs,'+c.id+',\'nom\',this.value)"></div>';
-  html+='<div class="ifield"><div class="ilbl">Sport</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'sport\',this.value)">';
-  var sports=['Rugby','Basket','Natation','Tennis','Football','Handball','Athlétisme','Autre'];
-  for(var si2=0;si2<sports.length;si2++){html+='<option'+(sports[si2]===c.sport?' selected':'')+'>'+sports[si2]+'</option>';}
-  html+='</select></div>';
-  html+='<div class="ifield"><div class="ilbl">Ville</div><input class="ied" value="'+(c.ville||'')+'" onchange="uf(DB.clubs,'+c.id+',\'ville\',this.value)"></div>';
-  html+='<div class="ifield"><div class="ilbl">Niveau</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'niveau\',this.value)">';
-  var niveaux=['Pro','Semi-pro','Amateur','Institutionnel'];
-  for(var ni=0;ni<niveaux.length;ni++){html+='<option'+(niveaux[ni]===c.niveau?' selected':'')+'>'+niveaux[ni]+'</option>';}
-  html+='</select></div>';
-  html+='<div class="ifield"><div class="ilbl">Site web</div><input class="ied" value="'+(c.site||'')+'" placeholder="racing92.fr" onchange="uf(DB.clubs,'+c.id+',\'site\',this.value)"></div>';
-  html+='</div></div>';
+  html += '<div id="tab-infos" style="display:block">';
+  html += '<div class="isec"><div class="stitle">Identité</div><div class="igrid">';
+  html += '<div class="ifield"><div class="ilbl">Nom</div><input class="ied" value="'+c.nom+'" onchange="uf(DB.clubs,'+c.id+',\'nom\',this.value)"></div>';
+  html += '<div class="ifield"><div class="ilbl">Sport</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'sport\',this.value)">'+mkSel(sports,c.sport)+'</select></div>';
+  html += '<div class="ifield"><div class="ilbl">Ville</div><input class="ied" value="'+(c.ville||'')+'" onchange="uf(DB.clubs,'+c.id+',\'ville\',this.value)"></div>';
+  html += '<div class="ifield"><div class="ilbl">Niveau</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'niveau\',this.value)">'+mkSel(niveaux,c.niveau)+'</select></div>';
+  html += '<div class="ifield"><div class="ilbl">Site web</div><input class="ied" value="'+(c.site||'')+'" placeholder="racing92.fr" onchange="uf(DB.clubs,'+c.id+',\'site\',this.value)"></div>';
+  html += '</div></div>';
+  html += '<div class="isec"><div class="stitle">Contact</div><div class="igrid">';
+  html += '<div class="ifield"><div class="ilbl">Nom · Rôle</div><input class="ied" value="'+(c.contact||'')+'" onchange="uf(DB.clubs,'+c.id+',\'contact\',this.value)"></div>';
+  html += '<div class="ifield"><div class="ilbl">Email</div><input class="ied" type="email" value="'+(c.email||'')+'" onchange="uf(DB.clubs,'+c.id+',\'email\',this.value)"></div>';
+  html += '<div class="ifield"><div class="ilbl">Tél</div><input class="ied" value="'+(c.tel||'')+'" onchange="uf(DB.clubs,'+c.id+',\'tel\',this.value)"></div>';
+  html += '</div></div>';
+  html += '<div class="isec"><div class="stitle">Prospection</div><div class="igrid">';
+  html += '<div class="ifield"><div class="ilbl">Statut</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'statut\',this.value)">'+mkSel(statuts,c.statut)+'</select></div>';
+  html += '<div class="ifield"><div class="ilbl">Potentiel</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'potentiel\',parseInt(this.value))">';
+  for(var pi=1;pi<=5;pi++) html += '<option value="'+pi+'"'+(pi===c.potentiel?' selected':'')+'>'+pi+' — '+potLabels[pi-1]+'</option>';
+  html += '</select></div>';
+  html += '<div class="ifield"><div class="ilbl">Message LinkedIn</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'message\',this.value)">'+mkSel(msgs,c.message)+'</select></div>';
+  html += '<div class="ifield"><div class="ilbl">Source</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'source\',this.value)">'+mkSel(srcs,c.source)+'</select></div>';
+  html += '<div class="ifield" style="grid-column:1/-1"><div class="ilbl">Prochaine action</div><input class="ied" value="'+(c.action||'')+'" onchange="uf(DB.clubs,'+c.id+',\'action\',this.value)"></div>';
+  html += '<div class="ifield" style="grid-column:1/-1"><div class="ilbl">Commentaire</div><textarea class="ied" onchange="uf(DB.clubs,'+c.id+',\'commentaire\',this.value)">'+(c.commentaire||'')+'</textarea></div>';
 
-  html+='<div class="isec"><div class="stitle">Contact</div><div class="igrid">';
-  html+='<div class="ifield"><div class="ilbl">Nom · Rôle</div><input class="ied" value="'+(c.contact||'')+'" onchange="uf(DB.clubs,'+c.id+',\'contact\',this.value)"></div>';
-  html+='<div class="ifield"><div class="ilbl">Email</div><input class="ied" type="email" value="'+(c.email||'')+'" onchange="uf(DB.clubs,'+c.id+',\'email\',this.value)"></div>';
-  html+='<div class="ifield"><div class="ilbl">Tél</div><input class="ied" value="'+(c.tel||'')+'" onchange="uf(DB.clubs,'+c.id+',\'tel\',this.value)"></div>';
-  html+='</div></div>';
-
-  html+='<div class="isec"><div class="stitle">Prospection</div><div class="igrid">';
-  html+='<div class="ifield"><div class="ilbl">Statut</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'statut\',this.value)">';
-  var statuts=['🔴 Froid','🔵 À contacter','🟡 En cours','🟢 Client','⚫ Abandonné'];
-  for(var sti=0;sti<statuts.length;sti++){html+='<option'+(statuts[sti]===c.statut?' selected':'')+' style="background:#0f1e2d">'+statuts[sti]+'</option>';}
-  html+='</select></div>';
-  html+='<div class="ifield"><div class="ilbl">Potentiel</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'potentiel\',parseInt(this.value))">';
-  var potLabels=['Faible','Moyen','Bon','Fort','Prioritaire'];
-  for(var pi=1;pi<=5;pi++){html+='<option value="'+pi+'"'+(pi===c.potentiel?' selected':'')+'>'+pi+' — '+potLabels[pi-1]+'</option>';}
-  html+='</select></div>';
-  html+='<div class="ifield"><div class="ilbl">Message LinkedIn</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'message\',this.value)">';
-  var msgs=['Type A — Pro/Semi-pro','Type B — Amateur','Type C — Institutionnel'];
-  for(var mi=0;mi<msgs.length;mi++){html+='<option'+(msgs[mi]===c.message?' selected':'')+'>'+msgs[mi]+'</option>';}
-  html+='</select></div>';
-  html+='<div class="ifield"><div class="ilbl">Source</div><select class="ied" onchange="uf(DB.clubs,'+c.id+',\'source\',this.value)">';
-  var srcs=['Réseau','Recherche','Recommandation','Stratégique'];
-  for(var sri=0;sri<srcs.length;sri++){html+='<option'+(srcs[sri]===c.source?' selected':'')+'>'+srcs[sri]+'</option>';}
-  html+='</select></div>';
-  html+='<div class="ifield" style="grid-column:1/-1"><div class="ilbl">Prochaine action</div><input class="ied" value="'+(c.action||'')+'" onchange="uf(DB.clubs,'+c.id+',\'action\',this.value)"></div>';
-  html+='<div class="ifield" style="grid-column:1/-1"><div class="ilbl">Commentaire</div><textarea class="ied" onchange="uf(DB.clubs,'+c.id+',\'commentaire\',this.value)">'+(c.commentaire||'')+'</textarea></div>';
-
-html+=’</div></div>’;
-html+=’</div>’; // end tab-infos
+html += ‘</div></div></div>’;
 
 // TAB DÉCOUVERTE
-html+=’<div id="tab-decouverte" style="display:none">’;
-html+=’<div class="isec"><div class="stitle">Le Club</div><div class="igrid">’;
-html+=’<div class="ifield"><div class="ilbl">Président</div><input class="ied" value="'+(d.president||'')+'" onchange="updDisc('+c.id+',\'president\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Directeur sportif</div><input class="ied" value="'+(d.directeur||'')+'" onchange="updDisc('+c.id+',\'directeur\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Nb adhérents</div><input class="ied" type="number" value="'+(d.nbAd||'')+'" onchange="updDisc('+c.id+',\'nbAd\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Nb équipes</div><input class="ied" type="number" value="'+(d.nbEq||'')+'" onchange="updDisc('+c.id+',\'nbEq\',this.value)"></div>’;
-html+=’</div></div>’;
-
-html+=’<div class="isec"><div class="stitle">Situation du club</div>’;
-html+=’<div class="igrid2">’;
-html+=’<div class="ifield"><div class="ilbl">Description aujourd'hui</div><textarea class="ied" onchange="updDisc('+c.id+',\'description\',this.value)">’+(d.description||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Principaux défis</div><textarea class="ied" onchange="updDisc('+c.id+',\'defis\',this.value)">’+(d.defis||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Ce qui fonctionne bien</div><textarea class="ied" onchange="updDisc('+c.id+',\'fonctionneBien\',this.value)">’+(d.fonctionneBien||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Ce qui préoccupe</div><textarea class="ied" onchange="updDisc('+c.id+',\'preoccupe\',this.value)">’+(d.preoccupe||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Qu'est-ce qui bloque vraiment ?</div><textarea class="ied" onchange="updDisc('+c.id+',\'bloque\',this.value)">’+(d.bloque||’’)+’</textarea></div>’;
-html+=’</div></div>’;
-
-html+=’<div class="isec"><div class="stitle">Performance mentale</div><div class="igrid2">’;
-html+=’<div class="ifield"><div class="ilbl">Déjà travaillé avec un préparateur ?</div>’;
-html+=’<select class="ied" onchange="updDisc('+c.id+',\'prepaMentale\',this.value)">’;
-html+=’<option value="">—</option>’;
-var pmOpts=[‘Oui’,‘Non’,‘En cours’];
-for(var pmi=0;pmi<pmOpts.length;pmi++){html+=’<option’+(d.prepaMentale===pmOpts[pmi]?’ selected’:’’)+’>’+pmOpts[pmi]+’</option>’;}
-html+=’</select></div>’;
-html+=’<div class="ifield"><div class="ilbl">Gestion du stress actuellement</div><textarea class="ied" onchange="updDisc('+c.id+',\'travailleStress\',this.value)" style="min-height:48px">’+(d.travailleStress||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Gestion cohésion</div><textarea class="ied" onchange="updDisc('+c.id+',\'travailleCohesion\',this.value)" style="min-height:48px">’+(d.travailleCohesion||’’)+’</textarea></div>’;
-html+=’</div></div>’;
-
-html+=’<div class="isec"><div class="stitle">Projection stratégique</div><div class="igrid">’;
-html+=’<div class="ifield"><div class="ilbl">Vision 1 an</div><textarea class="ied" onchange="updDisc('+c.id+',\'vision1\',this.value)" style="min-height:52px">’+(d.vision1||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Vision 5 ans</div><textarea class="ied" onchange="updDisc('+c.id+',\'vision5\',this.value)" style="min-height:52px">’+(d.vision5||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Ambition cette saison</div><textarea class="ied" onchange="updDisc('+c.id+',\'ambition\',this.value)" style="min-height:52px">’+(d.ambition||’’)+’</textarea></div>’;
-html+=’</div></div>’;
-
-html+=’<div class="isec"><div class="stitle">Culture & Identité</div><div class="igrid2">’;
-html+=’<div class="ifield"><div class="ilbl">ADN du club</div><textarea class="ied" onchange="updDisc('+c.id+',\'adn\',this.value)">’+(d.adn||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Valeurs réellement vécues</div><textarea class="ied" onchange="updDisc('+c.id+',\'valeurs\',this.value)">’+(d.valeurs||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Budget annuel estimé</div><input class="ied" value="'+(d.budget||'')+'" placeholder="Ex: 150 000€" onchange="updDisc('+c.id+',\'budget\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Si ça fonctionne, vous gagnez quoi ?</div><textarea class="ied" onchange="updDisc('+c.id+',\'gain\',this.value)">’+(d.gain||’’)+’</textarea></div>’;
-html+=’</div>’;
-html+=’<div style="margin-top:14px;text-align:right"><button class="btn bg bsm" onclick="svCl('+c.id+')">✓ Enregistrer la découverte</button></div>’;
-html+=’</div></div>’; // end isec + tab-decouverte
+html += ‘<div id="tab-decouverte" style="display:none">’;
+html += ‘<div class="isec"><div class="stitle">Le Club</div><div class="igrid">’;
+html += ‘<div class="ifield"><div class="ilbl">Président</div><input class="ied" value="'+(d.president||'')+'" onchange="updDisc('+c.id+',\'president\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Directeur sportif</div><input class="ied" value="'+(d.directeur||'')+'" onchange="updDisc('+c.id+',\'directeur\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Nb adhérents</div><input class="ied" type="number" value="'+(d.nbAd||'')+'" onchange="updDisc('+c.id+',\'nbAd\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Nb équipes</div><input class="ied" type="number" value="'+(d.nbEq||'')+'" onchange="updDisc('+c.id+',\'nbEq\',this.value)"></div>’;
+html += ‘</div></div>’;
+html += ‘<div class="isec"><div class="stitle">Situation du club</div><div class="igrid2">’;
+html += ‘<div class="ifield"><div class="ilbl">Description aujourd'hui</div><textarea class="ied" onchange="updDisc('+c.id+',\'description\',this.value)">’+(d.description||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Principaux défis</div><textarea class="ied" onchange="updDisc('+c.id+',\'defis\',this.value)">’+(d.defis||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Ce qui fonctionne bien</div><textarea class="ied" onchange="updDisc('+c.id+',\'fonctionneBien\',this.value)">’+(d.fonctionneBien||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Ce qui préoccupe</div><textarea class="ied" onchange="updDisc('+c.id+',\'preoccupe\',this.value)">’+(d.preoccupe||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Ce qui bloque vraiment</div><textarea class="ied" onchange="updDisc('+c.id+',\'bloque\',this.value)">’+(d.bloque||’’)+’</textarea></div>’;
+html += ‘</div></div>’;
+html += ‘<div class="isec"><div class="stitle">Performance mentale</div><div class="igrid2">’;
+html += ‘<div class="ifield"><div class="ilbl">Déjà travaillé avec un préparateur ?</div>’;
+html += ‘<select class="ied" onchange="updDisc('+c.id+',\'prepaMentale\',this.value)">’;
+html += ‘<option value="">—</option>’;
+var pmOpts = [‘Oui’,‘Non’,‘En cours’];
+for(var pmi=0;pmi<pmOpts.length;pmi++) html += ‘<option’+(d.prepaMentale===pmOpts[pmi]?’ selected’:’’)+’>’+pmOpts[pmi]+’</option>’;
+html += ‘</select></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Gestion du stress actuellement</div><textarea class="ied" onchange="updDisc('+c.id+',\'travailleStress\',this.value)" style="min-height:48px">’+(d.travailleStress||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Gestion cohésion</div><textarea class="ied" onchange="updDisc('+c.id+',\'travailleCohesion\',this.value)" style="min-height:48px">’+(d.travailleCohesion||’’)+’</textarea></div>’;
+html += ‘</div></div>’;
+html += ‘<div class="isec"><div class="stitle">Projection stratégique</div><div class="igrid">’;
+html += ‘<div class="ifield"><div class="ilbl">Vision 1 an</div><textarea class="ied" onchange="updDisc('+c.id+',\'vision1\',this.value)" style="min-height:52px">’+(d.vision1||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Vision 5 ans</div><textarea class="ied" onchange="updDisc('+c.id+',\'vision5\',this.value)" style="min-height:52px">’+(d.vision5||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Ambition cette saison</div><textarea class="ied" onchange="updDisc('+c.id+',\'ambition\',this.value)" style="min-height:52px">’+(d.ambition||’’)+’</textarea></div>’;
+html += ‘</div></div>’;
+html += ‘<div class="isec"><div class="stitle">Culture & Identité</div><div class="igrid2">’;
+html += ‘<div class="ifield"><div class="ilbl">ADN du club</div><textarea class="ied" onchange="updDisc('+c.id+',\'adn\',this.value)">’+(d.adn||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Valeurs réellement vécues</div><textarea class="ied" onchange="updDisc('+c.id+',\'valeurs\',this.value)">’+(d.valeurs||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Budget annuel estimé</div><input class="ied" value="'+(d.budget||'')+'" placeholder="Ex: 150 000€" onchange="updDisc('+c.id+',\'budget\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Si ça fonctionne, vous gagnez quoi ?</div><textarea class="ied" onchange="updDisc('+c.id+',\'gain\',this.value)">’+(d.gain||’’)+’</textarea></div>’;
+html += ‘</div>’;
+html += ‘<div style="margin-top:14px;text-align:right"><button class="btn bg bsm" onclick="svCl('+c.id+')">✓ Enregistrer la découverte</button></div>’;
+html += ‘</div></div>’;
 
 // TAB OFFRES
-html+=’<div id="tab-offres-tab" style="display:none"><div class="isec" style="border:none">’;
-html+=’<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn bg bsm" onclick="addOffreFor('+c.id+')">+ Nouvelle offre</button></div>’;
-if(offs.length){for(var oi2=0;oi2<offs.length;oi2++){html+=offreCard(offs[oi2],c);}}
-else{html+=’<div class="empty"><div class="eico">📋</div><div class="etxt">Aucune offre pour ce club</div></div>’;}
-html+=’</div></div>’;
+html += ‘<div id="tab-offres-tab" style="display:none"><div class="isec" style="border:none">’;
+html += ‘<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn bg bsm" onclick="addOffreFor('+c.id+')">+ Nouvelle offre</button></div>’;
+if(offs.length) { for(var oi2=0;oi2<offs.length;oi2++) html += offreCard(offs[oi2],c); }
+else html += ‘<div class="empty"><div class="eico">📋</div><div class="etxt">Aucune offre</div></div>’;
+html += ‘</div></div>’;
 
 // TAB INTERVENTIONS
-html+=’<div id="tab-interventions-tab" style="display:none"><div class="isec" style="border:none">’;
-html+=’<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn bg bsm" onclick="addInterFor('+c.id+')">+ Intervention</button></div>’;
-if(ints.length){
-var sortedInts=ints.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date)});
-for(var ii=0;ii<sortedInts.length;ii++){
-var it=sortedInts[ii];
-html+=’<div class="int-card">’;
-html+=’<div class="int-date">’+(it.date||’—’)+’</div><div class="int-dot"></div>’;
-html+=’<div style="flex:1"><div style="font-size:12.5px;font-weight:500">’+it.type+’ — ‘+(it.theme||’’)+’</div>’;
-html+=’<div style="font-size:11px;color:var(--gris);margin-top:2px">’+(it.equipe||’’)+’ · ‘+(it.duree||’’)+’</div>’;
-if(it.obs)html+=’<div style="font-size:11px;color:var(--gris);margin-top:3px">’+it.obs+’</div>’;
-html+=’</div>’;
-html+=’<button class="btn b-rouge bsm" onclick="delInter('+it.id+')">✕</button>’;
-html+=’</div>’;
+html += ‘<div id="tab-interventions-tab" style="display:none"><div class="isec" style="border:none">’;
+html += ‘<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn bg bsm" onclick="addInterFor('+c.id+')">+ Intervention</button></div>’;
+var sortedInts = ints.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date)});
+if(sortedInts.length) {
+for(var ii=0;ii<sortedInts.length;ii++) {
+var it3 = sortedInts[ii];
+html += ‘<div class="int-card">’;
+html += ‘<div class="int-date">’+(it3.date||’—’)+’</div><div class="int-dot"></div>’;
+html += ‘<div style="flex:1"><div style="font-size:12.5px;font-weight:500">’+it3.type+’ — ‘+(it3.theme||’’)+’</div>’;
+html += ‘<div style="font-size:11px;color:var(--gris);margin-top:2px">’+(it3.equipe||’’)+’ · ‘+(it3.duree||’’)+’</div>’;
+if(it3.obs) html += ‘<div style="font-size:11px;color:var(--gris);margin-top:3px">’+it3.obs+’</div>’;
+html += ‘</div><button class="btn b-rouge bsm" onclick="delInter('+it3.id+')">✕</button></div>’;
 }
-} else {
-html+=’<div class="empty"><div class="eico">📅</div><div class="etxt">Aucune intervention</div></div>’;
-}
-html+=’</div></div>’;
+} else html += ‘<div class="empty"><div class="eico">📅</div><div class="etxt">Aucune intervention</div></div>’;
+html += ‘</div></div>’;
 
 // TAB ÉQUIPES
-html+=’<div id="tab-equipes-tab" style="display:none">’;
-html+=’<div class="isec" style="padding-bottom:0;border:none"><div style="display:flex;justify-content:flex-end;margin-bottom:4px"><button class="btn bg bsm" onclick="S.pendEq='+c.id+';oAP(\'ap-equipe\')">+ Équipe</button></div></div>’;
-html+=’<div class="ecards">’;
-for(var eqi=0;eqi<eqs.length;eqi++){
-var eq=eqs[eqi];
-var jc=DB.joueurs.filter(function(j){return j.equipeId===eq.id}).length;
-var md=(eq.missions||[]).filter(function(m){return m.done}).length;
-html+=’<div class="ecard" onclick="opEq('+eq.id+')">’;
-html+=’<div style="display:flex;justify-content:space-between;margin-bottom:10px">’;
-html+=’<div><div style="font-family:\'Cormorant Garamond\',serif;font-size:15px;font-weight:600">’+eq.nom+’</div>’;
-html+=’<div style="font-size:10.5px;color:var(--gris);margin-top:2px">’+(eq.cat||’’)+’ ‘+(eq.coach?’· ‘+eq.coach:’’)+’</div></div>’;
-html+=bstEq(eq.statut)+’</div>’;
-html+=’<div style="display:flex;gap:12px">’;
-html+=’<div><div style="font-family:\'DM Mono\',monospace;font-size:17px;color:var(--or)">’+jc+’</div><div style="font-size:9px;text-transform:uppercase;color:var(--gris)">Joueurs</div></div>’;
-html+=’<div><div style="font-family:\'DM Mono\',monospace;font-size:17px;color:var(--or)">’+(eq.missions||[]).length+’</div><div style="font-size:9px;text-transform:uppercase;color:var(--gris)">Missions</div></div>’;
-html+=’</div>’;
-html+=’<div style="margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center">’;
-html+=’<span style="font-size:10.5px;color:var(--gris);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">’+(eq.mission||‘Aucune mission’)+’</span>’;
-html+=’<button class="btn bgh bsm" onclick="event.stopPropagation();opEq('+eq.id+')">→</button>’;
-html+=’</div></div>’;
+html += ‘<div id="tab-equipes-tab" style="display:none">’;
+html += ‘<div style="padding:14px 28px 4px;text-align:right"><button class="btn bg bsm" onclick="S.pendEq='+c.id+';openAP(\'ap-equipe\')">+ Équipe</button></div>’;
+html += ‘<div class="ecards">’;
+for(var eqi=0;eqi<eqs.length;eqi++) {
+var eq = eqs[eqi];
+var jc = filter(DB.joueurs, function(j){return j.equipeId===eq.id}).length;
+var mis = eq.missions||[];
+html += ‘<div class="ecard" onclick="opEq('+eq.id+')">’;
+html += ‘<div style="display:flex;justify-content:space-between;margin-bottom:10px">’;
+html += ‘<div><div style="font-family:\'Cormorant Garamond\',serif;font-size:15px;font-weight:600">’+eq.nom+’</div>’;
+html += ‘<div style="font-size:10.5px;color:var(--gris);margin-top:2px">’+(eq.cat||’’)+’ ‘+(eq.coach?’· ‘+eq.coach:’’)+’</div></div>’;
+var eqSt = eq.statut===‘Suivi actif’?‘c2’:eq.statut===‘Découverte’?‘e’:‘a’;
+html += ‘<span class="bdg b'+eqSt+'">’+eq.statut+’</span></div>’;
+html += ‘<div style="display:flex;gap:12px">’;
+html += ‘<div><div style="font-family:\'DM Mono\',monospace;font-size:17px;color:var(--or)">’+jc+’</div><div style="font-size:9px;text-transform:uppercase;color:var(--gris)">Joueurs</div></div>’;
+html += ‘<div><div style="font-family:\'DM Mono\',monospace;font-size:17px;color:var(--or)">’+mis.length+’</div><div style="font-size:9px;text-transform:uppercase;color:var(--gris)">Missions</div></div>’;
+html += ‘</div>’;
+html += ‘<div style="margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center">’;
+html += ‘<span style="font-size:10.5px;color:var(--gris);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">’+(eq.mission||‘Aucune mission’)+’</span>’;
+html += ‘<button class="btn bgh bsm" onclick="event.stopPropagation();opEq('+eq.id+')">→</button></div></div>’;
 }
-html+=’<div class="ecard ecard-add" onclick="S.pendEq='+c.id+';oAP(\'ap-equipe\')">’;
-html+=’<div style="text-align:center;color:var(--gris)"><div style="font-size:24px;margin-bottom:4px">+</div><div style="font-size:11px">Nouvelle équipe</div></div></div>’;
-html+=’</div></div>’; // end ecards + tab-equipes-tab
+html += ‘<div class="ecard ecard-add" onclick="S.pendEq='+c.id+';openAP(\'ap-equipe\')">’;
+html += ‘<div style="text-align:center;color:var(--gris)"><div style="font-size:24px;margin-bottom:4px">+</div><div style="font-size:11px">Nouvelle équipe</div></div></div>’;
+html += ‘</div></div>’;
 
-el.innerHTML=html;
+el.innerHTML = html;
 }
 
-function svCl(id){const c=DB.clubs.find(x=>x.id===id);saveDB();toast(‘Club “’+c.nom+’” enregistré’)}
-
-function offreCard(o, c){
-var cname = c ? c.nom : (DB.clubs.find(function(x){return x.id==o.clubId})||{nom:’—’}).nom;
-var h=’’;
-h+=’<div class="offre-card">’;
-h+=’<div style="flex:1">’;
-h+=’<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">’+boff(o.statut);
-h+=’<span style="font-weight:600;font-size:13px">’+((o.type||’’).split(’|’)[0])+’</span></div>’;
-if(!c){h+=’<div style="font-size:11px;color:var(--gris);margin-bottom:4px">📍 ‘+cname+’</div>’;}
-h+=’<div style="font-size:11px;color:var(--gris)">Signé le ‘+(o.date||’—’)+(o.equipes?’ · ‘+o.equipes:’’)+’</div>’;
-if(o.objectif){h+=’<div style="font-size:11px;color:var(--gris);margin-top:4px">’+o.objectif+’</div>’;}
-if(o.nxtDate){h+=’<div style="font-size:11px;color:var(--ora);margin-top:4px">📅 Prochaine intervention : ‘+o.nxtDate+’</div>’;}
-h+=’</div>’;
-h+=’<div style="text-align:right;flex-shrink:0">’;
-h+=’<div class="montant">’+fmt(parseInt(o.montant)||0)+’</div>’;
-h+=’<div style="margin-top:8px;display:flex;gap:6px;justify-content:flex-end">’;
-h+=’<select onchange="updOffre('+o.id+',\'statut\',this.value)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:var(--blanc);font-size:10px;padding:3px 7px;font-family:\'Outfit\',sans-serif;outline:none;cursor:pointer">’;
-var oSts=[‘En cours’,‘Terminé’,‘Renouvelable’];
-for(var i=0;i<oSts.length;i++){h+=’<option’+(oSts[i]===o.statut?’ selected’:’’)+’ style=“background:#0f1e2d”>’+oSts[i]+’</option>’;}
-h+=’</select>’;
-h+=’<button class="btn b-rouge bsm" onclick="delOffre('+o.id+')">✕</button>’;
-h+=’</div></div></div>’;
+// ─── OFFRES ───
+function offreCard(o, c) {
+var cname = c ? c.nom : ((find(DB.clubs, o.clubId)||{nom:’—’}).nom);
+var typeName = o.type||’—’;
+var statuts2 = [‘En cours’,‘Terminé’,‘Renouvelable’];
+var h = ‘<div class="offre-card">’;
+h += ‘<div style="flex:1">’;
+h += ‘<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">’+boff(o.statut);
+h += ‘<span style="font-weight:600;font-size:13px">’+typeName+’</span></div>’;
+if(!c) h += ‘<div style="font-size:11px;color:var(--gris);margin-bottom:4px">📍 ‘+cname+’</div>’;
+h += ‘<div style="font-size:11px;color:var(--gris)">Signé le ‘+(o.date||’—’)+(o.equipes?’ · ‘+o.equipes:’’)+’</div>’;
+if(o.nbEquipes||o.nbAdherents||o.duree){
+h += ‘<div style="font-size:10.5px;color:var(--gris);margin-top:3px">’;
+if(o.nbEquipes) h += o.nbEquipes+’ équipe’+(o.nbEquipes>1?‘s’:’’)+’ · ‘;
+if(o.nbAdherents) h += o.nbAdherents+’ licenciés · ‘;
+if(o.duree) h += o.duree;
+h += ‘</div>’;
+}
+if(o.paiement){h += ‘<div style="font-size:10.5px;color:var(--bleu);margin-top:2px">💳 ‘+o.paiement+’</div>’;}
+if(o.tarifNotes){h += ‘<div style="font-size:10.5px;color:var(--gris);font-style:italic;margin-top:3px">’+o.tarifNotes+’</div>’;}
+if(o.objectif) h += ‘<div style="font-size:11px;color:var(--gris);margin-top:4px">’+o.objectif+’</div>’;
+if(o.nxtDate) h += ‘<div style="font-size:11px;color:var(--ora);margin-top:4px">📅 ‘+o.nxtDate+’</div>’;
+h += ‘</div>’;
+h += ‘<div style="text-align:right;flex-shrink:0">’;
+h += ‘<div class="montant">’+fmt(parseInt(o.montant)||0)+’</div>’;
+h += ‘<div style="margin-top:8px;display:flex;gap:6px;justify-content:flex-end">’;
+h += ‘<select onchange="updOffre('+o.id+',\'statut\',this.value)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:var(--blanc);font-size:10px;padding:3px 7px;font-family:\'Outfit\',sans-serif;outline:none;cursor:pointer">’;
+for(var i=0;i<statuts2.length;i++) h += ‘<option’+(statuts2[i]===o.statut?’ selected’:’’)+’ style=“background:#0f1e2d”>’+statuts2[i]+’</option>’;
+h += ‘</select>’;
+h += ‘<button class="btn b-rouge bsm" onclick="delOffre('+o.id+')">✕</button>’;
+h += ‘</div></div></div>’;
 return h;
 }
 
-function addOffreFor(clubId){
-popOffreClubs();
-document.getElementById(‘ao-club’).value=clubId;
-const d=new Date().toISOString().split(‘T’)[0];
-document.getElementById(‘ao-date’).value=d;
-oAP(‘ap-offre’)
+function rOffres(f) {
+if(f) S.off = f;
+var data = S.off===‘all’ ? DB.offres : filter(DB.offres, function(o){return o.statut===S.off});
+var ca = totalCA();
+var enc = 0; var ren = 0;
+for(var i=0;i<DB.offres.length;i++) {
+if(DB.offres[i].statut===‘En cours’) enc += parseInt(DB.offres[i].montant)||0;
+if(DB.offres[i].statut===‘Renouvelable’) ren++;
 }
-function addInterFor(clubId){
-popInterClubs();
-document.getElementById(‘ai-club’).value=clubId;
-const d=new Date().toISOString().split(‘T’)[0];
-document.getElementById(‘ai-date’).value=d;
-oAP(‘ap-inter’)
+var kpis = [{n:fmt(ca),l:‘CA total’,c:‘var(–vert)’},{n:DB.offres.length,l:‘Offres totales’,c:‘var(–or)’},{n:fmt(enc),l:‘En cours’,c:‘var(–ora)’},{n:ren,l:‘Renouvelables’,c:‘var(–bleu)’}];
+var kh = ‘’;
+for(var k=0;k<kpis.length;k++) {
+var hasFmt = String(kpis[k].n).indexOf(‘€’)>=0;
+kh += ‘<div class="kpi" style="--kc:'+kpis[k].c+'">’;
+kh += ‘<div class="kn" style="'+(hasFmt?'font-size:22px;':'')+';color:'+kpis[k].c+'">’+kpis[k].n+’</div>’;
+kh += ‘<div class="kl">’+kpis[k].l+’</div></div>’;
 }
-
-// ═══════════════════════════════
-// OFFRES
-// ═══════════════════════════════
-function rOffres(f){
-f=f||S.off||‘all’;
-const data=f===‘all’?DB.offres:DB.offres.filter(o=>o.statut===f);
-const ca=totalCA();const enc=DB.offres.filter(o=>o.statut===‘En cours’).reduce((s,o)=>s+(parseInt(o.montant)||0),0);
-const ren=DB.offres.filter(o=>o.statut===‘Renouvelable’).length;
-document.getElementById(‘of-kpis’).innerHTML=[
-{n:fmt(ca),l:‘CA total’,c:‘var(–vert)’},{n:DB.offres.length,l:‘Offres totales’,c:‘var(–or)’},
-{n:fmt(enc),l:‘En cours’,c:‘var(–ora)’},{n:ren,l:‘Renouvelables’,c:‘var(–bleu)’}
-].map(k=>`<div class="kpi" style="--kc:${k.c}"><div class="kn" style="${k.n.includes('€')?'font-size:22px!important;':''}color:${k.c}">${k.n}</div><div class="kl">${k.l}</div></div>`).join(’’);
-document.getElementById(‘of-list’).innerHTML=data.length?
-data.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(o=>offreCard(o,null)).join(’’) :
-‘<div class="empty"><div class="eico">📋</div><div class="etxt">Aucune offre pour ce filtre</div></div>’;
-}
-function fof(f,el){S.off=f;document.querySelectorAll(’#v-offres .tab’).forEach(t=>t.classList.remove(‘on’));if(el)el.classList.add(‘on’);rOffres(f)}
-function updOffre(id,field,val){const o=DB.offres.find(x=>x.id===id);if(o){o[field]=val;saveDB();toast(‘Offre mise à jour’)}}
-function delOffre(id){if(!confirm(‘Supprimer cette offre ?’))return;DB.offres=DB.offres.filter(o=>o.id!==id);saveDB();updCounts();rView(S.view)}
-
-// ═══════════════════════════════
-// INTERVENTIONS
-// ═══════════════════════════════
-function rInter(){
-var its=DB.interventions;
-var now=new Date();
-var thisMonth=its.filter(function(i){var d=new Date(i.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()}).length;
-var clubs=[];
-for(var i=0;i<its.length;i++){if(clubs.indexOf(its[i].clubId)<0)clubs.push(its[i].clubId);}
-var kpiEl=document.getElementById(‘in-kpis’);
-var kpis=[{n:its.length,l:‘Total’,c:‘var(–or)’},{n:thisMonth,l:‘Ce mois’,c:‘var(–bleu)’},{n:clubs.length,l:‘Clubs touchés’,c:‘var(–vert)’}];
-var kh=’’;
-for(var k=0;k<kpis.length;k++){kh+=’<div class="kpi" style="--kc:'+kpis[k].c+'"><div class="kn" style="color:'+kpis[k].c+'">’+kpis[k].n+’</div><div class="kl">’+kpis[k].l+’</div></div>’;}
-kpiEl.innerHTML=kh;
-var sorted=its.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date)});
-var lh=’’;
-for(var j=0;j<sorted.length;j++){
-var it=sorted[j];
-var c2=DB.clubs.find(function(x){return x.id==it.clubId});
-lh+=’<div class="int-card">’;
-lh+=’<div class="int-date">’+(it.date||’—’)+’</div><div class="int-dot"></div>’;
-lh+=’<div style="flex:1">’;
-lh+=’<div style="font-size:12.5px;font-weight:500">’+(c2?c2.nom:’’)+’ — ‘+it.type+’</div>’;
-lh+=’<div style="font-size:11px;color:var(--gris);margin-top:2px">’+(it.theme||’’)+’ ‘+(it.equipe?’ · ‘+it.equipe:’’)+’ · ‘+(it.duree||’’)+’</div>’;
-if(it.obs){lh+=’<div style="font-size:11px;color:var(--gris);margin-top:3px">’+it.obs.substring(0,120)+(it.obs.length>120?’…’:’’)+’</div>’;}
-if(it.nxt){lh+=’<div style="font-size:11px;color:var(--or);margin-top:3px">→ ‘+it.nxt+’</div>’;}
-lh+=’</div>’;
-lh+=’<button class="btn b-rouge bsm" onclick="delInter('+it.id+')">✕</button>’;
-lh+=’</div>’;
-}
-if(!sorted.length){lh=’<div class="empty"><div class="eico">📅</div><div class="etxt">Aucune intervention</div></div>’;}
-document.getElementById(‘in-list’).innerHTML=lh;
+document.getElementById(‘of-kpis’).innerHTML = kh;
+var sorted = data.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date)});
+var lh = ‘’;
+for(var j=0;j<sorted.length;j++) lh += offreCard(sorted[j], null);
+if(!lh) lh = ‘<div class="empty"><div class="eico">📋</div><div class="etxt">Aucune offre</div></div>’;
+document.getElementById(‘of-list’).innerHTML = lh;
 }
 
-function delInter(id){if(!confirm(‘Supprimer ?’))return;DB.interventions=DB.interventions.filter(i=>i.id!==id);saveDB();updCounts();rView(S.view)}
-
-// ═══════════════════════════════
-// PROSPECTION
-// ═══════════════════════════════
-function rProsp(){
-var cl=DB.clubs;
-var froid=0,enc=0,cli=0;
-for(var i=0;i<cl.length;i++){
-if(cl[i].statut===‘🔴 Froid’)froid++;
-else if(cl[i].statut===‘🟡 En cours’)enc++;
-else if(cl[i].statut===‘🟢 Client’)cli++;
-}
-var conv=cl.length?Math.round(cli/cl.length*100):0;
-var kh=’’;
-var kpis=[{n:froid,l:‘Froid’,c:‘var(–rouge)’},{n:enc,l:‘En cours’,c:‘var(–ora)’},{n:cli,l:‘Clients’,c:‘var(–vert)’},{n:conv+’%’,l:‘Conversion’,c:‘var(–or)’}];
-for(var k=0;k<kpis.length;k++){kh+=’<div class="kpi" style="--kc:'+kpis[k].c+'"><div class="kn" style="color:'+kpis[k].c+'">’+kpis[k].n+’</div><div class="kl">’+kpis[k].l+’</div></div>’;}
-document.getElementById(‘pr-kpis’).innerHTML=kh;
-var rh=’’;
-var statuts=[‘🔴 Froid’,‘🔵 À contacter’,‘🟡 En cours’,‘🟢 Client’,‘⚫ Abandonné’];
-for(var j=0;j<cl.length;j++){
-var c2=cl[j];
-rh+=’<div class="cr" style="grid-template-columns:2fr 1fr 1fr 1.3fr 1fr 1.2fr" onclick="opCl('+c2.id+')">’;
-rh+=’<div class="cnc"><div class="ava">’+av(c2.nom)+’</div><div><div class="cn">’+c2.nom+’</div><div class="cs">’+c2.ville+’</div></div></div>’;
-rh+=’<div><span class="bdg bsp">’+c2.sport+’</span></div>’;
-rh+=’<div class="cm">’+(c2.contact||’—’)+’</div>’;
-rh+=’<div><select onclick="event.stopPropagation()" onchange="uf(DB.clubs,'+c2.id+',\'statut\',this.value);rProsp()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:var(--blanc);font-size:10.5px;padding:4px 7px;font-family:\'Outfit\',sans-serif;outline:none;cursor:pointer">’;
-for(var s=0;s<statuts.length;s++){rh+=’<option’+(statuts[s]===c2.statut?’ selected’:’’)+’ style=“background:#0f1e2d”>’+statuts[s]+’</option>’;}
-rh+=’</select></div>’;
-rh+=’<div><span class="bdg ba" style="font-size:9px">’+((c2.message||’’).split(’—’)[0].trim())+’</span></div>’;
-rh+=’<div><span class="sor">’+st(c2.potentiel)+’</span></div>’;
-rh+=’</div>’;
-}
-document.getElementById(‘pr-rows’).innerHTML=rh;
+function fof(f, el) {
+S.off = f;
+var tabs = document.querySelectorAll(’#v-offres .tab’);
+for(var i=0;i<tabs.length;i++) tabs[i].className = tabs[i].className.replace(’ on’,’’).replace(/\bon\b/,’’).trim();
+if(el) el.className += ’ on’;
+rOffres(f);
 }
 
-// ═══════════════════════════════
-// OPEN EQUIPE
-// ═══════════════════════════════
-function opEq(id){const eq=DB.equipes.find(x=>x.id===id);if(!eq)return;S.equipeId=id;S.clubId=eq.clubId;S.joueurId=null;rEqDet(eq);gv(‘equipe-detail’)}
-
-function rEqDet(eq){
-var jous=DB.joueurs.filter(function(j){return j.equipeId===eq.id});
-var club=DB.clubs.find(function(c){return c.id===eq.clubId});
-var mis=eq.missions||[];
-var el=document.getElementById(‘v-equipe-detail’);
-var avgScore=jous.length?Math.round(jous.reduce(function(s,j){return s+(j.scoreAct||0)},0)/jous.length*10)/10:’—’;
-var statEq=eq.statut===‘Suivi actif’?‘c2’:eq.statut===‘Découverte’?‘e’:‘a’;
-
-var html=’’;
-html+=’<div class="hero"><div class="hero2">’;
-html+=’<div><div style="font-size:10px;color:var(--or);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px">’+(club?club.nom:’’)+’ · ‘+(eq.sport||(club?club.sport:’’))+’</div>’;
-html+=’<div class="htitle">’+eq.nom+’</div>’;
-html+=’<div class="hmeta"><span class="bdg b'+statEq+'">’+eq.statut+’</span>’+(eq.niveau?’<span class="bdg bsp">’+eq.niveau+’</span>’:’’)+’</div></div>’;
-html+=’<div class="hactions">’;
-html+=’<button class="btn bgh bsm" onclick="S.pendMi='+eq.id+';oAP(\'ap-mission\')">+ Mission</button>’;
-html+=’<button class="btn bgh bsm" onclick="S.pendJou='+eq.id+';oAP(\'ap-joueur\')">+ Joueur</button>’;
-html+=’<button class="btn bg bsm" onclick="svEq('+eq.id+')">Enregistrer</button>’;
-html+=’</div></div></div>’;
-
-html+=’<div class="srow">’;
-var stats=[{n:jous.length,l:‘Joueurs’},{n:mis.length,l:‘Missions’},{n:mis.filter(function(m){return m.done}).length,l:‘Faites’},{n:avgScore,l:‘Score moy.’}];
-for(var s=0;s<stats.length;s++){html+=’<div class="sc"><div class="scv">’+stats[s].n+’</div><div class="scl">’+stats[s].l+’</div></div>’;}
-html+=’</div>’;
-
-html+=’<div class="isec"><div class="stitle">Infos équipe</div><div class="igrid">’;
-html+=’<div class="ifield"><div class="ilbl">Nom</div><input class="ied" value="'+eq.nom+'" onchange="uf(DB.equipes,'+eq.id+',\'nom\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Catégorie</div><input class="ied" value="'+(eq.cat||'')+'" onchange="uf(DB.equipes,'+eq.id+',\'cat\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Entraîneur</div><input class="ied" value="'+(eq.coach||'')+'" onchange="uf(DB.equipes,'+eq.id+',\'coach\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Nb joueurs</div><input class="ied" type="number" value="'+(eq.nb||'')+'" onchange="uf(DB.equipes,'+eq.id+',\'nb\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Statut</div><select class="ied" onchange="uf(DB.equipes,'+eq.id+',\'statut\',this.value)">’;
-var eqSts=[‘Prospect’,‘Découverte’,‘Suivi actif’,‘En pause’,‘Terminé’];
-for(var si=0;si<eqSts.length;si++){html+=’<option’+(eqSts[si]===eq.statut?’ selected’:’’)+’>’+eqSts[si]+’</option>’;}
-html+=’</select></div>’;
-html+=’<div class="ifield"><div class="ilbl">Niveau</div><select class="ied" onchange="uf(DB.equipes,'+eq.id+',\'niveau\',this.value)">’;
-var eqNv=[’’,‘Élite’,‘National’,‘Régional’,‘Départemental’];
-for(var ni=0;ni<eqNv.length;ni++){html+=’<option’+(eqNv[ni]===(eq.niveau||’’)?’ selected’:’’)+’>’+(eqNv[ni]||’—’)+’</option>’;}
-html+=’</select></div>’;
-html+=’<div class="ifield" style="grid-column:1/-1"><div class="ilbl">Mission principale</div><textarea class="ied" onchange="uf(DB.equipes,'+eq.id+',\'mission\',this.value)">’+(eq.mission||’’)+’</textarea></div>’;
-html+=’<div class="ifield" style="grid-column:1/-1"><div class="ilbl">Problématiques identifiées</div><textarea class="ied" onchange="uf(DB.equipes,'+eq.id+',\'problemes\',this.value)">’+(eq.problemes||’’)+’</textarea></div>’;
-html+=’</div></div>’;
-
-html+=’<div class="isec" style="padding-bottom:8px"><div class="stitle">Missions A4P (’+mis.length+’)</div></div>’;
-html+=’<div class="mlist">’+rMis(eq)+’</div>’;
-html+=’<div style="padding:0 28px 18px"><button class="btn bgh" style="width:100%;justify-content:center" onclick="S.pendMi='+eq.id+';oAP(\'ap-mission\')">+ Mission</button></div>’;
-
-html+=’<div class="isec" style="padding-bottom:4px"><div class="stitle">Joueurs (’+jous.length+’)</div></div>’;
-html+=’<div class="ecards">’;
-for(var j=0;j<jous.length;j++){html+=rJcard(jous[j]);}
-html+=’<div class="ecard ecard-add" onclick="S.pendJou='+eq.id+';oAP(\'ap-joueur\')">’;
-html+=’<div style="text-align:center;color:var(--gris)"><div style="font-size:22px;margin-bottom:4px">+</div><div style="font-size:11px">Nouveau joueur</div></div></div>’;
-html+=’</div>’;
-
-el.innerHTML=html;
+function updOffre(id, field, val) {
+var o = find(DB.offres, id);
+if(o) { o[field] = val; saveDB(); showToast(‘Offre mise à jour’); }
+}
+function delOffre(id) {
+if(!confirm(‘Supprimer cette offre ?’)) return;
+var newArr = [];
+for(var i=0;i<DB.offres.length;i++) if(DB.offres[i].id!==id) newArr.push(DB.offres[i]);
+DB.offres = newArr;
+saveDB(); updCounts(); rView(S.view);
 }
 
-function rMis(eq){
-var mis=eq.missions||[];
-if(!mis.length)return ‘<div style="font-size:12px;color:var(--gris)">Aucune mission.</div>’;
-var h=’’;
-for(var i=0;i<mis.length;i++){
-var m=mis[i];
-h+=’<div class="mi">’;
-h+=’<div class="mck'+(m.done?' done':'')+'" onclick="tgMi('+eq.id+','+m.id+')"></div>’;
-h+=’<div style="flex:1"><div class="mtt'+(m.done?' dt':'')+'">’+m.titre+’</div>’;
-if(m.desc){h+=’<div class="mdt">’+m.desc+’</div>’;}
-h+=’<div class="mph">’+m.phase+’</div></div>’;
-h+=’<button class="mdel" onclick="delMi('+eq.id+','+m.id+')">✕</button>’;
-h+=’</div>’;
+// ─── INTERVENTIONS ───
+function rInter() {
+var its = DB.interventions;
+var now = new Date();
+var thisMonth = 0;
+var clubSet = {};
+for(var i=0;i<its.length;i++) {
+var d = new Date(its[i].date);
+if(d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()) thisMonth++;
+clubSet[its[i].clubId] = true;
+}
+var clubCount = Object.keys(clubSet).length;
+var kpis = [{n:its.length,l:‘Total’,c:‘var(–or)’},{n:thisMonth,l:‘Ce mois’,c:‘var(–bleu)’},{n:clubCount,l:‘Clubs touchés’,c:‘var(–vert)’}];
+var kh = ‘’;
+for(var k=0;k<kpis.length;k++) kh += ‘<div class="kpi" style="--kc:'+kpis[k].c+'"><div class="kn" style="color:'+kpis[k].c+'">’+kpis[k].n+’</div><div class="kl">’+kpis[k].l+’</div></div>’;
+document.getElementById(‘in-kpis’).innerHTML = kh;
+var sorted = its.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date)});
+var lh = ‘’;
+for(var j=0;j<sorted.length;j++) {
+var it = sorted[j];
+var c2 = find(DB.clubs, it.clubId);
+lh += ‘<div class="int-card">’;
+lh += ‘<div class="int-date">’+(it.date||’—’)+’</div><div class="int-dot"></div>’;
+lh += ‘<div style="flex:1"><div style="font-size:12.5px;font-weight:500">’+(c2?c2.nom:’’)+’ — ‘+it.type+’</div>’;
+lh += ‘<div style="font-size:11px;color:var(--gris);margin-top:2px">’+(it.theme||’’)+’ ‘+(it.equipe?’ · ‘+it.equipe:’’)+’ · ‘+(it.duree||’’)+’</div>’;
+if(it.obs) lh += ‘<div style="font-size:11px;color:var(--gris);margin-top:3px">’+it.obs.substring(0,120)+(it.obs.length>120?’…’:’’)+’</div>’;
+if(it.nxt) lh += ‘<div style="font-size:11px;color:var(--or);margin-top:3px">→ ‘+it.nxt+’</div>’;
+lh += ‘</div><button class="btn b-rouge bsm" onclick="delInter('+it.id+')">✕</button></div>’;
+}
+if(!lh) lh = ‘<div class="empty"><div class="eico">📅</div><div class="etxt">Aucune intervention</div></div>’;
+document.getElementById(‘in-list’).innerHTML = lh;
+}
+function delInter(id) {
+if(!confirm(‘Supprimer ?’)) return;
+var newArr = [];
+for(var i=0;i<DB.interventions.length;i++) if(DB.interventions[i].id!==id) newArr.push(DB.interventions[i]);
+DB.interventions = newArr;
+saveDB(); updCounts(); rView(S.view);
+}
+
+// ─── PROSPECTION ───
+function rProsp() {
+var cl = DB.clubs;
+var froid=0, enc=0, cli=0;
+for(var i=0;i<cl.length;i++) {
+if(cl[i].statut===‘🔴 Froid’) froid++;
+else if(cl[i].statut===‘🟡 En cours’) enc++;
+else if(cl[i].statut===‘🟢 Client’) cli++;
+}
+var conv = cl.length ? Math.round(cli/cl.length*100) : 0;
+var kpis = [{n:froid,l:‘Froid’,c:‘var(–rouge)’},{n:enc,l:‘En cours’,c:‘var(–ora)’},{n:cli,l:‘Clients’,c:‘var(–vert)’},{n:conv+’%’,l:‘Conversion’,c:‘var(–or)’}];
+var kh = ‘’;
+for(var k=0;k<kpis.length;k++) kh += ‘<div class="kpi" style="--kc:'+kpis[k].c+'"><div class="kn" style="color:'+kpis[k].c+'">’+kpis[k].n+’</div><div class="kl">’+kpis[k].l+’</div></div>’;
+document.getElementById(‘pr-kpis’).innerHTML = kh;
+var statuts = [‘🔴 Froid’,‘🔵 À contacter’,‘🟡 En cours’,‘🟢 Client’,‘⚫ Abandonné’];
+var rh = ‘’;
+for(var j=0;j<cl.length;j++) {
+var c = cl[j];
+rh += ‘<div class="cr" style="grid-template-columns:2fr 1fr 1fr 1.3fr 1fr 1.2fr" onclick="opCl('+c.id+')">’;
+rh += ‘<div class="cnc"><div class="ava">’+av(c.nom)+’</div><div><div class="cn">’+c.nom+’</div><div class="cs">’+c.ville+’</div></div></div>’;
+rh += ‘<div><span class="bdg bsp">’+c.sport+’</span></div><div class="cm">’+(c.contact||’—’)+’</div>’;
+rh += ‘<div><select onclick="event.stopPropagation()" onchange="uf(DB.clubs,'+c.id+',\'statut\',this.value);rProsp()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:var(--blanc);font-size:10.5px;padding:4px 7px;font-family:\'Outfit\',sans-serif;outline:none;cursor:pointer">’;
+for(var s=0;s<statuts.length;s++) rh += ‘<option’+(statuts[s]===c.statut?’ selected’:’’)+’ style=“background:#0f1e2d”>’+statuts[s]+’</option>’;
+rh += ‘</select></div>’;
+rh += ‘<div><span class="bdg ba" style="font-size:9px">’+((c.message||’’).split(’—’)[0].trim())+’</span></div>’;
+rh += ‘<div><span class="sor">’+st(c.potentiel)+’</span></div></div>’;
+}
+document.getElementById(‘pr-rows’).innerHTML = rh;
+}
+
+// ─── EQUIPE ───
+function opEq(id) {
+var eq = find(DB.equipes, id);
+if(!eq) return;
+S.equipeId = id; S.clubId = eq.clubId; S.joueurId = null;
+rEqDet(eq);
+gv(‘equipe-detail’);
+}
+
+function rMis(eq) {
+var mis = eq.missions||[];
+if(!mis.length) return ‘<div style="font-size:12px;color:var(--gris)">Aucune mission.</div>’;
+var h = ‘’;
+for(var i=0;i<mis.length;i++) {
+var m = mis[i];
+h += ‘<div class="mi">’;
+h += ‘<div class="mck'+(m.done?' done':'')+'" onclick="tgMi('+eq.id+','+m.id+')"></div>’;
+h += ‘<div style="flex:1"><div class="mtt'+(m.done?' dt':'')+'">’+m.titre+’</div>’;
+if(m.desc) h += ‘<div class="mdt">’+m.desc+’</div>’;
+h += ‘<div class="mph">’+m.phase+’</div></div>’;
+h += ‘<button class="mdel" onclick="delMi('+eq.id+','+m.id+')">✕</button></div>’;
 }
 return h;
 }
 
-function tgMi(eid,mid){const eq=DB.equipes.find(x=>x.id===eid);if(!eq)return;const m=(eq.missions||[]).find(x=>x.id===mid);if(m){m.done=!m.done;saveDB();rEqDet(eq)}}
-function delMi(eid,mid){const eq=DB.equipes.find(x=>x.id===eid);if(!eq)return;eq.missions=(eq.missions||[]).filter(m=>m.id!==mid);saveDB();rEqDet(eq)}
-function svEq(id){const eq=DB.equipes.find(x=>x.id===id);saveDB();toast(‘Équipe “’+eq.nom+’” enregistrée’);rEqDet(eq)}
-
-// ═══════════════════════════════
-// JOUEUR CARD
-// ═══════════════════════════════
-function rJcard(j){const pct=j.scoreAct/10*100,d=j.scoreAct-j.scoreInit;return`<div class="jcard" onclick="opJ(${j.id})">
-
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px"><div class="ava ava-sm">${av(j.nom)}</div><div><div style="font-weight:600;font-size:12.5px">${j.nom}</div><div style="font-size:10px;color:var(--gris)">${j.poste||''}${j.age?' · '+j.age+' ans':''}</div></div></div>
-  <div>${bph(j.phase)}</div>
-  <div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gris);margin-bottom:3px"><span>DPM</span><span style="color:${d>=0?'var(--vert)':'var(--rouge)'};font-weight:600">${j.scoreAct}/10 ${d>0?'↑'+d:d<0?'↓'+Math.abs(d):''}</span></div><div class="sbar"><div class="sfill" style="width:${pct}%"></div></div></div>
-  <div style="margin-top:8px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:10px;color:var(--gris);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${j.axes||'—'}</span><button class="btn bgh bsm" style="margin-left:6px" onclick="event.stopPropagation();opJ(${j.id})">→</button></div>
-</div>`}
-
-// ═══════════════════════════════
-// OPEN JOUEUR
-// ═══════════════════════════════
-function opJ(id){const j=DB.joueurs.find(x=>x.id===id);if(!j)return;S.joueurId=id;const eq=DB.equipes.find(e=>e.id===j.equipeId);if(eq){S.equipeId=eq.id;S.clubId=eq.clubId}rJDet(j);gv(‘joueur-detail’)}
-
-function rJDet(j){
-var eq=DB.equipes.find(function(e){return e.id===j.equipeId});
-var club=DB.clubs.find(function(c){return c.id===(eq?eq.clubId:null)});
-var d=j.scoreAct-j.scoreInit;
-var objs=j.objectifs||[];
-var el=document.getElementById(‘v-joueur-detail’);
-var phMap={‘Lucidité’:‘l’,‘Régulation’:‘r’,‘Performance’:‘p’,‘Autonomie’:‘a’};
-var phases=[‘Lucidité’,‘Régulation’,‘Performance’,‘Autonomie’];
-
-var html=’’;
-html+=’<div class="hero"><div class="hero2">’;
-html+=’<div style="display:flex;align-items:flex-start;gap:12px;flex:1">’;
-html+=’<div class="biga" style="width:48px;height:48px;font-size:17px">’+av(j.nom)+’</div>’;
-html+=’<div><div style="font-size:10px;color:var(--or);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">’+(club?club.nom+’ · ‘:’’)+’ ‘+(eq?eq.nom:’’)+’</div>’;
-html+=’<div class="htitle">’+j.nom+’</div>’;
-html+=’<div class="hmeta">’+bph(j.phase);
-if(j.poste){html+=’<span style="font-size:11px;color:var(--gris)">’+j.poste+’</span>’;}
-if(j.age){html+=’<span style="font-size:11px;color:var(--gris)">’+j.age+’ ans</span>’;}
-html+=’</div></div></div>’;
-html+=’<div class="hactions">’;
-html+=’<button class="btn bgh bsm" onclick="S.pendObj='+j.id+';oAP(\'ap-objectif\')">+ Objectif</button>’;
-html+=’<button class="btn bg bsm" onclick="svJ('+j.id+')">Enregistrer</button>’;
-html+=’</div></div></div>’;
-
-// SCORES
-html+=’<div class="scrow">’;
-html+=’<div class="scblk"><div class="scbig" style="color:var(--gris)">’+j.scoreInit+’</div><div class="sclbl">Score initial</div></div>’;
-html+=’<div style="font-size:20px;color:var(--gris);opacity:.4">→</div>’;
-html+=’<div class="scblk"><div class="scbig" style="color:'+(d>=0?'var(--vert)':'var(--rouge)')+'">’+j.scoreAct+’</div><div class="sclbl">Score actuel</div></div>’;
-html+=’<div class="scblk" style="flex:0.6"><div class="scbig" style="color:'+(d>=0?'var(--vert)':'var(--rouge)')+';font-size:30px">’+(d>=0?’+’:’’)+d+’</div><div class="sclbl">Progression</div></div>’;
-html+=’<div style="flex:1.2;padding:12px 14px;background:var(--m2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--r)">’;
-html+=’<div style="font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gris);margin-bottom:8px">Phase A4P</div>’;
-html+=’<div class="prow">’;
-for(var pi=0;pi<phases.length;pi++){
-var p=phases[pi];
-var cls=‘pbtn’+(p===j.phase?’ ps’+phMap[p]:’’);
-html+=’<button class="'+cls+'" onclick="updJPh('+j.id+',\''+p+'\',this)">’+p+’</button>’;
-}
-html+=’</div>’;
-html+=’<div style="display:flex;gap:10px;align-items:center;margin-top:10px;font-size:10px;color:var(--gris)">’;
-html+=’<span>Ini.:</span>’;
-html+=’<div class="stpr"><button class="stpb" onclick="updJSc('+j.id+',\'i\',-1)">−</button><span class="stpv" id="si-'+j.id+'" style="font-size:16px">’+j.scoreInit+’</span><button class="stpb" onclick="updJSc('+j.id+',\'i\',1)">+</button></div>’;
-html+=’<span>Act.:</span>’;
-html+=’<div class="stpr"><button class="stpb" onclick="updJSc('+j.id+',\'a\',-1)">−</button><span class="stpv" id="sa-'+j.id+'" style="font-size:16px">’+j.scoreAct+’</span><button class="stpb" onclick="updJSc('+j.id+',\'a\',1)">+</button></div>’;
-html+=’</div></div>’;
-html+=’</div>’;
-
-// IDENTITE
-html+=’<div class="isec"><div class="stitle">Identité</div><div class="igrid">’;
-html+=’<div class="ifield"><div class="ilbl">Nom</div><input class="ied" value="'+j.nom+'" onchange="uf(DB.joueurs,'+j.id+',\'nom\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Poste</div><input class="ied" value="'+(j.poste||'')+'" onchange="uf(DB.joueurs,'+j.id+',\'poste\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Âge</div><input class="ied" type="number" value="'+(j.age||'')+'" onchange="uf(DB.joueurs,'+j.id+',\'age\',this.value)"></div>’;
-html+=’<div class="ifield"><div class="ilbl">Téléphone</div><input class="ied" value="'+(j.tel||'')+'" onchange="uf(DB.joueurs,'+j.id+',\'tel\',this.value)"></div>’;
-html+=’</div></div>’;
-
-html+=’<div class="isec"><div class="stitle">Découverte · Lucidité</div><div class="igrid" style="grid-template-columns:1fr">’;
-html+=’<div class="ifield"><div class="ilbl">Contexte</div><textarea class="ied" onchange="uf(DB.joueurs,'+j.id+',\'contexte\',this.value)">’+(j.contexte||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl">Axes de travail</div><input class="ied" value="'+(j.axes||'')+'" placeholder="Ex: Gestion post-erreur · Pression · Confiance" onchange="uf(DB.joueurs,'+j.id+',\'axes\',this.value)"></div>’;
-html+=’</div></div>’;
-
-html+=’<div class="isec"><div class="stitle">Bilan mental</div><div class="igrid2">’;
-html+=’<div class="ifield"><div class="ilbl" style="color:var(--vert)">✦ Points forts</div><textarea class="ied" onchange="uf(DB.joueurs,'+j.id+',\'forts\',this.value)">’+(j.forts||’’)+’</textarea></div>’;
-html+=’<div class="ifield"><div class="ilbl" style="color:var(--ora)">▲ À travailler</div><textarea class="ied" onchange="uf(DB.joueurs,'+j.id+',\'travail\',this.value)">’+(j.travail||’’)+’</textarea></div>’;
-html+=’</div></div>’;
-
-html+=’<div class="isec" style="padding-bottom:8px"><div class="stitle">Objectifs individuels (’+objs.length+’)</div></div>’;
-html+=’<div style="padding:0 28px" class="mlist">’+rObjs(j)+’</div>’;
-html+=’<div style="padding:8px 28px 24px"><button class="btn bgh" style="width:100%;justify-content:center" onclick="S.pendObj='+j.id+';oAP(\'ap-objectif\')">+ Objectif</button></div>’;
-
-el.innerHTML=html;
+function rJcard(j) {
+var pct = Math.round(j.scoreAct/10*100);
+var d = j.scoreAct - j.scoreInit;
+var dCol = d>=0?‘var(–vert)’:‘var(–rouge)’;
+var h = ‘<div class="jcard" onclick="opJ('+j.id+')">’;
+h += ‘<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">’;
+h += ‘<div class="ava ava-sm">’+av(j.nom)+’</div>’;
+h += ‘<div><div style="font-weight:600;font-size:12.5px">’+j.nom+’</div>’;
+h += ‘<div style="font-size:10px;color:var(--gris)">’+(j.poste||’’)+(j.age?’ · ‘+j.age+’ ans’:’’)+’</div></div></div>’;
+h += bph(j.phase);
+h += ‘<div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gris);margin-bottom:3px">’;
+h += ‘<span>DPM</span><span style="color:'+dCol+';font-weight:600">’+j.scoreAct+’/10 ‘+(d>0?‘↑’+d:d<0?‘↓’+Math.abs(d):’’)+’</span></div>’;
+h += ‘<div class="sbar"><div class="sfill" style="width:'+pct+'%"></div></div></div>’;
+h += ‘<div style="margin-top:8px;display:flex;align-items:center;justify-content:space-between">’;
+h += ‘<span style="font-size:10px;color:var(--gris);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">’+(j.axes||’—’)+’</span>’;
+h += ‘<button class="btn bgh bsm" style="margin-left:6px" onclick="event.stopPropagation();opJ('+j.id+')">→</button></div>’;
+h += ‘</div>’;
+return h;
 }
 
-function rObjs(j){
-var o=j.objectifs||[];
-if(!o.length)return ‘<div style="font-size:12px;color:var(--gris);padding-bottom:8px">Aucun objectif.</div>’;
-var h=’’;
-for(var i=0;i<o.length;i++){
-var ob=o[i];
-h+=’<div class="oi" style="margin-bottom:8px">’;
-h+=’<div class="op '+ob.prio+'"></div>’;
-h+=’<div style="flex:1"><div style="font-size:12.5px;font-weight:500">’+ob.titre+’</div>’;
-if(ob.desc){h+=’<div style="font-size:11px;color:var(--gris);margin-top:2px">’+ob.desc+’</div>’;}
-h+=’</div>’;
-h+=’<button class="mdel" onclick="delObj('+j.id+','+ob.id+')">✕</button>’;
-h+=’</div>’;
+function rEqDet(eq) {
+var jous = filter(DB.joueurs, function(j){return j.equipeId===eq.id});
+var club = find(DB.clubs, eq.clubId);
+var mis = eq.missions||[];
+var avgScore = ‘—’;
+if(jous.length) {
+var sum = 0;
+for(var s=0;s<jous.length;s++) sum += jous[s].scoreAct||0;
+avgScore = Math.round(sum/jous.length*10)/10;
+}
+var eqSt = eq.statut===‘Suivi actif’?‘c2’:eq.statut===‘Découverte’?‘e’:‘a’;
+var eqSts = [‘Prospect’,‘Découverte’,‘Suivi actif’,‘En pause’,‘Terminé’];
+var eqNv = [’’,‘Élite’,‘National’,‘Régional’,‘Départemental’];
+var el = document.getElementById(‘v-equipe-detail’);
+var html = ‘’;
+
+html += ‘<div class="hero"><div class="hero2">’;
+html += ‘<div><div style="font-size:10px;color:var(--or);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px">’+(club?club.nom:’’)+’ · ‘+(eq.sport||(club?club.sport:’’))+’</div>’;
+html += ‘<div class="htitle">’+eq.nom+’</div>’;
+html += ‘<div class="hmeta"><span class="bdg b'+eqSt+'">’+eq.statut+’</span>’+(eq.niveau?’<span class="bdg bsp">’+eq.niveau+’</span>’:’’)+’</div></div>’;
+html += ‘<div class="hactions">’;
+html += ‘<button class="btn bgh bsm" onclick="S.pendMi='+eq.id+';openAP(\'ap-mission\')">+ Mission</button>’;
+html += ‘<button class="btn bgh bsm" onclick="S.pendJou='+eq.id+';openAP(\'ap-joueur\')">+ Joueur</button>’;
+html += ‘<button class="btn bg bsm" onclick="svEq('+eq.id+')">Enregistrer</button>’;
+html += ‘</div></div></div>’;
+
+html += ‘<div class="srow">’;
+html += ‘<div class="sc"><div class="scv">’+jous.length+’</div><div class="scl">Joueurs</div></div>’;
+html += ‘<div class="sc"><div class="scv">’+mis.length+’</div><div class="scl">Missions</div></div>’;
+var doneMis = 0; for(var dm=0;dm<mis.length;dm++) if(mis[dm].done) doneMis++;
+html += ‘<div class="sc"><div class="scv">’+doneMis+’</div><div class="scl">Faites</div></div>’;
+html += ‘<div class="sc"><div class="scv">’+avgScore+’</div><div class="scl">Score moy.</div></div>’;
+html += ‘</div>’;
+
+html += ‘<div class="isec"><div class="stitle">Infos équipe</div><div class="igrid">’;
+html += ‘<div class="ifield"><div class="ilbl">Nom</div><input class="ied" value="'+eq.nom+'" onchange="uf(DB.equipes,'+eq.id+',\'nom\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Catégorie</div><input class="ied" value="'+(eq.cat||'')+'" onchange="uf(DB.equipes,'+eq.id+',\'cat\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Entraîneur</div><input class="ied" value="'+(eq.coach||'')+'" onchange="uf(DB.equipes,'+eq.id+',\'coach\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Nb joueurs</div><input class="ied" type="number" value="'+(eq.nb||'')+'" onchange="uf(DB.equipes,'+eq.id+',\'nb\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Statut</div><select class="ied" onchange="uf(DB.equipes,'+eq.id+',\'statut\',this.value)">’;
+for(var si=0;si<eqSts.length;si++) html += ‘<option’+(eqSts[si]===eq.statut?’ selected’:’’)+’>’+eqSts[si]+’</option>’;
+html += ‘</select></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Niveau</div><select class="ied" onchange="uf(DB.equipes,'+eq.id+',\'niveau\',this.value)">’;
+for(var ni=0;ni<eqNv.length;ni++) html += ‘<option’+(eqNv[ni]===(eq.niveau||’’)?’ selected’:’’)+’>’+(eqNv[ni]||’—’)+’</option>’;
+html += ‘</select></div>’;
+html += ‘<div class="ifield" style="grid-column:1/-1"><div class="ilbl">Mission principale</div><textarea class="ied" onchange="uf(DB.equipes,'+eq.id+',\'mission\',this.value)">’+(eq.mission||’’)+’</textarea></div>’;
+html += ‘<div class="ifield" style="grid-column:1/-1"><div class="ilbl">Problématiques identifiées</div><textarea class="ied" onchange="uf(DB.equipes,'+eq.id+',\'problemes\',this.value)">’+(eq.problemes||’’)+’</textarea></div>’;
+html += ‘</div></div>’;
+
+html += ‘<div class="isec" style="padding-bottom:8px"><div class="stitle">Missions A4P (’+mis.length+’)</div></div>’;
+html += ‘<div class="mlist">’+rMis(eq)+’</div>’;
+html += ‘<div style="padding:0 28px 18px"><button class="btn bgh" style="width:100%;justify-content:center" onclick="S.pendMi='+eq.id+';openAP(\'ap-mission\')">+ Mission</button></div>’;
+
+html += ‘<div class="isec" style="padding-bottom:4px"><div class="stitle">Joueurs (’+jous.length+’)</div></div>’;
+html += ‘<div class="ecards">’;
+for(var j=0;j<jous.length;j++) html += rJcard(jous[j]);
+html += ‘<div class="ecard ecard-add" onclick="S.pendJou='+eq.id+';openAP(\'ap-joueur\')">’;
+html += ‘<div style="text-align:center;color:var(--gris)"><div style="font-size:22px;margin-bottom:4px">+</div><div style="font-size:11px">Nouveau joueur</div></div></div>’;
+html += ‘</div>’;
+el.innerHTML = html;
+}
+
+function tgMi(eid, mid) {
+var eq = find(DB.equipes, eid);
+if(!eq) return;
+var m = find(eq.missions||[], mid);
+if(m) { m.done = !m.done; saveDB(); rEqDet(eq); }
+}
+function delMi(eid, mid) {
+var eq = find(DB.equipes, eid);
+if(!eq) return;
+var newMis = [];
+for(var i=0;i<eq.missions.length;i++) if(eq.missions[i].id!==mid) newMis.push(eq.missions[i]);
+eq.missions = newMis; saveDB(); rEqDet(eq);
+}
+function svEq(id) {
+var eq = find(DB.equipes, id);
+saveDB(); showToast(‘Équipe “’+eq.nom+’” enregistrée’); rEqDet(eq);
+}
+
+// ─── JOUEUR ───
+function opJ(id) {
+var j = find(DB.joueurs, id);
+if(!j) return;
+S.joueurId = id;
+var eq = find(DB.equipes, j.equipeId);
+if(eq) { S.equipeId = eq.id; S.clubId = eq.clubId; }
+rJDet(j);
+gv(‘joueur-detail’);
+}
+
+function rObjs(j) {
+var o = j.objectifs||[];
+if(!o.length) return ‘<div style="font-size:12px;color:var(--gris);padding-bottom:8px">Aucun objectif.</div>’;
+var h = ‘’;
+for(var i=0;i<o.length;i++) {
+var ob = o[i];
+h += ‘<div class="oi" style="margin-bottom:8px">’;
+h += ‘<div class="op '+ob.prio+'"></div>’;
+h += ‘<div style="flex:1"><div style="font-size:12.5px;font-weight:500">’+ob.titre+’</div>’;
+if(ob.desc) h += ‘<div style="font-size:11px;color:var(--gris);margin-top:2px">’+ob.desc+’</div>’;
+h += ‘</div><button class="mdel" onclick="delObj('+j.id+','+ob.id+')">✕</button></div>’;
 }
 return h;
 }
 
-function delObj(jid,oid){const j=DB.joueurs.find(x=>x.id===jid);if(!j)return;j.objectifs=(j.objectifs||[]).filter(o=>o.id!==oid);saveDB();rJDet(j)}
-function updJPh(jid,ph,btn){const j=DB.joueurs.find(x=>x.id===jid);if(!j)return;j.phase=ph;saveDB();const phm={‘Lucidité’:‘l’,‘Régulation’:‘r’,‘Performance’:‘p’,‘Autonomie’:‘a’};btn.closest(’.prow’).querySelectorAll(’.pbtn’).forEach(b=>b.className=‘pbtn’);btn.classList.add(‘ps’+phm[ph])}
-function updJSc(jid,t,d){const j=DB.joueurs.find(x=>x.id===jid);if(!j)return;if(t===‘i’){j.scoreInit=Math.max(0,Math.min(10,j.scoreInit+d));const el=document.getElementById(‘si-’+jid);if(el)el.textContent=j.scoreInit}else{j.scoreAct=Math.max(0,Math.min(10,j.scoreAct+d));const el=document.getElementById(‘sa-’+jid);if(el)el.textContent=j.scoreAct}saveDB()}
-function svJ(id){const j=DB.joueurs.find(x=>x.id===id);saveDB();toast(j.nom+’ enregistré’);rJDet(j)}
+function rJDet(j) {
+var eq = find(DB.equipes, j.equipeId);
+var club = eq ? find(DB.clubs, eq.clubId) : null;
+var d = j.scoreAct - j.scoreInit;
+var dCol = d>=0?‘var(–vert)’:‘var(–rouge)’;
+var objs = j.objectifs||[];
+var phases = [‘Lucidité’,‘Régulation’,‘Performance’,‘Autonomie’];
+var phMap = {‘Lucidité’:‘l’,‘Régulation’:‘r’,‘Performance’:‘p’,‘Autonomie’:‘a’};
+var el = document.getElementById(‘v-joueur-detail’);
+var html = ‘’;
 
-// ═══════════════════════════════
-// ALL JOUEURS
-// ═══════════════════════════════
-function rAJ(f){
-f=f||S.jf||‘all’;
-const data=f===‘all’?DB.joueurs:DB.joueurs.filter(j=>j.phase===f);
-const g=document.getElementById(‘aj-grid’);
-if(!data.length){g.innerHTML=`<div style="grid-column:1/-1"><div class="empty"><div class="eico">🧠</div><div class="etxt">Aucun joueur</div></div></div>`;return}
-g.innerHTML=data.map(j=>rJcard(j)).join(’’)
+html += ‘<div class="hero"><div class="hero2">’;
+html += ‘<div style="display:flex;align-items:flex-start;gap:12px;flex:1">’;
+html += ‘<div class="biga" style="width:48px;height:48px;font-size:17px">’+av(j.nom)+’</div>’;
+html += ‘<div><div style="font-size:10px;color:var(--or);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">’+(club?club.nom+’ · ‘:’’)+’ ‘+(eq?eq.nom:’’)+’</div>’;
+html += ‘<div class="htitle">’+j.nom+’</div>’;
+html += ‘<div class="hmeta">’+bph(j.phase);
+if(j.poste) html += ‘<span style="font-size:11px;color:var(--gris)">’+j.poste+’</span>’;
+if(j.age) html += ‘<span style="font-size:11px;color:var(--gris)">’+j.age+’ ans</span>’;
+html += ‘</div></div></div>’;
+html += ‘<div class="hactions">’;
+html += ‘<button class="btn bgh bsm" onclick="S.pendObj='+j.id+';openAP(\'ap-objectif\')">+ Objectif</button>’;
+html += ‘<button class="btn bg bsm" onclick="svJ('+j.id+')">Enregistrer</button>’;
+html += ‘</div></div></div>’;
+
+html += ‘<div class="scrow">’;
+html += ‘<div class="scblk"><div class="scbig" style="color:var(--gris)">’+j.scoreInit+’</div><div class="sclbl">Score initial</div></div>’;
+html += ‘<div style="font-size:20px;color:var(--gris);opacity:.4">→</div>’;
+html += ‘<div class="scblk"><div class="scbig" style="color:'+dCol+'">’+j.scoreAct+’</div><div class="sclbl">Score actuel</div></div>’;
+html += ‘<div class="scblk" style="flex:0.6"><div class="scbig" style="color:'+dCol+';font-size:30px">’+(d>=0?’+’:’’)+d+’</div><div class="sclbl">Progression</div></div>’;
+html += ‘<div style="flex:1.2;padding:12px 14px;background:var(--m2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--r)">’;
+html += ‘<div style="font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gris);margin-bottom:8px">Phase A4P</div>’;
+html += ‘<div class="prow">’;
+for(var pi=0;pi<phases.length;pi++) {
+var p = phases[pi];
+var cls = ‘pbtn’ + (p===j.phase?’ ps’+phMap[p]:’’);
+html += ‘<button class="'+cls+'" onclick="updJPh('+j.id+',\''+p+'\',this)">’+p+’</button>’;
 }
-function fjou(f,el){S.jf=f;document.querySelectorAll(’#v-alljoueurs .tab’).forEach(t=>t.classList.remove(‘on’));if(el)el.classList.add(‘on’);rAJ(f)}
+html += ‘</div>’;
+html += ‘<div style="display:flex;gap:10px;align-items:center;margin-top:10px;font-size:10px;color:var(--gris)">’;
+html += ‘<span>Ini.:</span>’;
+html += ‘<div class="stpr"><button class="stpb" onclick="updJSc('+j.id+',\'i\',-1)">−</button><span class="stpv" id="si-'+j.id+'" style="font-size:16px">’+j.scoreInit+’</span><button class="stpb" onclick="updJSc('+j.id+',\'i\',1)">+</button></div>’;
+html += ‘<span>Act.:</span>’;
+html += ‘<div class="stpr"><button class="stpb" onclick="updJSc('+j.id+',\'a\',-1)">−</button><span class="stpv" id="sa-'+j.id+'" style="font-size:16px">’+j.scoreAct+’</span><button class="stpb" onclick="updJSc('+j.id+',\'a\',1)">+</button></div>’;
+html += ‘</div></div></div>’;
 
-// ═══════════════════════════════
-// SAVE FUNCTIONS
-// ═══════════════════════════════
-function sClub(){
-const n=document.getElementById(‘ac-n’).value.trim();if(!n){alert(‘Nom requis’);return}
-DB.clubs.push({id:uid(),nom:n,sport:document.getElementById(‘ac-s’).value,ville:document.getElementById(‘ac-v’).value,niveau:document.getElementById(‘ac-nv’).value,contact:document.getElementById(‘ac-c’).value,email:document.getElementById(‘ac-e’).value,tel:’’,site:’’,statut:document.getElementById(‘ac-st’).value,potentiel:parseInt(document.getElementById(‘ac-p’).value)||4,message:document.getElementById(‘ac-m’).value,source:document.getElementById(‘ac-src’).value,action:document.getElementById(‘ac-a’).value,commentaire:document.getElementById(‘ac-co’).value,decouverte:{president:’’,directeur:’’,nbAd:’’,nbEq:’’,budget:’’,vision1:’’,vision5:’’,adn:’’,defis:’’,fonctionneBien:’’,bloque:’’,prepaMentale:’’,travailleStress:’’,travailleCohesion:’’,ouvertAborder:[],categories:[]},equipes:[],offres:[],interventions:[]});
-cAP(‘ap-club’);[‘ac-n’,‘ac-v’,‘ac-c’,‘ac-e’,‘ac-a’,‘ac-co’].forEach(id=>document.getElementById(id).value=’’);
-saveDB();updCounts();toast(n+’ ajouté’);rView(S.view)
+html += ‘<div class="isec"><div class="stitle">Identité</div><div class="igrid">’;
+html += ‘<div class="ifield"><div class="ilbl">Nom</div><input class="ied" value="'+j.nom+'" onchange="uf(DB.joueurs,'+j.id+',\'nom\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Poste</div><input class="ied" value="'+(j.poste||'')+'" onchange="uf(DB.joueurs,'+j.id+',\'poste\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Âge</div><input class="ied" type="number" value="'+(j.age||'')+'" onchange="uf(DB.joueurs,'+j.id+',\'age\',this.value)"></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Téléphone</div><input class="ied" value="'+(j.tel||'')+'" onchange="uf(DB.joueurs,'+j.id+',\'tel\',this.value)"></div>’;
+html += ‘</div></div>’;
+html += ‘<div class="isec"><div class="stitle">Découverte · Lucidité</div><div class="igrid" style="grid-template-columns:1fr">’;
+html += ‘<div class="ifield"><div class="ilbl">Contexte</div><textarea class="ied" onchange="uf(DB.joueurs,'+j.id+',\'contexte\',this.value)">’+(j.contexte||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl">Axes de travail</div><input class="ied" value="'+(j.axes||'')+'" onchange="uf(DB.joueurs,'+j.id+',\'axes\',this.value)"></div>’;
+html += ‘</div></div>’;
+html += ‘<div class="isec"><div class="stitle">Bilan mental</div><div class="igrid2">’;
+html += ‘<div class="ifield"><div class="ilbl" style="color:var(--vert)">✦ Points forts</div><textarea class="ied" onchange="uf(DB.joueurs,'+j.id+',\'forts\',this.value)">’+(j.forts||’’)+’</textarea></div>’;
+html += ‘<div class="ifield"><div class="ilbl" style="color:var(--ora)">▲ À travailler</div><textarea class="ied" onchange="uf(DB.joueurs,'+j.id+',\'travail\',this.value)">’+(j.travail||’’)+’</textarea></div>’;
+html += ‘</div></div>’;
+html += ‘<div class="isec" style="padding-bottom:8px"><div class="stitle">Objectifs (’+objs.length+’)</div></div>’;
+html += ‘<div style="padding:0 28px" class="mlist">’+rObjs(j)+’</div>’;
+html += ‘<div style="padding:8px 28px 24px"><button class="btn bgh" style="width:100%;justify-content:center" onclick="S.pendObj='+j.id+';openAP(\'ap-objectif\')">+ Objectif</button></div>’;
+el.innerHTML = html;
 }
 
-function sOffre(){
-const cid=parseInt(document.getElementById(‘ao-club’).value);
-const type=document.getElementById(‘ao-type’).value;
-const montant=document.getElementById(‘ao-mt’).value;
-if(!cid||!type){alert(‘Club et type requis’);return}
-const o={id:uid(),clubId:cid,type,montant,date:document.getElementById(‘ao-date’).value,statut:document.getElementById(‘ao-st’).value,nxtDate:document.getElementById(‘ao-nxt’).value,nbInter:document.getElementById(‘ao-nbi’).value,equipes:document.getElementById(‘ao-eq’).value,objectif:document.getElementById(‘ao-obj’).value,notes:document.getElementById(‘ao-notes’).value};
+function updJPh(jid, ph, btn) {
+var j = find(DB.joueurs, jid);
+if(!j) return;
+j.phase = ph; saveDB();
+var phMap = {‘Lucidité’:‘l’,‘Régulation’:‘r’,‘Performance’:‘p’,‘Autonomie’:‘a’};
+var row = btn.parentNode;
+var btns = row.querySelectorAll(’.pbtn’);
+for(var i=0;i<btns.length;i++) btns[i].className = ‘pbtn’;
+btn.className = ‘pbtn ps’ + (phMap[ph]||‘l’);
+}
+function updJSc(jid, t, d) {
+var j = find(DB.joueurs, jid);
+if(!j) return;
+if(t===‘i’) { j.scoreInit = Math.max(0,Math.min(10,j.scoreInit+d)); var eli=document.getElementById(‘si-’+jid); if(eli)eli.textContent=j.scoreInit; }
+else { j.scoreAct = Math.max(0,Math.min(10,j.scoreAct+d)); var ela=document.getElementById(‘sa-’+jid); if(ela)ela.textContent=j.scoreAct; }
+saveDB();
+}
+function svJ(id) { var j=find(DB.joueurs,id); saveDB(); showToast(j.nom+’ enregistré’); rJDet(j); }
+function delObj(jid, oid) {
+var j = find(DB.joueurs, jid);
+if(!j) return;
+var newObjs = [];
+for(var i=0;i<j.objectifs.length;i++) if(j.objectifs[i].id!==oid) newObjs.push(j.objectifs[i]);
+j.objectifs = newObjs; saveDB(); rJDet(j);
+}
+
+// ─── ALL JOUEURS ───
+function rAJ(f) {
+if(f) S.jf = f;
+var data = S.jf===‘all’ ? DB.joueurs : filter(DB.joueurs, function(j){return j.phase===S.jf});
+var g = document.getElementById(‘aj-grid’);
+if(!data.length) { g.innerHTML=’<div style="grid-column:1/-1"><div class="empty"><div class="eico">🧠</div><div class="etxt">Aucun joueur</div></div></div>’; return; }
+var h = ‘’;
+for(var i=0;i<data.length;i++) h += rJcard(data[i]);
+g.innerHTML = h;
+}
+function fjou(f, el) {
+S.jf = f;
+var tabs = document.querySelectorAll(’#v-alljoueurs .tab’);
+for(var i=0;i<tabs.length;i++) tabs[i].className = tabs[i].className.replace(’ on’,’’).replace(/\bon\b/,’’).trim();
+if(el) el.className += ’ on’;
+rAJ(f);
+}
+
+// ─── SAVE FUNCTIONS ───
+function sClub() {
+var n = document.getElementById(‘ac-n’).value.trim();
+if(!n) { alert(‘Nom requis’); return; }
+DB.clubs.push({id:uid(),nom:n,sport:document.getElementById(‘ac-s’).value,ville:document.getElementById(‘ac-v’).value,niveau:document.getElementById(‘ac-nv’).value,contact:document.getElementById(‘ac-c’).value,email:document.getElementById(‘ac-e’).value,tel:’’,site:’’,statut:document.getElementById(‘ac-st’).value,potentiel:parseInt(document.getElementById(‘ac-p’).value)||4,message:document.getElementById(‘ac-m’).value,source:document.getElementById(‘ac-src’).value,action:document.getElementById(‘ac-a’).value,commentaire:document.getElementById(‘ac-co’).value,decouverte:{},equipes:[],offres:[],interventions:[]});
+closeAP(‘ap-club’);
+var ids2 = [‘ac-n’,‘ac-v’,‘ac-c’,‘ac-e’,‘ac-a’,‘ac-co’];
+for(var i=0;i<ids2.length;i++) document.getElementById(ids2[i]).value=’’;
+saveDB(); updCounts(); showToast(n+’ ajouté’); rView(S.view);
+}
+
+function sOffre() {
+var cid = parseInt(document.getElementById(‘ao-club’).value);
+var type = document.getElementById(‘ao-type’).value;
+var montant = document.getElementById(‘ao-mt’).value;
+if(!cid||!type) { alert(‘Club et format requis’); return; }
+if(!montant) { alert(‘Le montant final est requis’); return; }
+var o = {
+id: uid(),
+clubId: cid,
+type: type,
+montant: montant,
+tarifBase: document.getElementById(‘ao-tarif-base’).value,
+ajustement: document.getElementById(‘ao-ajustement’).value,
+tarifNotes: document.getElementById(‘ao-tarif-notes’).value,
+paiement: document.getElementById(‘ao-paiement’).value,
+nbEquipes: document.getElementById(‘ao-nb-equipes’).value,
+nbAdherents: document.getElementById(‘ao-nb-adherents’).value,
+duree: document.getElementById(‘ao-duree’).value,
+date: document.getElementById(‘ao-date’).value,
+statut: document.getElementById(‘ao-st’).value,
+nxtDate: document.getElementById(‘ao-nxt’).value,
+nbInter: document.getElementById(‘ao-nbi’).value,
+equipes: document.getElementById(‘ao-eq’).value,
+objectif: document.getElementById(‘ao-obj’).value,
+notes: document.getElementById(‘ao-notes’).value
+};
 DB.offres.push(o);
-// update club statut to client
-const c=DB.clubs.find(x=>x.id===cid);if(c&&c.statut!==‘🟢 Client’){c.statut=‘🟢 Client’}
-cAP(‘ap-offre’);[‘ao-mt’,‘ao-eq’,‘ao-obj’,‘ao-notes’,‘ao-nxt’,‘ao-nbi’].forEach(id=>document.getElementById(id).value=’’);
-document.getElementById(‘ao-type’).value=’’;
-saveDB();updCounts();toast(‘Offre enregistrée’);rView(S.view)
+var c = find(DB.clubs, cid);
+if(c && c.statut!==‘🟢 Client’) c.statut = ‘🟢 Client’;
+closeAP(‘ap-offre’);
+var ids3 = [‘ao-mt’,‘ao-eq’,‘ao-obj’,‘ao-notes’,‘ao-nxt’,‘ao-nbi’,‘ao-tarif-notes’,‘ao-nb-equipes’,‘ao-nb-adherents’];
+for(var i=0;i<ids3.length;i++) document.getElementById(ids3[i]).value=’’;
+document.getElementById(‘ao-type’).value = ‘’;
+document.getElementById(‘ao-tarif-base’).value = ‘’;
+document.getElementById(‘ao-ajustement’).value = ‘0’;
+document.getElementById(‘ao-tarif-calc-val’).textContent = ‘—’;
+saveDB(); updCounts(); showToast(‘Offre enregistrée’); rView(S.view);
 }
 
-function sEquipe(){
-const n=document.getElementById(‘ae-n’).value.trim();if(!n){alert(‘Nom requis’);return}
-const cid=S.pendEq;
+function calcTarif() {
+var base = parseInt(document.getElementById(‘ao-tarif-base’).value) || 0;
+var adj = parseInt(document.getElementById(‘ao-ajustement’).value) || 0;
+var calcEl = document.getElementById(‘ao-tarif-calc’);
+var calcVal = document.getElementById(‘ao-tarif-calc-val’);
+var hint = document.getElementById(‘ao-tarif-hint’);
+if(!base) { calcEl.style.display=‘none’; return; }
+calcEl.style.display=‘block’;
+var montantCalc = Math.round(base * (1 + adj/100));
+calcVal.textContent = montantCalc.toLocaleString(‘fr-FR’) + ‘€’;
+if(adj > 0) hint.textContent = ’Base ’ + base.toLocaleString(‘fr-FR’) + ’€ + ’ + adj + ’% = ’ + montantCalc.toLocaleString(‘fr-FR’) + ‘€’;
+else if(adj < 0) hint.textContent = ’Base ’ + base.toLocaleString(‘fr-FR’) + ’€ ’ + adj + ’% = ’ + montantCalc.toLocaleString(‘fr-FR’) + ‘€’;
+else hint.textContent = ‘Tarif de base A4P’;
+document.getElementById(‘ao-mt’).value = montantCalc;
+}
+
+function sEquipe() {
+var n = document.getElementById(‘ae-n’).value.trim();
+if(!n) { alert(‘Nom requis’); return; }
+var cid = S.pendEq;
 DB.equipes.push({id:uid(),clubId:cid,nom:n,cat:document.getElementById(‘ae-c’).value,coach:document.getElementById(‘ae-co’).value,nb:document.getElementById(‘ae-nb’).value,niveau:document.getElementById(‘ae-nv’).value,statut:document.getElementById(‘ae-st’).value,mission:document.getElementById(‘ae-mi’).value,problemes:document.getElementById(‘ae-pr’).value,missions:[]});
-cAP(‘ap-equipe’);[‘ae-n’,‘ae-c’,‘ae-co’,‘ae-nb’,‘ae-mi’,‘ae-pr’].forEach(id=>document.getElementById(id).value=’’);
-saveDB();updCounts();toast(n+’ créée’);
-if(cid&&S.clubId===cid){const c=DB.clubs.find(x=>x.id===cid);if(c)rClDet(c)}else rView(S.view)
+closeAP(‘ap-equipe’);
+var ids4 = [‘ae-n’,‘ae-c’,‘ae-co’,‘ae-nb’,‘ae-mi’,‘ae-pr’];
+for(var i=0;i<ids4.length;i++) document.getElementById(ids4[i]).value=’’;
+saveDB(); updCounts(); showToast(n+’ créée’);
+if(cid && S.clubId===cid) { var c=find(DB.clubs,cid); if(c) rClDet(c); }
+else rView(S.view);
 }
 
-function sJoueur(){
-const n=document.getElementById(‘aj-n’).value.trim();if(!n){alert(‘Nom requis’);return}
-const eid=S.pendJou;const eq=DB.equipes.find(e=>e.id===eid);
+function sJoueur() {
+var n = document.getElementById(‘aj-n’).value.trim();
+if(!n) { alert(‘Nom requis’); return; }
+var eid = S.pendJou;
+var eq = find(DB.equipes, eid);
 DB.joueurs.push({id:uid(),equipeId:eid||null,clubId:eq?eq.clubId:null,nom:n,poste:document.getElementById(‘aj-po’).value,age:document.getElementById(‘aj-a’).value,tel:document.getElementById(‘aj-t’).value,phase:document.getElementById(‘aj-ph’).value||‘Lucidité’,scoreInit:parseInt(document.getElementById(‘aj-si’).value)||5,scoreAct:parseInt(document.getElementById(‘aj-sa’).value)||5,axes:document.getElementById(‘aj-ax’).value,forts:document.getElementById(‘aj-fo’).value,travail:document.getElementById(‘aj-tr’).value,contexte:document.getElementById(‘aj-cx’).value,objectifs:[]});
-cAP(‘ap-joueur’);[‘aj-n’,‘aj-po’,‘aj-a’,‘aj-t’,‘aj-ax’,‘aj-fo’,‘aj-tr’,‘aj-cx’].forEach(id=>document.getElementById(id).value=’’);
-ss(‘aj-si’,0,5);ss(‘aj-sa’,0,5);document.getElementById(‘aj-ph’).value=‘Lucidité’;document.querySelectorAll(’#ap-joueur .pbtn’).forEach((b,i)=>{b.className=‘pbtn’+(i===0?’ psl’:’’)});
-saveDB();updCounts();toast(n+’ ajouté’);
-if(eid&&S.equipeId===eid&&eq)rEqDet(eq);else rAJ()
+closeAP(‘ap-joueur’);
+var ids5 = [‘aj-n’,‘aj-po’,‘aj-a’,‘aj-t’,‘aj-ax’,‘aj-fo’,‘aj-tr’,‘aj-cx’];
+for(var i=0;i<ids5.length;i++) document.getElementById(ids5[i]).value=’’;
+ss(‘aj-si’,0,5); ss(‘aj-sa’,0,5);
+document.getElementById(‘aj-ph’).value = ‘Lucidité’;
+var pbtns = document.querySelectorAll(’#ap-joueur .pbtn’);
+for(var pb=0;pb<pbtns.length;pb++) pbtns[pb].className = ‘pbtn’+(pb===0?’ psl’:’’);
+saveDB(); updCounts(); showToast(n+’ ajouté’);
+if(eid && S.equipeId===eid && eq) rEqDet(eq); else rAJ();
 }
 
-function sMission(){
-const t=document.getElementById(‘am-t’).value.trim();if(!t){alert(‘Requis’);return}
-const eid=S.pendMi;const eq=DB.equipes.find(e=>e.id===eid);if(!eq)return;
-if(!eq.missions)eq.missions=[];
+function sMission() {
+var t = document.getElementById(‘am-t’).value.trim();
+if(!t) { alert(‘Requis’); return; }
+var eid = S.pendMi;
+var eq = find(DB.equipes, eid);
+if(!eq) return;
+if(!eq.missions) eq.missions = [];
 eq.missions.push({id:uid(),titre:t,desc:document.getElementById(‘am-d’).value,phase:document.getElementById(‘am-p’).value,done:false});
-cAP(‘ap-mission’);document.getElementById(‘am-t’).value=’’;document.getElementById(‘am-d’).value=’’;
-saveDB();toast(‘Mission ajoutée’);if(S.equipeId===eid)rEqDet(eq)
+closeAP(‘ap-mission’);
+document.getElementById(‘am-t’).value=’’; document.getElementById(‘am-d’).value=’’;
+saveDB(); showToast(‘Mission ajoutée’);
+if(S.equipeId===eid) rEqDet(eq);
 }
 
-function sObj(){
-const t=document.getElementById(‘aobj-t’).value.trim();if(!t){alert(‘Requis’);return}
-const jid=S.pendObj;const j=DB.joueurs.find(x=>x.id===jid);if(!j)return;
-if(!j.objectifs)j.objectifs=[];
+function sObj() {
+var t = document.getElementById(‘aobj-t’).value.trim();
+if(!t) { alert(‘Requis’); return; }
+var jid = S.pendObj;
+var j = find(DB.joueurs, jid);
+if(!j) return;
+if(!j.objectifs) j.objectifs = [];
 j.objectifs.push({id:uid(),titre:t,desc:document.getElementById(‘aobj-d’).value,prio:document.getElementById(‘aobj-p’).value});
-cAP(‘ap-objectif’);document.getElementById(‘aobj-t’).value=’’;document.getElementById(‘aobj-d’).value=’’;
-saveDB();toast(‘Objectif ajouté’);if(S.joueurId===jid)rJDet(j)
+closeAP(‘ap-objectif’);
+document.getElementById(‘aobj-t’).value=’’; document.getElementById(‘aobj-d’).value=’’;
+saveDB(); showToast(‘Objectif ajouté’);
+if(S.joueurId===jid) rJDet(j);
 }
 
-function sInter(){
-const cid=parseInt(document.getElementById(‘ai-club’).value);const date=document.getElementById(‘ai-date’).value;
-if(!cid||!date){alert(‘Club et date requis’);return}
-DB.interventions.push({id:uid(),clubId:cid,date,type:document.getElementById(‘ai-type’).value,duree:document.getElementById(‘ai-dur’).value,theme:document.getElementById(‘ai-theme’).value,equipe:document.getElementById(‘ai-eq’).value,obs:document.getElementById(‘ai-obs’).value,nxt:document.getElementById(‘ai-nxt’).value});
-cAP(‘ap-inter’);[‘ai-eq’,‘ai-obs’,‘ai-nxt’].forEach(id=>document.getElementById(id).value=’’);
-saveDB();updCounts();toast(‘Intervention enregistrée’);rView(S.view)
+function sInter() {
+var cid = parseInt(document.getElementById(‘ai-club’).value);
+var date = document.getElementById(‘ai-date’).value;
+if(!cid||!date) { alert(‘Club et date requis’); return; }
+DB.interventions.push({id:uid(),clubId:cid,date:date,type:document.getElementById(‘ai-type’).value,duree:document.getElementById(‘ai-dur’).value,theme:document.getElementById(‘ai-theme’).value,equipe:document.getElementById(‘ai-eq’).value,obs:document.getElementById(‘ai-obs’).value,nxt:document.getElementById(‘ai-nxt’).value});
+closeAP(‘ap-inter’);
+var ids6 = [‘ai-eq’,‘ai-obs’,‘ai-nxt’];
+for(var i=0;i<ids6.length;i++) document.getElementById(ids6[i]).value=’’;
+saveDB(); updCounts(); showToast(‘Intervention enregistrée’); rView(S.view);
 }
 
-// ═══════════════════════════════
-// SEARCH
-// ═══════════════════════════════
-function gsrch(q){if(!q.trim())return;q=q.toLowerCase();const c=DB.clubs.find(x=>x.nom.toLowerCase().includes(q)||x.sport.toLowerCase().includes(q));const j=DB.joueurs.find(x=>x.nom.toLowerCase().includes(q));if(j)opJ(j.id);else if(c)opCl(c.id)}
-
-function bcNav(fn){
-if(!fn) return;
-if(fn===‘dashboard’){gv(‘dashboard’)}
-else if(fn===‘clubs’){gv(‘clubs’)}
-else if(fn.indexOf(‘club:’)===0){opCl(parseInt(fn.split(’:’)[1]))}
-else if(fn.indexOf(‘eq:’)===0){opEq(parseInt(fn.split(’:’)[1]))}
-else{gv(fn)}
+// ─── SEARCH ───
+function gsrch(q) {
+if(!q.trim()) return;
+q = q.toLowerCase();
+for(var j=0;j<DB.joueurs.length;j++) { if(DB.joueurs[j].nom.toLowerCase().indexOf(q)>=0) { opJ(DB.joueurs[j].id); return; } }
+for(var c=0;c<DB.clubs.length;c++) { if(DB.clubs[c].nom.toLowerCase().indexOf(q)>=0||DB.clubs[c].sport.toLowerCase().indexOf(q)>=0) { opCl(DB.clubs[c].id); return; } }
 }
-// ═══════════════════════════════
-// INIT
-// ═══════════════════════════════
+
+// ─── INIT ───
+window.onload = function() {
 loadDB();
-rDash();updBC();rBtn();updCounts();
-</script>
+initPanels();
+loadLinkedin();
+rDash();
+updBC();
+rBtn();
+updCounts();
+};
 
+// ═══════════════════════════════
+// EMAILING & LINKEDIN
+// ═══════════════════════════════
+
+// LinkedIn templates storage
+var LI_TEMPLATES = {
+a: { obj: ‘’, msg: ‘’ },
+b: { obj: ‘’, msg: ‘’ },
+c: { obj: ‘’, msg: ‘’ }
+};
+
+function loadLinkedin() {
+try {
+var raw = localStorage.getItem(‘a4p_li_templates’);
+if (raw) {
+var parsed = JSON.parse(raw);
+LI_TEMPLATES = parsed;
+// Fill inputs if on linkedin page
+var la = document.getElementById(‘li-a-msg’);
+if (la) {
+document.getElementById(‘li-a-obj’).value = LI_TEMPLATES.a.obj || document.getElementById(‘li-a-obj’).value;
+document.getElementById(‘li-a-msg’).value = LI_TEMPLATES.a.msg || document.getElementById(‘li-a-msg’).value;
+document.getElementById(‘li-b-obj’).value = LI_TEMPLATES.b.obj || document.getElementById(‘li-b-obj’).value;
+document.getElementById(‘li-b-msg’).value = LI_TEMPLATES.b.msg || document.getElementById(‘li-b-msg’).value;
+document.getElementById(‘li-c-obj’).value = LI_TEMPLATES.c.obj || document.getElementById(‘li-c-obj’).value;
+document.getElementById(‘li-c-msg’).value = LI_TEMPLATES.c.msg || document.getElementById(‘li-c-msg’).value;
+}
+}
+} catch(e) {}
+}
+
+function saveLinkedin() {
+LI_TEMPLATES.a.obj = document.getElementById(‘li-a-obj’).value;
+LI_TEMPLATES.a.msg = document.getElementById(‘li-a-msg’).value;
+LI_TEMPLATES.b.obj = document.getElementById(‘li-b-obj’).value;
+LI_TEMPLATES.b.msg = document.getElementById(‘li-b-msg’).value;
+LI_TEMPLATES.c.obj = document.getElementById(‘li-c-obj’).value;
+LI_TEMPLATES.c.msg = document.getElementById(‘li-c-msg’).value;
+try { localStorage.setItem(‘a4p_li_templates’, JSON.stringify(LI_TEMPLATES)); } catch(e) {}
+showToast(‘Templates LinkedIn enregistrés’);
+}
+
+function getLiTemplate(type) {
+// type: ‘a’, ‘b’, ‘c’
+var tpl = LI_TEMPLATES[type];
+var obj = (tpl && tpl.obj) ? tpl.obj : (document.getElementById(‘li-’+type+’-obj’) ? document.getElementById(‘li-’+type+’-obj’).value : ‘’);
+var msg = (tpl && tpl.msg) ? tpl.msg : (document.getElementById(‘li-’+type+’-msg’) ? document.getElementById(‘li-’+type+’-msg’).value : ‘’);
+return { obj: obj, msg: msg };
+}
+
+// Camp filters state
+var CAMP_FILTERS = {
+sports: [‘Rugby’,‘Basket’,‘Handball’,‘Natation’,‘Judo’,‘Volleyball’,‘Tennis’],
+niveaux: [‘Pro’,‘Semi-pro’,‘Amateur’,‘Institutionnel’],
+zones: [‘92’,‘63’]
+};
+var CAMP_SELECTED = {}; // clubId -> true/false
+
+function toggleCampFilter(type, val, el) {
+var arr = CAMP_FILTERS[type + ‘s’] || CAMP_FILTERS[type + ‘x’] || [];
+if (type === ‘sport’) arr = CAMP_FILTERS.sports;
+else if (type === ‘niveau’) arr = CAMP_FILTERS.niveaux;
+else if (type === ‘zone’) arr = CAMP_FILTERS.zones;
+
+var idx = arr.indexOf(val);
+if (idx >= 0) {
+arr.splice(idx, 1);
+el.className = el.className.replace(’ sel’,’’).replace(/\bsel\b/,’’);
+} else {
+arr.push(val);
+el.className += ’ sel’;
+}
+}
+
+function getFilteredClubs() {
+var result = [];
+for (var i = 0; i < DB.clubs.length; i++) {
+var c = DB.clubs[i];
+// Sport filter
+var sportOk = false;
+for (var s = 0; s < CAMP_FILTERS.sports.length; s++) {
+if (c.sport === CAMP_FILTERS.sports[s]) { sportOk = true; break; }
+}
+// Niveau filter
+var niveauOk = false;
+for (var n = 0; n < CAMP_FILTERS.niveaux.length; n++) {
+if (c.niveau === CAMP_FILTERS.niveaux[n]) { niveauOk = true; break; }
+}
+// Zone filter
+var zoneOk = false;
+for (var z = 0; z < CAMP_FILTERS.zones.length; z++) {
+if (c.ville && c.ville.indexOf(CAMP_FILTERS.zones[z]) >= 0) { zoneOk = true; break; }
+}
+if (sportOk && niveauOk && zoneOk) result.push(c);
+}
+return result;
+}
+
+function getMsgType(c) {
+if (c.message && c.message.indexOf(‘Type A’) >= 0) return ‘a’;
+if (c.message && c.message.indexOf(‘Type C’) >= 0) return ‘c’;
+return ‘b’;
+}
+
+function genEmailForClub(c) {
+var type = getMsgType(c);
+var tpl = getLiTemplate(type);
+var subject = tpl.obj || ‘Performance mentale — Académie A4P’;
+subject = subject.replace(’[Structure]’, c.nom);
+
+// Get stored templates from localStorage if available
+var liRaw = null;
+try { liRaw = localStorage.getItem(‘a4p_li_templates’); } catch(e) {}
+var liTpl = liRaw ? JSON.parse(liRaw) : null;
+var msgTpl = liTpl && liTpl[type] && liTpl[type].msg ? liTpl[type].msg : getDefaultMsg(type);
+
+var body = msgTpl
+.replace(’[Prénom]’, c.contact || ‘Madame, Monsieur’)
+.replace(’[Club]’, c.nom)
+.replace(’[Sport]’, c.sport)
+.replace(’[Ville]’, c.ville || ‘’);
+
+return { subject: subject, body: body, email: c.email || ‘’ };
+}
+
+function getDefaultMsg(type) {
+if (type === ‘a’) return ‘Bonjour [Prénom],\n\nJe me permets de vous contacter car j'accompagne des clubs de votre niveau dans la structuration de la performance mentale de leurs jeunes compétiteurs.\n\nÀ travers la méthode A4P (Lucidité · Régulation · Performance · Autonomie), j'aide les clubs professionnels et semi-professionnels à développer des joueurs plus stables sous pression et plus lucides dans les moments décisifs.\n\nSeriez-vous disponible pour un échange de 20 minutes ?\n\nAlexandre Griffet\nFondateur — Académie de Performances A4P’;
+if (type === ‘c’) return ‘Bonjour [Prénom],\n\nJe me permets de vous contacter en qualité de Fondateur de l'Académie de Performances A4P, spécialisée dans la préparation mentale des jeunes sportifs 12-25 ans.\n\nJe souhaiterais explorer avec vous les possibilités d'un partenariat institutionnel pour accompagner les clubs affiliés à votre structure.\n\nSeriez-vous disponible pour un échange ?\n\nAlexandre Griffet\nFondateur — Académie de Performances A4P’;
+return ‘Bonjour [Prénom],\n\nJ'accompagne des clubs sportifs comme le vôtre dans la préparation mentale de leurs jeunes compétiteurs (12-25 ans).\n\nCe que j'observe souvent : des joueurs très performants à l'entraînement qui perdent leurs moyens en compétition. La méthode A4P permet d'y remédier avec des outils concrets.\n\nUne intervention découverte est possible à partir de 490€.\n\nAlexandre Griffet\nFondateur — Académie de Performances A4P’;
+}
+
+function genCampagne() {
+var clubs = getFilteredClubs();
+var el = document.getElementById(‘camp-list’);
+var countEl = document.getElementById(‘camp-count’);
+
+if (!clubs.length) {
+el.innerHTML = ‘<div style="font-size:12px;color:var(--gris);text-align:center;padding:20px">Aucun club correspond aux filtres</div>’;
+countEl.textContent = ‘0 club trouvé’;
+return;
+}
+
+// Init selection
+for (var i = 0; i < clubs.length; i++) {
+if (CAMP_SELECTED[clubs[i].id] === undefined) CAMP_SELECTED[clubs[i].id] = true;
+}
+
+countEl.textContent = clubs.length + ’ clubs trouvés — ’ + clubs.filter(function(c){ return CAMP_SELECTED[c.id]; }).length + ’ sélectionnés’;
+
+var h = ‘’;
+for (var j = 0; j < clubs.length; j++) {
+var c = clubs[j];
+var type = getMsgType(c);
+var typeLabel = type === ‘a’ ? ‘Type A’ : type === ‘c’ ? ‘Type C’ : ‘Type B’;
+var typeClass = ‘msg-type-’ + type;
+var sel = CAMP_SELECTED[c.id] ? ‘on’ : ‘’;
+var hasEmail = c.email ? ‘✓ email’ : ‘⚠ sans email’;
+var emailColor = c.email ? ‘var(–vert)’ : ‘var(–ora)’;
+h += ‘<div class="camp-item">’;
+h += ‘<div class="camp-item-check '+sel+'" onclick="toggleClubSelect('+c.id+',this)"></div>’;
+h += ‘<div style="flex:1;cursor:pointer" onclick="previewEmail('+c.id+')">’;
+h += ‘<div style="font-weight:500;font-size:12.5px">’+c.nom+’</div>’;
+h += ‘<div style="font-size:10.5px;color:var(--gris);margin-top:2px">’+c.sport+’ · ‘+c.ville+’</div>’;
+h += ‘</div>’;
+h += ‘<span class="stat-badge '+typeClass+'">’+typeLabel+’</span>’;
+h += ‘<span style="font-size:10px;color:'+emailColor+';margin-left:6px">’+hasEmail+’</span>’;
+if (c.email) {
+h += ‘<a href="mailto:'+c.email+'?subject='+encodeURIComponent(genEmailForClub(c).subject)+'&body='+encodeURIComponent(genEmailForClub(c).body)+'" style="margin-left:8px"><button class="btn bg bsm">✉ Envoyer</button></a>’;
+}
+h += ‘</div>’;
+}
+el.innerHTML = h;
+updateCampStats(clubs);
+}
+
+function toggleClubSelect(id, el) {
+CAMP_SELECTED[id] = !CAMP_SELECTED[id];
+if (CAMP_SELECTED[id]) {
+el.className = ‘camp-item-check on’;
+} else {
+el.className = ‘camp-item-check’;
+}
+var clubs = getFilteredClubs();
+var countEl = document.getElementById(‘camp-count’);
+var sel = clubs.filter(function(c){ return CAMP_SELECTED[c.id]; }).length;
+countEl.textContent = clubs.length + ’ clubs trouvés — ’ + sel + ’ sélectionnés’;
+}
+
+function selectAllCamp() {
+var clubs = getFilteredClubs();
+for (var i = 0; i < clubs.length; i++) CAMP_SELECTED[clubs[i].id] = true;
+genCampagne();
+}
+
+function previewEmail(clubId) {
+var c = find(DB.clubs, clubId);
+if (!c) return;
+var email = genEmailForClub(c);
+var type = getMsgType(c);
+var typeLabel = type === ‘a’ ? ‘Type A — Pro/Semi-pro’ : type === ‘c’ ? ‘Type C — Institutionnel’ : ‘Type B — Amateur’;
+var typeClass = ‘msg-type-’ + type;
+
+var panel = document.getElementById(‘email-preview-panel’);
+var h = ‘’;
+h += ‘<div style="margin-bottom:12px"><div class="stat-badge '+typeClass+'" style="margin-bottom:8px">’+typeLabel+’</div>’;
+h += ‘<div style="font-size:13px;font-weight:600;color:var(--blanc)">’+c.nom+’</div>’;
+h += ‘<div style="font-size:11px;color:var(--gris)">’+c.sport+’ · ‘+c.ville+’</div></div>’;
+
+h += ‘<div class="email-subject">Objet : ‘+email.subject+’</div>’;
+h += ‘<div class="email-preview">’+email.body+’</div>’;
+h += ‘<div style="display:flex;gap:8px;margin-top:12px">’;
+
+if (c.email) {
+var mailto = ‘mailto:’+c.email+’?subject=’+encodeURIComponent(email.subject)+’&body=’+encodeURIComponent(email.body);
+h += ‘<a href="'+mailto+'"><button class="btn bg bsm">✉ Ouvrir dans Mail</button></a>’;
+} else {
+h += ‘<button class="btn bgh bsm" onclick="opCl('+c.id+');showClubTab(\'infos\',null)">+ Ajouter email</button>’;
+}
+h += ‘<button class="btn bgh bsm" onclick="copyEmail('+c.id+')">📋 Copier</button>’;
+h += ‘</div>’;
+
+panel.innerHTML = h;
+}
+
+function copyEmail(clubId) {
+var c = find(DB.clubs, clubId);
+if (!c) return;
+var email = genEmailForClub(c);
+var text = ’OBJET: ’ + email.subject + ‘\n\n’ + email.body;
+if (navigator.clipboard) {
+navigator.clipboard.writeText(text).then(function(){ showToast(‘Email copié’); });
+} else {
+var ta = document.createElement(‘textarea’);
+ta.value = text;
+document.body.appendChild(ta);
+ta.select();
+document.execCommand(‘copy’);
+document.body.removeChild(ta);
+showToast(‘Email copié’);
+}
+}
+
+function updateCampStats(clubs) {
+var withEmail = clubs.filter(function(c){ return c.email; }).length;
+var typeA = clubs.filter(function(c){ return getMsgType(c)===‘a’; }).length;
+var typeB = clubs.filter(function(c){ return getMsgType(c)===‘b’; }).length;
+var typeC = clubs.filter(function(c){ return getMsgType(c)===‘c’; }).length;
+
+var statsEl = document.getElementById(‘camp-stats’);
+var detEl = document.getElementById(‘camp-stats-detail’);
+if (!statsEl) return;
+
+statsEl.innerHTML = ‘<span class="bdg bc2">’+withEmail+’ emails</span><span class="bdg bsp">’+clubs.length+’ clubs</span>’;
+
+detEl.innerHTML = ‘<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">’
++ ‘<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:700;color:var(--vert)">’+typeA+’</div><div style="font-size:10px;color:var(--gris);text-transform:uppercase">Type A — Pro</div></div>’
++ ‘<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:700;color:var(--or)">’+typeB+’</div><div style="font-size:10px;color:var(--gris);text-transform:uppercase">Type B — Amateur</div></div>’
++ ‘<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:700;color:var(--bleu)">’+typeC+’</div><div style="font-size:10px;color:var(--gris);text-transform:uppercase">Type C — Institutionnel</div></div>’
++ ‘</div>’;
+}
+
+function exportCSV() {
+var clubs = getFilteredClubs();
+var selected = clubs.filter(function(c){ return CAMP_SELECTED[c.id] !== false; });
+if (!selected.length) { showToast(‘Aucun club sélectionné’); return; }
+
+var lines = [‘Nom,Sport,Ville,Niveau,Email,Tel,Contact,Type Message,Statut,Potentiel’];
+for (var i = 0; i < selected.length; i++) {
+var c = selected[i];
+var row = [
+‘”’+(c.nom||’’)+’”’,
+‘”’+(c.sport||’’)+’”’,
+‘”’+(c.ville||’’)+’”’,
+‘”’+(c.niveau||’’)+’”’,
+‘”’+(c.email||’’)+’”’,
+‘”’+(c.tel||’’)+’”’,
+‘”’+(c.contact||’’)+’”’,
+‘”’+(c.message||’’)+’”’,
+‘”’+(c.statut||’’)+’”’,
+c.potentiel||’’
+];
+lines.push(row.join(’,’));
+}
+var csv = lines.join(’\n’);
+var blob = new Blob([’\uFEFF’+csv], {type:‘text/csv;charset=utf-8’});
+var a = document.createElement(‘a’);
+a.href = URL.createObjectURL(blob);
+a.download = ‘A4P_Prospects_’ + new Date().toISOString().split(‘T’)[0] + ‘.csv’;
+a.click();
+showToast(selected.length + ’ clubs exportés en CSV’);
+}
+
+</script>
 </body>
 </html>
