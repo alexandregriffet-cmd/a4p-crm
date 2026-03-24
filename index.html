@@ -1,257 +1,413 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A4P CRM PREMIUM</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-body{
-  margin:0;
-  font-family:'Outfit',sans-serif;
-  background:#0b1622;
-  color:white;
-}
-
-.sidebar{
-  width:240px;
-  background:#101f2f;
-  height:100vh;
-  position:fixed;
-  padding:20px;
-}
-
-.sidebar h2{
-  color:#d4af37;
-}
-
-.nav{
-  margin-top:20px;
-}
-
-.nav div{
-  padding:10px;
-  cursor:pointer;
-  color:#9fb3c8;
-}
-
-.nav div:hover{
-  background:#1c2e42;
-  color:white;
-}
-
-.main{
-  margin-left:240px;
-  padding:20px;
-}
-
-.card{
-  background:#122436;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:15px;
-}
-
-input, select, textarea{
-  width:100%;
-  padding:10px;
-  margin-top:5px;
-  margin-bottom:10px;
-  border:none;
-  border-radius:8px;
-  background:#1c2e42;
-  color:white;
-}
-
-button{
-  background:#d4af37;
-  border:none;
-  padding:10px 15px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-button:hover{
-  opacity:0.8;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.tag{
-  padding:5px 10px;
-  border-radius:8px;
-  font-size:12px;
-}
-
-.hot{background:#e74c3c;}
-.warm{background:#f39c12;}
-.cold{background:#3498db;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A4P CRM Ultra Premium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --marine:#09151F;--m2:#0f1e2d;--m3:#162638;--m4:#1d3247;--or:#C8A45A;--or2:#E2C07A;
+      --orD:rgba(200,164,90,.12);--orB:rgba(200,164,90,.22);--blanc:#F2F4F8;--gris:#8A9CB5;
+      --grisD:rgba(138,156,181,.10);--vert:#3DD68C;--vertD:rgba(61,214,140,.12);--ora:#F5A623;
+      --oraD:rgba(245,166,35,.12);--rouge:#F05252;--rougeD:rgba(240,82,82,.12);--bleu:#4EA8DE;
+      --bleuD:rgba(78,168,222,.12);--violet:#A78BFA;--violetD:rgba(167,139,250,.12);--radius:14px;
+      --sidebar:258px;--shadow:0 24px 60px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{font-family:'Outfit',sans-serif;background:var(--marine);color:var(--blanc);display:flex;min-height:100vh;overflow:hidden}
+    ::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:rgba(200,164,90,.18);border-radius:10px}
+    .sidebar{width:var(--sidebar);background:var(--m2);border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;flex-shrink:0}
+    .logo{padding:22px 18px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
+    .logo-line{display:flex;align-items:center;gap:10px;margin-bottom:4px}.logo-badge{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--or),var(--or2));color:var(--marine);font-family:'Cormorant Garamond',serif;font-weight:700;font-size:16px}
+    .logo-name{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:700;color:var(--or)}.logo-sub{color:var(--gris);font-size:10px;text-transform:uppercase;letter-spacing:2px}
+    .nav{flex:1;overflow:auto;padding:10px 0}.nav-label{padding:10px 16px 4px;color:rgba(138,156,181,.45);font-size:9px;text-transform:uppercase;letter-spacing:2px;font-weight:700}
+    .nav-item{margin:2px 8px;padding:10px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;color:var(--gris);transition:.18s;user-select:none;font-size:13px}
+    .nav-item:hover{background:var(--grisD);color:var(--blanc)}.nav-item.active{background:var(--orD);color:var(--or);font-weight:600}
+    .nav-badge{margin-left:auto;padding:2px 8px;border-radius:999px;background:var(--orD);color:var(--or);font-size:10px;font-family:'DM Mono',monospace}
+    .sidebar-actions{padding:14px 16px;border-top:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;gap:8px}.quote{padding:12px 16px 16px;border-top:1px solid rgba(255,255,255,.05);color:rgba(138,156,181,.55);font-size:11px;font-family:'Cormorant Garamond',serif;font-style:italic;line-height:1.5}
+    .main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}.topbar{height:60px;background:var(--m2);border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:12px;flex-shrink:0}
+    .topbar-left{min-width:0;display:flex;align-items:center;gap:12px}.breadcrumb{color:var(--gris);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .topbar-right{display:flex;align-items:center;gap:10px;flex-shrink:0}.search{width:270px;border-radius:10px;background:var(--grisD);border:1px solid rgba(255,255,255,.08);color:var(--blanc);font-size:12px;padding:9px 12px;outline:none}.search::placeholder{color:var(--gris)}
+    .content{flex:1;overflow:auto;padding:20px}.view{display:none}.view.active{display:block}
+    .hero{background:linear-gradient(135deg,var(--m3),var(--m4));border:1px solid rgba(255,255,255,.05);border-radius:18px;padding:24px;margin-bottom:18px}.hero-title{font-family:'Cormorant Garamond',serif;font-size:31px;font-weight:700;color:var(--or);margin-bottom:4px}.hero-sub{font-size:13px;color:var(--gris)}.save-indicator{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--vert)}.save-dot{width:8px;height:8px;border-radius:50%;background:var(--vert)}
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.kpi{background:var(--m2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:16px;position:relative;overflow:hidden;cursor:pointer}.kpi::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--kpi-color,var(--or))}.kpi-number{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;line-height:1;margin-bottom:4px}.kpi-label{color:var(--gris);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+    .card{background:var(--m2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);overflow:hidden}.card-header{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;gap:12px}.card-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--blanc)}.card-body{padding:16px 18px}
+    .list{display:flex;flex-direction:column;gap:10px}.item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:12px 14px}.item-line{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}.item-title{font-size:14px;font-weight:600;color:var(--blanc)}.item-sub{font-size:11px;color:var(--gris);margin-top:4px}.item-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap}.badge-gold{background:var(--orD);color:var(--or)}.badge-green{background:var(--vertD);color:var(--vert)}.badge-orange{background:var(--oraD);color:var(--ora)}.badge-blue{background:var(--bleuD);color:var(--bleu)}.badge-red{background:var(--rougeD);color:var(--rouge)}.badge-gray{background:var(--grisD);color:var(--gris)}.badge-violet{background:var(--violetD);color:var(--violet)}
+    .table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px;vertical-align:top}.table th{color:var(--gris);text-transform:uppercase;letter-spacing:1.3px;font-size:10px;font-weight:700}
+    .money{color:var(--vert);font-family:'DM Mono',monospace;font-weight:600}.muted{color:var(--gris)}.strong{font-weight:700}
+    .btn{border:none;border-radius:10px;padding:9px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:.18s;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;white-space:nowrap}.btn:hover{transform:translateY(-1px)}.btn-primary{background:linear-gradient(135deg,var(--or),var(--or2));color:var(--marine)}.btn-secondary{background:var(--grisD);color:var(--gris);border:1px solid rgba(255,255,255,.08)}.btn-secondary:hover{color:var(--blanc)}.btn-green{background:var(--vertD);color:var(--vert);border:1px solid rgba(61,214,140,.2)}.btn-red{background:var(--rougeD);color:var(--rouge);border:1px solid rgba(240,82,82,.2)}.btn-blue{background:var(--bleuD);color:var(--bleu);border:1px solid rgba(78,168,222,.2)}.btn-small{padding:6px 10px;font-size:11px;border-radius:8px}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{border:none;background:rgba(255,255,255,.04);color:var(--gris);padding:8px 12px;border-radius:999px;font-size:11px;cursor:pointer;font-weight:600}.tab.active{background:var(--orD);color:var(--or)}
+    .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}.form-label{font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1.2px;font-weight:700}.input,.select,.textarea{width:100%;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--blanc);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 12px;outline:none}.textarea{min-height:90px;resize:vertical;line-height:1.5}.select option{background:#0f1e2d}
+    .empty{text-align:center;padding:30px 12px;color:var(--gris);font-size:13px}.metric-list{display:flex;flex-direction:column;gap:8px}.metric{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:999;padding:20px}.modal.open{display:flex}.modal-box{width:min(980px,100%);max-height:92vh;overflow:auto;background:var(--m2);border:1px solid var(--orB);border-radius:18px;box-shadow:var(--shadow)}.modal-header{position:sticky;top:0;background:var(--m2);padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;z-index:2}.modal-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--or)}.modal-body{padding:18px}.modal-footer{position:sticky;bottom:0;background:var(--m2);padding:14px 18px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:flex-end;gap:8px}.close-btn{width:30px;height:30px;border:none;border-radius:8px;background:var(--grisD);color:var(--gris);cursor:pointer;font-size:15px}
+    .toast{position:fixed;right:18px;bottom:18px;z-index:1200;background:linear-gradient(135deg,var(--or),var(--or2));color:var(--marine);font-size:12px;font-weight:700;padding:12px 16px;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.35);transform:translateY(80px);opacity:0;transition:.25s;pointer-events:none}.toast.show{transform:translateY(0);opacity:1}
+    .score-pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-size:10px;font-weight:700}.score-hot{background:var(--rougeD);color:var(--rouge)}.score-warm{background:var(--oraD);color:var(--ora)}.score-cold{background:var(--bleuD);color:var(--bleu)}
+    .section-title{font-size:11px;color:var(--or);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin:8px 0 12px}
+    @media (max-width:1100px){.kpi-grid,.grid-3{grid-template-columns:1fr 1fr}.form-grid-3{grid-template-columns:1fr 1fr}}
+    @media (max-width:980px){body{flex-direction:column;overflow:auto}.sidebar{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,.05)}.nav{display:flex;flex-wrap:wrap;gap:4px;padding:10px}.nav-label{display:none}.nav-item{margin:0}.quote{display:none}.topbar{flex-wrap:wrap;height:auto;padding:12px}.search{width:100%}.kpi-grid,.grid-2,.grid-3,.form-grid-2,.form-grid-3{grid-template-columns:1fr}.content{padding:14px}}
+  </style>
 </head>
-
 <body>
-
-<div class="sidebar">
-  <h2>A4P CRM</h2>
-  <div class="nav">
-    <div onclick="showView('dashboard')">Dashboard</div>
-    <div onclick="showView('clubs')">Clubs</div>
-    <div onclick="showView('prospection')">Prospection</div>
-  </div>
-</div>
-
-<div class="main">
-
-<!-- DASHBOARD -->
-<div id="dashboard" class="view">
-  <h1>Dashboard</h1>
-  <div class="grid">
-    <div class="card"><h2 id="totalClubs">0</h2><p>Clubs</p></div>
-    <div class="card"><h2 id="hotLeads">0</h2><p>🔥 Chaud</p></div>
-    <div class="card"><h2 id="ca">0€</h2><p>CA potentiel</p></div>
-  </div>
-</div>
-
-<!-- CLUB -->
-<div id="clubs" class="view" style="display:none;">
-  <h1>Ajout club</h1>
-
-  <div class="card">
-    <input id="name" placeholder="Nom du club">
-    <input id="sport" placeholder="Sport">
-    <input id="contact" placeholder="Contact">
-    <input id="budget" placeholder="Budget estimé (€)">
-    
-    <select id="niveau">
-      <option>Départemental</option>
-      <option>Régional</option>
-      <option>National</option>
-      <option>Élite</option>
-    </select>
-
-    <select id="besoin">
-      <option>Découverte</option>
-      <option>Atelier</option>
-      <option>Suivi</option>
-    </select>
-
-    <textarea id="notes" placeholder="Notes..."></textarea>
-
-    <button onclick="addClub()">Ajouter</button>
-  </div>
-
-  <div id="clubList"></div>
-</div>
-
-<!-- PROSPECTION -->
-<div id="prospection" class="view" style="display:none;">
-  <h1>Prospection intelligente</h1>
-
-  <div class="card">
-    <button onclick="exportCSV()">Exporter CSV</button>
-  </div>
-
-  <div id="prospectList"></div>
-</div>
-
-</div>
-
-<script>
-let clubs = JSON.parse(localStorage.getItem("clubs") || "[]")
-
-function save(){
-  localStorage.setItem("clubs", JSON.stringify(clubs))
-  render()
-}
-
-function showView(view){
-  document.querySelectorAll('.view').forEach(v=>v.style.display='none')
-  document.getElementById(view).style.display='block'
-}
-
-function addClub(){
-  let club = {
-    name:document.getElementById("name").value,
-    sport:document.getElementById("sport").value,
-    contact:document.getElementById("contact").value,
-    budget:parseInt(document.getElementById("budget").value)||0,
-    niveau:document.getElementById("niveau").value,
-    besoin:document.getElementById("besoin").value,
-    notes:document.getElementById("notes").value
-  }
-
-  clubs.push(club)
-  save()
-}
-
-function score(club){
-  let s=0
-  if(club.budget>5000) s+=3
-  if(club.niveau==="National"||club.niveau==="Élite") s+=3
-  if(club.besoin==="Suivi") s+=4
-  return s
-}
-
-function render(){
-  document.getElementById("totalClubs").innerText=clubs.length
-
-  let hot=0
-  let ca=0
-
-  let html=""
-  clubs.forEach((c,i)=>{
-    let s=score(c)
-
-    let tag="cold"
-    if(s>=7){tag="hot";hot++;ca+=c.budget}
-    else if(s>=4) tag="warm"
-
-    html+=`
-    <div class="card">
-      <b>${c.name}</b> (${c.sport})<br>
-      ${c.niveau} - ${c.besoin}<br>
-      ${c.budget}€<br>
-      <span class="tag ${tag}">${tag}</span>
-      <br><br>
-      <button onclick="deleteClub(${i})">Supprimer</button>
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-line"><div class="logo-badge">A4P</div><div class="logo-name">A4P</div></div>
+      <div class="logo-sub">CRM Ultra Premium</div>
     </div>
-    `
-  })
+    <div class="nav">
+      <div class="nav-label">Pilotage</div>
+      <div class="nav-item active" data-view="dashboard" onclick="goView('dashboard')">ð  Dashboard</div>
+      <div class="nav-label">Commercial</div>
+      <div class="nav-item" data-view="clubs" onclick="goView('clubs')">ð Clubs <span class="nav-badge" id="nav-clubs-count">0</span></div>
+      <div class="nav-item" data-view="pipeline" onclick="goView('pipeline')">ð¯ Pipeline</div>
+      <div class="nav-item" data-view="offres" onclick="goView('offres')">ð Offres <span class="nav-badge" id="nav-offres-count">0</span></div>
+      <div class="nav-item" data-view="prospection" onclick="goView('prospection')">ð£ Prospection</div>
+      <div class="nav-item" data-view="emailing" onclick="goView('emailing')">âï¸ Emailing</div>
+      <div class="nav-item" data-view="linkedin" onclick="goView('linkedin')">ð¼ LinkedIn</div>
+      <div class="nav-label">Terrain</div>
+      <div class="nav-item" data-view="joueurs" onclick="goView('joueurs')">ð§  Joueurs <span class="nav-badge" id="nav-joueurs-count">0</span></div>
+      <div class="nav-label">Analyse</div>
+      <div class="nav-item" data-view="reporting" onclick="goView('reporting')">ð Reporting</div>
+    </div>
+    <div class="sidebar-actions">
+      <button class="btn btn-green" onclick="exportData()">Exporter JSON</button>
+      <label class="btn btn-secondary" style="cursor:pointer">Importer JSON<input type="file" accept=".json" onchange="importData(event)" style="display:none"></label>
+      <button class="btn btn-blue" onclick="exportProspectsCSV()">Export CSV</button>
+    </div>
+    <div class="quote">Â« Une architecture mentale. Pas une bÃ©quille Ã©motionnelle. Â»</div>
+  </aside>
 
-  document.getElementById("clubList").innerHTML=html
-  document.getElementById("hotLeads").innerText=hot
-  document.getElementById("ca").innerText=ca+"€"
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left"><div class="breadcrumb" id="breadcrumb">Dashboard</div></div>
+      <div class="topbar-right">
+        <input class="search" id="global-search" type="text" placeholder="Rechercher un club, un contact, une offre..." oninput="handleSearch(this.value)">
+        <button class="btn btn-primary" id="top-add-btn" onclick="openAddModal()">+ Ajouter</button>
+      </div>
+    </div>
 
-  document.getElementById("prospectList").innerHTML=html
-}
+    <div class="content">
+      <section class="view active" id="view-dashboard">
+        <div class="hero">
+          <div class="hero-title">Bonjour, Alexandre</div>
+          <div class="hero-sub">Outil commercial A4P â dÃ©couverte club, qualification, closing, suivi et pilotage</div>
+          <div class="save-indicator"><div class="save-dot"></div><span id="save-status">DonnÃ©es chargÃ©es</span></div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi" style="--kpi-color:var(--or)" onclick="goView('clubs')"><div class="kpi-number" id="kpi-clubs">0</div><div class="kpi-label">Clubs</div></div>
+          <div class="kpi" style="--kpi-color:var(--vert)" onclick="goView('offres')"><div class="kpi-number" id="kpi-ca">0â¬</div><div class="kpi-label">CA potentiel</div></div>
+          <div class="kpi" style="--kpi-color:var(--rouge)" onclick="goView('pipeline')"><div class="kpi-number" id="kpi-hot">0</div><div class="kpi-label">Prioritaires</div></div>
+          <div class="kpi" style="--kpi-color:var(--bleu)" onclick="goView('reporting')"><div class="kpi-number" id="kpi-conversion">0%</div><div class="kpi-label">Conversion</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><div class="card-header"><div class="card-title">Pipeline commercial</div></div><div class="card-body"><div id="dashboard-pipeline" class="metric-list"></div></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">RÃ©partition CA par offre</div></div><div class="card-body"><div id="dashboard-ca-breakdown" class="metric-list"></div></div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><div class="card-header"><div class="card-title">Clubs prioritaires</div></div><div class="card-body"><div id="dashboard-priority-clubs" class="list"></div></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Relances du moment</div></div><div class="card-body"><div id="dashboard-relances" class="list"></div></div></div>
+        </div>
+      </section>
 
-function deleteClub(i){
-  clubs.splice(i,1)
-  save()
-}
+      <section class="view" id="view-clubs">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Clubs & dÃ©couverte commerciale</div>
+            <div class="tabs">
+              <button class="tab active" onclick="setClubFilter('all',this)">Tous</button>
+              <button class="tab" onclick="setClubFilter('ð´ Froid',this)">Froid</button>
+              <button class="tab" onclick="setClubFilter('ðµ Ã contacter',this)">Ã contacter</button>
+              <button class="tab" onclick="setClubFilter('ð¡ En cours',this)">En cours</button>
+              <button class="tab" onclick="setClubFilter('ð¢ Client',this)">Clients</button>
+            </div>
+          </div>
+          <div class="card-body" id="clubs-list"></div>
+        </div>
+      </section>
 
-function exportCSV(){
-  let csv="Nom,Sport,Budget\n"
-  clubs.forEach(c=>{
-    csv+=`${c.name},${c.sport},${c.budget}\n`
-  })
+      <section class="view" id="view-pipeline">
+        <div class="grid-3">
+          <div class="card"><div class="card-header"><div class="card-title">Froid</div></div><div class="card-body"><div id="pipeline-froid" class="list"></div></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">En cours</div></div><div class="card-body"><div id="pipeline-encours" class="list"></div></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Clients</div></div><div class="card-body"><div id="pipeline-clients" class="list"></div></div></div>
+        </div>
+      </section>
 
-  let blob=new Blob([csv])
-  let a=document.createElement("a")
-  a.href=URL.createObjectURL(blob)
-  a.download="prospects.csv"
-  a.click()
-}
+      <section class="view" id="view-offres">
+        <div class="kpi-grid">
+          <div class="kpi" style="--kpi-color:var(--vert)"><div class="kpi-number" id="offres-kpi-total-ca">0â¬</div><div class="kpi-label">CA total</div></div>
+          <div class="kpi" style="--kpi-color:var(--or)"><div class="kpi-number" id="offres-kpi-total">0</div><div class="kpi-label">Offres</div></div>
+          <div class="kpi" style="--kpi-color:var(--ora)"><div class="kpi-number" id="offres-kpi-open">0â¬</div><div class="kpi-label">En cours</div></div>
+          <div class="kpi" style="--kpi-color:var(--bleu)"><div class="kpi-number" id="offres-kpi-renew">0</div><div class="kpi-label">Renouvelables</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Offres & closing</div>
+            <div class="tabs">
+              <button class="tab active" onclick="setOffreFilter('all',this)">Toutes</button>
+              <button class="tab" onclick="setOffreFilter('En cours',this)">En cours</button>
+              <button class="tab" onclick="setOffreFilter('SignÃ©e',this)">SignÃ©es</button>
+              <button class="tab" onclick="setOffreFilter('Renouvelable',this)">Renouvelables</button>
+            </div>
+          </div>
+          <div class="card-body" id="offres-list"></div>
+        </div>
+      </section>
 
-render()
-</script>
+      <section class="view" id="view-prospection">
+        <div class="kpi-grid">
+          <div class="kpi" style="--kpi-color:var(--rouge)"><div class="kpi-number" id="prospection-kpi-froid">0</div><div class="kpi-label">Froid</div></div>
+          <div class="kpi" style="--kpi-color:var(--ora)"><div class="kpi-number" id="prospection-kpi-encours">0</div><div class="kpi-label">En cours</div></div>
+          <div class="kpi" style="--kpi-color:var(--vert)"><div class="kpi-number" id="prospection-kpi-clients">0</div><div class="kpi-label">Clients</div></div>
+          <div class="kpi" style="--kpi-color:var(--or)"><div class="kpi-number" id="prospection-kpi-conversion">0%</div><div class="kpi-label">Conversion</div></div>
+        </div>
+        <div class="card"><div class="card-header"><div class="card-title">Priorisation commerciale</div></div><div class="card-body" id="prospection-list"></div></div>
+      </section>
 
+      <section class="view" id="view-emailing">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Campagne emailing</div></div>
+            <div class="card-body">
+              <div class="form-grid-3">
+                <div class="form-group"><label class="form-label">Sport</label><select class="select" id="emailing-filter-sport" onchange="renderEmailing()"><option value="all">Tous</option><option>Rugby</option><option>Basket</option><option>Handball</option><option>Natation</option><option>Judo</option><option>Volleyball</option><option>Tennis</option><option>Football</option></select></div>
+                <div class="form-group"><label class="form-label">Niveau</label><select class="select" id="emailing-filter-niveau" onchange="renderEmailing()"><option value="all">Tous</option><option>DÃ©partemental</option><option>RÃ©gional</option><option>National</option><option>Ãlite</option><option>Institutionnel</option></select></div>
+                <div class="form-group"><label class="form-label">Offre ciblÃ©e</label><select class="select" id="emailing-filter-offre" onchange="renderEmailing()"><option value="all">Toutes</option><option>ConfÃ©rence</option><option>Atelier</option><option>Suivi Saison</option><option>Pack DÃ©couverte</option></select></div>
+              </div>
+              <div class="item-actions" style="margin-bottom:14px"><button class="btn btn-primary btn-small" onclick="renderEmailing()">GÃ©nÃ©rer</button><button class="btn btn-secondary btn-small" onclick="exportProspectsCSV()">Export CSV</button></div>
+              <div id="emailing-list" class="list"></div>
+            </div>
+          </div>
+          <div class="card"><div class="card-header"><div class="card-title">AperÃ§u email</div></div><div class="card-body" id="emailing-preview"><div class="empty">Clique sur un club pour voir lâemail gÃ©nÃ©rÃ©.</div></div></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-linkedin">
+        <div class="grid-3">
+          <div class="card"><div class="card-header"><div class="card-title">Template Pro / National</div></div><div class="card-body"><div class="form-group"><label class="form-label">Objet</label><input class="input" id="li-a-obj"></div><div class="form-group"><label class="form-label">Message</label><textarea class="textarea" id="li-a-msg"></textarea></div></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Template Amateur / RÃ©gional</div></div><div class="card-body"><div class="form-group"><label class="form-label">Objet</label><input class="input" id="li-b-obj"></div><div class="form-group"><label class="form-label">Message</label><textarea class="textarea" id="li-b-msg"></textarea></div></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Template Institutionnel</div></div><div class="card-body"><div class="form-group"><label class="form-label">Objet</label><input class="input" id="li-c-obj"></div><div class="form-group"><label class="form-label">Message</label><textarea class="textarea" id="li-c-msg"></textarea></div></div></div>
+        </div>
+        <div class="card"><div class="card-header"><div class="card-title">Actions</div></div><div class="card-body"><div class="item-actions"><button class="btn btn-primary" onclick="saveLinkedin()">Enregistrer les templates</button></div></div></div>
+      </section>
+
+      <section class="view" id="view-joueurs">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Joueurs suivis</div>
+            <div class="tabs">
+              <button class="tab active" onclick="setJoueurFilter('all',this)">Tous</button>
+              <button class="tab" onclick="setJoueurFilter('LuciditÃ©',this)">LuciditÃ©</button>
+              <button class="tab" onclick="setJoueurFilter('RÃ©gulation',this)">RÃ©gulation</button>
+              <button class="tab" onclick="setJoueurFilter('Performance',this)">Performance</button>
+              <button class="tab" onclick="setJoueurFilter('Autonomie',this)">Autonomie</button>
+            </div>
+          </div>
+          <div class="card-body" id="joueurs-list"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-reporting">
+        <div class="grid-2">
+          <div class="card"><div class="card-header"><div class="card-title">RÃ©partition besoins</div></div><div class="card-body"><div id="reporting-besoins" class="metric-list"></div></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">RÃ©partition niveaux</div></div><div class="card-body"><div id="reporting-niveaux" class="metric-list"></div></div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><div class="card-header"><div class="card-title">Budget estimÃ© total</div></div><div class="card-body"><div class="kpi-number" id="reporting-budget-total">0â¬</div><div class="kpi-label">Somme budgets clubs</div></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Valeur pipeline pondÃ©rÃ©e</div></div><div class="card-body"><div class="kpi-number" id="reporting-weighted-pipeline">0â¬</div><div class="kpi-label">CA pondÃ©rÃ© par probabilitÃ©</div></div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal" id="modal-club">
+    <div class="modal-box">
+      <div class="modal-header"><div class="modal-title" id="club-modal-title">Nouveau club</div><button class="close-btn" onclick="closeModal('modal-club')">Ã</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="club-id">
+        <div class="section-title">IdentitÃ©</div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Nom *</label><input class="input" id="club-nom"></div>
+          <div class="form-group"><label class="form-label">Sport</label><select class="select" id="club-sport"><option value="">--</option><option>Rugby</option><option>Basket</option><option>Natation</option><option>Tennis</option><option>Football</option><option>Handball</option><option>Volleyball</option><option>Judo</option><option>Autre</option></select></div>
+          <div class="form-group"><label class="form-label">Ville</label><input class="input" id="club-ville"></div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Niveau</label><select class="select" id="club-niveau"><option value="">--</option><option>DÃ©partemental</option><option>RÃ©gional</option><option>National</option><option>Ãlite</option><option>Institutionnel</option></select></div>
+          <div class="form-group"><label class="form-label">Nb licenciÃ©s</label><input class="input" type="number" id="club-licencies"></div>
+          <div class="form-group"><label class="form-label">Nb Ã©quipes</label><input class="input" type="number" id="club-equipes"></div>
+        </div>
+        <div class="section-title">DÃ©cideur & contact</div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Nom contact</label><input class="input" id="club-contact"></div>
+          <div class="form-group"><label class="form-label">Fonction</label><input class="input" id="club-role"></div>
+          <div class="form-group"><label class="form-label">TÃ©lÃ©phone</label><input class="input" id="club-tel"></div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Email</label><input class="input" id="club-email"></div>
+          <div class="form-group"><label class="form-label">Site</label><input class="input" id="club-site"></div>
+          <div class="form-group"><label class="form-label">Source</label><select class="select" id="club-source"><option value="">--</option><option>RÃ©seau</option><option>Recherche</option><option>Recommandation</option><option>LinkedIn</option><option>StratÃ©gique</option></select></div>
+        </div>
+        <div class="section-title">Qualification commerciale</div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Statut</label><select class="select" id="club-statut"><option>ð´ Froid</option><option>ðµ Ã contacter</option><option>ð¡ En cours</option><option>ð¢ Client</option></select></div>
+          <div class="form-group"><label class="form-label">Potentiel</label><select class="select" id="club-potentiel"><option value="1">1 - Faible</option><option value="2">2 - Moyen</option><option value="3">3 - Bon</option><option value="4" selected>4 - Fort</option><option value="5">5 - Prioritaire</option></select></div>
+          <div class="form-group"><label class="form-label">ProbabilitÃ© de signature</label><select class="select" id="club-proba"><option value="10">10%</option><option value="25">25%</option><option value="40">40%</option><option value="60">60%</option><option value="80">80%</option><option value="100">100%</option></select></div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Budget estimÃ© (â¬)</label><input class="input" type="number" id="club-budget"></div>
+          <div class="form-group"><label class="form-label">Urgence</label><select class="select" id="club-urgence"><option>Moyenne</option><option>Basse</option><option>Haute</option></select></div>
+          <div class="form-group"><label class="form-label">ÃchÃ©ance</label><input class="input" type="date" id="club-echeance"></div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Besoin principal</label><select class="select" id="club-besoin"><option>DÃ©couverte</option><option>ConfÃ©rence</option><option>Atelier</option><option>Mini cycle</option><option>Suivi Saison</option><option>Accompagnement individuel</option></select></div>
+          <div class="form-group"><label class="form-label">Offre dâintÃ©rÃªt</label><select class="select" id="club-offre"><option>Pack DÃ©couverte</option><option>ConfÃ©rence Signature</option><option>Atelier ThÃ©matique</option><option>Suivi Saison</option><option>Pack Performance</option><option>Sur mesure</option></select></div>
+          <div class="form-group"><label class="form-label">Prochaine relance</label><input class="input" type="date" id="club-relance"></div>
+        </div>
+        <div class="section-title">DÃ©couverte du club et de ses besoins</div>
+        <div class="form-grid-2">
+          <div class="form-group"><label class="form-label">ProblÃ©matiques observÃ©es</label><textarea class="textarea" id="club-problematiques"></textarea></div>
+          <div class="form-group"><label class="form-label">Objectifs du club</label><textarea class="textarea" id="club-objectifs"></textarea></div>
+          <div class="form-group"><label class="form-label">Freins / objections</label><textarea class="textarea" id="club-freins"></textarea></div>
+          <div class="form-group"><label class="form-label">Ce qui ferait dire oui</label><textarea class="textarea" id="club-leviers"></textarea></div>
+        </div>
+        <div class="form-group"><label class="form-label">Prochaine action</label><input class="input" id="club-action"></div>
+        <div class="form-group"><label class="form-label">Compte-rendu / notes</label><textarea class="textarea" id="club-notes"></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-club')">Annuler</button><button class="btn btn-primary" onclick="saveClub()">Enregistrer</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-offre">
+    <div class="modal-box">
+      <div class="modal-header"><div class="modal-title" id="offre-modal-title">Nouvelle offre</div><button class="close-btn" onclick="closeModal('modal-offre')">Ã</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="offre-id">
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Club *</label><select class="select" id="offre-club"></select></div>
+          <div class="form-group"><label class="form-label">Format *</label><select class="select" id="offre-type"><option value="">Choisir...</option><option>ConfÃ©rence Signature</option><option>Atelier ThÃ©matique</option><option>Mini Cycle</option><option>Pack DÃ©couverte</option><option>Pack Engagement</option><option>Pack Performance</option><option>Suivi Saison</option><option>Programme Saison Complet</option><option>Accompagnement individuel</option><option>Sur mesure</option></select></div>
+          <div class="form-group"><label class="form-label">Montant â¬ *</label><input class="input" type="number" id="offre-montant"></div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Statut</label><select class="select" id="offre-statut"><option>En cours</option><option>SignÃ©e</option><option>Renouvelable</option><option>Perdue</option></select></div>
+          <div class="form-group"><label class="form-label">Date</label><input class="input" type="date" id="offre-date"></div>
+          <div class="form-group"><label class="form-label">Nb Ã©quipes concernÃ©es</label><input class="input" type="number" id="offre-equipes"></div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group"><label class="form-label">Objectif</label><textarea class="textarea" id="offre-objectif"></textarea></div>
+          <div class="form-group"><label class="form-label">Notes closing</label><textarea class="textarea" id="offre-notes"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-offre')">Annuler</button><button class="btn btn-primary" onclick="saveOffre()">Enregistrer</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-joueur">
+    <div class="modal-box">
+      <div class="modal-header"><div class="modal-title" id="joueur-modal-title">Nouveau joueur</div><button class="close-btn" onclick="closeModal('modal-joueur')">Ã</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="joueur-id">
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Nom *</label><input class="input" id="joueur-nom"></div>
+          <div class="form-group"><label class="form-label">Club</label><select class="select" id="joueur-club"></select></div>
+          <div class="form-group"><label class="form-label">Poste</label><input class="input" id="joueur-poste"></div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group"><label class="form-label">Ãge</label><input class="input" type="number" id="joueur-age"></div>
+          <div class="form-group"><label class="form-label">Phase A4P</label><select class="select" id="joueur-phase"><option>LuciditÃ©</option><option>RÃ©gulation</option><option>Performance</option><option>Autonomie</option></select></div>
+          <div class="form-group"><label class="form-label">Score /10</label><input class="input" type="number" min="0" max="10" id="joueur-score"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Axes de travail</label><input class="input" id="joueur-axes"></div>
+        <div class="form-group"><label class="form-label">Notes</label><textarea class="textarea" id="joueur-notes"></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-joueur')">Annuler</button><button class="btn btn-primary" onclick="saveJoueur()">Enregistrer</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY='a4p_crm_ultra_premium_v1';
+    const LI_KEY='a4p_crm_ultra_li_templates_v1';
+    const STATE={view:'dashboard',clubFilter:'all',offreFilter:'all',joueurFilter:'all',search:'',editingClubId:null,editingOffreId:null,editingJoueurId:null};
+    const defaultLi={a:{obj:'Performance mentale - accompagnement A4P pour votre club',msg:'Bonjour [Prenom],\n\nJe me permets de vous contacter car jâaccompagne des clubs de niveau national / Ã©lite dans la structuration de la performance mentale.\n\nLa mÃ©thode A4P aide Ã  dÃ©velopper des joueurs plus stables sous pression et des environnements plus performants.\n\nDisponible pour un Ã©change de 20 minutes ?\n\nAlexandre Griffet\nAcadÃ©mie de Performances A4P'},b:{obj:'PrÃ©paration mentale des jeunes sportifs - mÃ©thode A4P',msg:'Bonjour [Prenom],\n\nJâaccompagne des clubs dans la prÃ©paration mentale des jeunes 12-25 ans.\n\nQuand les joueurs ont le potentiel mais perdent leurs moyens en compÃ©tition, il est souvent utile de structurer le mental et lâenvironnement.\n\nSeriez-vous ouvert Ã  un Ã©change ?\n\nAlexandre Griffet\nAcadÃ©mie de Performances A4P'},c:{obj:'Partenariat performance mentale - AcadÃ©mie A4P',msg:'Bonjour [Prenom],\n\nJe vous contacte en qualitÃ© de fondateur de lâAcadÃ©mie de Performances A4P, spÃ©cialisÃ©e dans la performance mentale des jeunes sportifs.\n\nJe souhaiterais explorer un partenariat pour accompagner les clubs de votre structure.\n\nDisponible pour un Ã©change ?\n\nAlexandre Griffet\nAcadÃ©mie de Performances A4P'}};
+    let LI=JSON.parse(localStorage.getItem(LI_KEY)||'null')||structuredClone(defaultLi);
+    let DB={_id:1000,clubs:[{id:1,nom:'Racing 92',sport:'Rugby',ville:'Nanterre (92)',niveau:'Ãlite',licencies:850,equipes:22,contact:'Directeur sportif',role:'Directeur sportif',tel:'',email:'',site:'',source:'RÃ©seau',statut:'ð¡ En cours',potentiel:5,proba:60,budget:12000,urgence:'Haute',echeance:'2026-04-10',besoin:'Suivi Saison',offre:'Pack Performance',relance:'2026-03-28',problematiques:'Gestion de la pression sur les matches clÃ©s, homogÃ©nÃ©itÃ© mentale du groupe.',objectifs:'Structurer une culture de performance et accompagner le centre de formation.',freins:'Timing, validation budget.',leviers:'DÃ©monstration de ROI, confÃ©rence pilote.',action:'Relancer aprÃ¨s prÃ©paration budget.',notes:'Club premium, trÃ¨s bon potentiel de signature.',createdAt:'2026-03-20'},{id:2,nom:'Nanterre 92',sport:'Basket',ville:'Nanterre (92)',niveau:'Ãlite',licencies:600,equipes:18,contact:'Responsable formation',role:'Responsable formation',tel:'',email:'',site:'',source:'Recherche',statut:'ðµ Ã contacter',potentiel:5,proba:40,budget:9000,urgence:'Moyenne',echeance:'2026-04-20',besoin:'ConfÃ©rence',offre:'Pack DÃ©couverte',relance:'2026-03-30',problematiques:'Jeunes Ã  fort potentiel, irrÃ©gularitÃ© Ã©motionnelle.',objectifs:'ConfÃ©rence + atelier pour le groupe formation.',freins:'PrioritÃ©s internes.',leviers:'EntrÃ©e par confÃ©rence.',action:'Premier message ciblÃ© LinkedIn.',notes:'TrÃ¨s belle cible.',createdAt:'2026-03-19'},{id:3,nom:'RC Suresnes',sport:'Rugby',ville:'Suresnes (92)',niveau:'National',licencies:420,equipes:14,contact:'PrÃ©sident',role:'PrÃ©sident',tel:'',email:'',site:'',source:'Recherche',statut:'ð´ Froid',potentiel:4,proba:25,budget:3500,urgence:'Moyenne',echeance:'2026-05-10',besoin:'Atelier',offre:'Atelier ThÃ©matique',relance:'2026-04-02',problematiques:'Stress compÃ©tition U18.',objectifs:'CrÃ©er une dynamique mentale sur les jeunes.',freins:'Budget modÃ©rÃ©.',leviers:'Atelier ciblÃ© et concret.',action:'Envoi email amateur.',notes:'IntÃ©ressant mais budget limitÃ©.',createdAt:'2026-03-18'}],offres:[{id:4,clubId:1,type:'Pack Performance',montant:12000,statut:'En cours',date:'2026-03-23',equipes:3,objectif:'Structurer la performance mentale sur 3 Ã©quipes.',notes:'RÃ©union budget Ã  venir.',createdAt:'2026-03-23'},{id:5,clubId:2,type:'Pack DÃ©couverte',montant:1200,statut:'En cours',date:'2026-03-22',equipes:1,objectif:'ConfÃ©rence + atelier.',notes:'Bon angle dâentrÃ©e.',createdAt:'2026-03-22'}],joueurs:[{id:6,nom:'Thomas Martin',clubId:1,poste:'3/4 centre',age:17,phase:'RÃ©gulation',score:6,axes:'Gestion du stress, stabilitÃ© Ã©motionnelle.',notes:'Profil intÃ©ressant.',createdAt:'2026-03-21'},{id:7,nom:'MaÃ«lys Dupont',clubId:2,poste:'ArriÃ¨re',age:16,phase:'Performance',score:7,axes:'Routine avant compÃ©tition.',notes:'Bonne progression.',createdAt:'2026-03-22'}]};
+
+    function uid(){DB._id=(DB._id||1000)+1;return DB._id;}
+    function structuredClone(obj){return JSON.parse(JSON.stringify(obj));}
+    function saveDB(){localStorage.setItem(STORAGE_KEY,JSON.stringify(DB));const now=new Date();const h=String(now.getHours()).padStart(2,'0');const m=String(now.getMinutes()).padStart(2,'0');document.getElementById('save-status').textContent='Sauvegarde Ã  '+h+':'+m;}
+    function loadDB(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const p=JSON.parse(raw);if(p&&typeof p==='object'){DB=p;if(!Array.isArray(DB.clubs))DB.clubs=[];if(!Array.isArray(DB.offres))DB.offres=[];if(!Array.isArray(DB.joueurs))DB.joueurs=[];if(!DB._id)DB._id=1000;}}}catch(e){console.error(e)}}
+    function saveLinkedin(){LI.a.obj=val('li-a-obj');LI.a.msg=val('li-a-msg');LI.b.obj=val('li-b-obj');LI.b.msg=val('li-b-msg');LI.c.obj=val('li-c-obj');LI.c.msg=val('li-c-msg');localStorage.setItem(LI_KEY,JSON.stringify(LI));showToast('Templates LinkedIn enregistrÃ©s');}
+    function loadLinkedinFields(){setVal('li-a-obj',LI.a.obj);setVal('li-a-msg',LI.a.msg);setVal('li-b-obj',LI.b.obj);setVal('li-b-msg',LI.b.msg);setVal('li-c-obj',LI.c.obj);setVal('li-c-msg',LI.c.msg);}
+    function val(id){return document.getElementById(id).value.trim();}function setVal(id,v){document.getElementById(id).value=v||'';}
+    function showToast(msg){const t=document.getElementById('toast');t.textContent='â '+msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+    function escapeHtml(str){return String(str||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
+    function formatMoney(n){return (Number(n)||0).toLocaleString('fr-FR')+'â¬'}
+    function getClubById(id){return DB.clubs.find(c=>c.id===id)||null}
+    function getStatusBadge(status){if(status==='ð¢ Client')return '<span class="badge badge-green">ð¢ Client</span>';if(status==='ð¡ En cours')return '<span class="badge badge-orange">ð¡ En cours</span>';if(status==='ðµ Ã contacter')return '<span class="badge badge-blue">ðµ Ã contacter</span>';return '<span class="badge badge-red">ð´ Froid</span>'}
+    function getOffreBadge(status){if(status==='SignÃ©e')return '<span class="badge badge-green">SignÃ©e</span>';if(status==='Renouvelable')return '<span class="badge badge-blue">Renouvelable</span>';if(status==='Perdue')return '<span class="badge badge-red">Perdue</span>';return '<span class="badge badge-orange">En cours</span>'}
+    function getPhaseBadge(phase){if(phase==='LuciditÃ©')return '<span class="badge badge-blue">LuciditÃ©</span>';if(phase==='RÃ©gulation')return '<span class="badge badge-orange">RÃ©gulation</span>';if(phase==='Performance')return '<span class="badge badge-green">Performance</span>';return '<span class="badge badge-gold">Autonomie</span>'}
+    function scoreClub(c){let s=0;s+=Number(c.potentiel||0)*8;s+=Math.min(Number(c.proba||0)/5,20);if((Number(c.budget)||0)>=10000)s+=18;else if((Number(c.budget)||0)>=5000)s+=10;else if((Number(c.budget)||0)>=2000)s+=5;if(c.niveau==='Ãlite')s+=18;else if(c.niveau==='National')s+=12;else if(c.niveau==='RÃ©gional')s+=7;if(c.besoin==='Suivi Saison')s+=18;else if(c.besoin==='Mini cycle')s+=10;else if(c.besoin==='Atelier'||c.besoin==='ConfÃ©rence')s+=6;if(c.urgence==='Haute')s+=10;else if(c.urgence==='Moyenne')s+=5;if(c.statut==='ð¡ En cours')s+=10;if(c.statut==='ð¢ Client')s+=15;return Math.min(100,Math.round(s));}
+    function scoreClass(score){if(score>=70)return 'score-hot';if(score>=45)return 'score-warm';return 'score-cold'}
+    function scoreLabel(score){if(score>=70)return 'ð¥ Prioritaire';if(score>=45)return 'ð  Ã travailler';return 'ðµ Froid'}
+    function totalCA(){return DB.offres.filter(o=>o.statut!=='Perdue').reduce((sum,o)=>sum+(Number(o.montant)||0),0)}
+    function conversionRate(){const signed=DB.offres.filter(o=>o.statut==='SignÃ©e'||o.statut==='Renouvelable').length;return DB.clubs.length?Math.round((signed/DB.clubs.length)*100):0}
+    function weightedPipeline(){return Math.round(DB.clubs.reduce((sum,c)=>sum+((Number(c.budget)||0)*(Number(c.proba||0)/100)),0))}
+    function matchesSearch(texts){if(!STATE.search)return true;return texts.some(t=>String(t||'').toLowerCase().includes(STATE.search))}
+    function updateNavCounts(){document.getElementById('nav-clubs-count').textContent=DB.clubs.length;document.getElementById('nav-offres-count').textContent=DB.offres.length;document.getElementById('nav-joueurs-count').textContent=DB.joueurs.length}
+    function setActiveNav(view){document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.view===view))}
+    function updateTopAddButton(){const b=document.getElementById('top-add-btn');if(STATE.view==='clubs')b.textContent='+ Club';else if(STATE.view==='offres')b.textContent='+ Offre';else if(STATE.view==='joueurs')b.textContent='+ Joueur';else b.textContent='+ Ajouter'}
+    function goView(view){STATE.view=view;document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-'+view).classList.add('active');document.getElementById('breadcrumb').textContent={dashboard:'Dashboard',clubs:'Clubs',pipeline:'Pipeline',offres:'Offres & closing',prospection:'Prospection',emailing:'Emailing',linkedin:'Templates LinkedIn',joueurs:'Joueurs',reporting:'Reporting'}[view]||view;setActiveNav(view);updateTopAddButton();render()}
+    function handleSearch(v){STATE.search=v.trim().toLowerCase();render()}
+    function openModal(id){document.getElementById(id).classList.add('open')}function closeModal(id){document.getElementById(id).classList.remove('open')}
+    function bindModalOverlayClose(){document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}))}
+    function openAddModal(){if(STATE.view==='offres'){startNewOffre();openModal('modal-offre')}else if(STATE.view==='joueurs'){startNewJoueur();openModal('modal-joueur')}else{startNewClub();openModal('modal-club')}}
+    function setClubFilter(f,btn){STATE.clubFilter=f;document.querySelectorAll('#view-clubs .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');renderClubs()}
+    function setOffreFilter(f,btn){STATE.offreFilter=f;document.querySelectorAll('#view-offres .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');renderOffres()}
+    function setJoueurFilter(f,btn){STATE.joueurFilter=f;document.querySelectorAll('#view-joueurs .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');renderJoueurs()}
+    function populateClubSelect(id){const sel=document.getElementById(id);let h='<option value="">Choisir...</option>';DB.clubs.slice().sort((a,b)=>a.nom.localeCompare(b.nom)).forEach(c=>h+=`<option value="${c.id}">${escapeHtml(c.nom)}</option>`);sel.innerHTML=h}
+
+    function startNewClub(){STATE.editingClubId=null;document.getElementById('club-modal-title').textContent='Nouveau club';['club-id','club-nom','club-ville','club-contact','club-role','club-tel','club-email','club-site','club-budget','club-licencies','club-equipes','club-echeance','club-relance','club-problematiques','club-objectifs','club-freins','club-leviers','club-action','club-notes'].forEach(id=>setVal(id,''));setVal('club-sport','');setVal('club-niveau','');setVal('club-source','');setVal('club-statut','ð´ Froid');setVal('club-potentiel','4');setVal('club-proba','25');setVal('club-urgence','Moyenne');setVal('club-besoin','DÃ©couverte');setVal('club-offre','Pack DÃ©couverte')}
+    function editClub(id){const c=getClubById(id);if(!c)return;STATE.editingClubId=id;document.getElementById('club-modal-title').textContent='Ãditer le club';setVal('club-id',id);setVal('club-nom',c.nom);setVal('club-sport',c.sport);setVal('club-ville',c.ville);setVal('club-niveau',c.niveau);setVal('club-licencies',c.licencies);setVal('club-equipes',c.equipes);setVal('club-contact',c.contact);setVal('club-role',c.role);setVal('club-tel',c.tel);setVal('club-email',c.email);setVal('club-site',c.site);setVal('club-source',c.source);setVal('club-statut',c.statut);setVal('club-potentiel',String(c.potentiel||4));setVal('club-proba',String(c.proba||25));setVal('club-budget',c.budget);setVal('club-urgence',c.urgence||'Moyenne');setVal('club-echeance',c.echeance);setVal('club-besoin',c.besoin);setVal('club-offre',c.offre);setVal('club-relance',c.relance);setVal('club-problematiques',c.problematiques);setVal('club-objectifs',c.objectifs);setVal('club-freins',c.freins);setVal('club-leviers',c.leviers);setVal('club-action',c.action);setVal('club-notes',c.notes);openModal('modal-club')}
+    function saveClub(){const nom=val('club-nom');if(!nom){alert('Le nom du club est requis.');return;}const payload={nom,sport:val('club-sport'),ville:val('club-ville'),niveau:val('club-niveau'),licencies:Number(val('club-licencies'))||0,equipes:Number(val('club-equipes'))||0,contact:val('club-contact'),role:val('club-role'),tel:val('club-tel'),email:val('club-email'),site:val('club-site'),source:val('club-source'),statut:val('club-statut'),potentiel:Number(val('club-potentiel'))||4,proba:Number(val('club-proba'))||25,budget:Number(val('club-budget'))||0,urgence:val('club-urgence'),echeance:val('club-echeance'),besoin:val('club-besoin'),offre:val('club-offre'),relance:val('club-relance'),problematiques:val('club-problematiques'),objectifs:val('club-objectifs'),freins:val('club-freins'),leviers:val('club-leviers'),action:val('club-action'),notes:val('club-notes')};if(STATE.editingClubId){const i=DB.clubs.findIndex(c=>c.id===STATE.editingClubId);DB.clubs[i]={...DB.clubs[i],...payload};showToast('Club mis Ã  jour')}else{DB.clubs.push({id:uid(),createdAt:new Date().toISOString().slice(0,10),...payload});showToast('Club enregistrÃ©')}saveDB();closeModal('modal-club');render()}
+    function deleteClub(id){if(!confirm('Supprimer ce club ?'))return;DB.clubs=DB.clubs.filter(c=>c.id!==id);DB.offres=DB.offres.filter(o=>o.clubId!==id);DB.joueurs=DB.joueurs.filter(j=>j.clubId!==id);saveDB();render();showToast('Club supprimÃ©')}
+    function quickStatus(id,status){const c=getClubById(id);if(!c)return;c.statut=status;saveDB();render()}
+
+    function startNewOffre(){STATE.editingOffreId=null;document.getElementById('offre-modal-title').textContent='Nouvelle offre';populateClubSelect('offre-club');['offre-id','offre-montant','offre-objectif','offre-notes','offre-equipes'].forEach(id=>setVal(id,''));setVal('offre-type','');setVal('offre-statut','En cours');setVal('offre-date',new Date().toISOString().slice(0,10))}
+    function editOffre(id){const o=DB.offres.find(x=>x.id===id);if(!o)return;STATE.editingOffreId=id;document.getElementById('offre-modal-title').textContent='Ãditer lâoffre';populateClubSelect('offre-club');setVal('offre-id',id);setVal('offre-club',String(o.clubId));setVal('offre-type',o.type);setVal('offre-montant',String(o.montant));setVal('offre-statut',o.statut);setVal('offre-date',o.date);setVal('offre-objectif',o.objectif);setVal('offre-notes',o.notes);setVal('offre-equipes',String(o.equipes||''));openModal('modal-offre')}
+    function saveOffre(){const clubId=Number(val('offre-club'));const type=val('offre-type');const montant=Number(val('offre-montant'))||0;if(!clubId||!type||!montant){alert('Club, format et montant sont requis.');return;}const payload={clubId,type,montant,statut:val('offre-statut'),date:val('offre-date')||new Date().toISOString().slice(0,10),equipes:Number(val('offre-equipes'))||0,objectif:val('offre-objectif'),notes:val('offre-notes')};if(STATE.editingOffreId){const i=DB.offres.findIndex(o=>o.id===STATE.editingOffreId);DB.offres[i]={...DB.offres[i],...payload};showToast('Offre mise Ã  jour')}else{DB.offres.push({id:uid(),createdAt:new Date().toISOString().slice(0,10),...payload});showToast('Offre enregistrÃ©e')}const c=getClubById(clubId);if(c&&c.statut!=='ð¢ Client'&&payload.statut==='SignÃ©e')c.statut='ð¢ Client';saveDB();closeModal('modal-offre');render()}
+    function deleteOffre(id){if(!confirm('Supprimer cette offre ?'))return;DB.offres=DB.offres.filter(o=>o.id!==id);saveDB();render();showToast('Offre supprimÃ©e')}
+
+    function startNewJoueur(){STATE.editingJoueurId=null;document.getElementById('joueur-modal-title').textContent='Nouveau joueur';populateClubSelect('joueur-club');['joueur-id','joueur-nom','joueur-poste','joueur-age','joueur-axes','joueur-notes'].forEach(id=>setVal(id,''));setVal('joueur-phase','LuciditÃ©');setVal('joueur-score','5')}
+    function editJoueur(id){const j=DB.joueurs.find(x=>x.id===id);if(!j)return;STATE.editingJoueurId=id;document.getElementById('joueur-modal-title').textContent='Ãditer le joueur';populateClubSelect('joueur-club');setVal('joueur-id',id);setVal('joueur-nom',j.nom);setVal('joueur-club',String(j.clubId||''));setVal('joueur-poste',j.poste);setVal('joueur-age',String(j.age||''));setVal('joueur-phase',j.phase);setVal('joueur-score',String(j.score||0));setVal('joueur-axes',j.axes);setVal('joueur-notes',j.notes);openModal('modal-joueur')}
+    function saveJoueur(){const nom=val('joueur-nom');if(!nom){alert('Le nom du joueur est requis.');return;}const payload={nom,clubId:Number(val('joueur-club'))||null,poste:val('joueur-poste'),age:Number(val('joueur-age'))||0,phase:val('joueur-phase'),score:Number(val('joueur-score'))||0,axes:val('joueur-axes'),notes:val('joueur-notes')};if(STATE.editingJoueurId){const i=DB.joueurs.findIndex(j=>j.id===STATE.editingJoueurId);DB.joueurs[i]={...DB.joueurs[i],...payload};showToast('Joueur mis Ã  jour')}else{DB.joueurs.push({id:uid(),createdAt:new Date().toISOString().slice(0,10),...payload});showToast('Joueur enregistrÃ©')}saveDB();closeModal('modal-joueur');render()}
+    function deleteJoueur(id){if(!confirm('Supprimer ce joueur ?'))return;DB.joueurs=DB.joueurs.filter(j=>j.id!==id);saveDB();render();showToast('Joueur supprimÃ©')}
+
+    function renderDashboard(){document.getElementById('kpi-clubs').textContent=DB.clubs.length;document.getElementById('kpi-ca').textContent=formatMoney(totalCA());const priority=DB.clubs.filter(c=>scoreClub(c)>=70).length;document.getElementById('kpi-hot').textContent=priority;document.getElementById('kpi-conversion').textContent=conversionRate()+'%';const froid=DB.clubs.filter(c=>c.statut==='ð´ Froid').length;const acont=DB.clubs.filter(c=>c.statut==='ðµ Ã contacter').length;const enc=DB.clubs.filter(c=>c.statut==='ð¡ En cours').length;const cli=DB.clubs.filter(c=>c.statut==='ð¢ Client').length;document.getElementById('dashboard-pipeline').innerHTML=`<div class="metric"><span>ð´ Froid</span><strong>${froid}</strong></div><div class="metric"><span>ðµ Ã contacter</span><strong>${acont}</strong></div><div class="metric"><span>ð¡ En cours</span><strong>${enc}</strong></div><div class="metric"><span>ð¢ Client</span><strong>${cli}</strong></div>`;const caByType={};DB.offres.filter(o=>o.statut!=='Perdue').forEach(o=>caByType[o.type]=(caByType[o.type]||0)+Number(o.montant||0));const caHtml=Object.keys(caByType).length?Object.entries(caByType).sort((a,b)=>b[1]-a[1]).map(([type,amount])=>`<div class="metric"><span>${escapeHtml(type)}</span><strong class="money">${formatMoney(amount)}</strong></div>`).join(''):'<div class="empty">Aucune offre.</div>';document.getElementById('dashboard-ca-breakdown').innerHTML=caHtml;const top=DB.clubs.slice().sort((a,b)=>scoreClub(b)-scoreClub(a)).slice(0,5);document.getElementById('dashboard-priority-clubs').innerHTML=top.length?top.map(c=>clubCardMini(c,true)).join(''):'<div class="empty">Aucun club.</div>';const relances=DB.clubs.filter(c=>c.relance).slice().sort((a,b)=>String(a.relance).localeCompare(String(b.relance))).slice(0,5);document.getElementById('dashboard-relances').innerHTML=relances.length?relances.map(c=>`<div class="item"><div class="item-line"><div><div class="item-title">${escapeHtml(c.nom)}</div><div class="item-sub">Relance : ${escapeHtml(c.relance||'â')}</div><div class="item-sub">${escapeHtml(c.action||'Aucune action')}</div></div><div>${getStatusBadge(c.statut)}</div></div></div>`).join(''):'<div class="empty">Aucune relance planifiÃ©e.</div>'}
+    function clubCardMini(c,withScore=false){const sc=scoreClub(c);return `<div class="item"><div class="item-line"><div><div class="item-title">${escapeHtml(c.nom)}</div><div class="item-sub">${escapeHtml(c.sport||'â')} Â· ${escapeHtml(c.ville||'â')}</div><div class="item-sub">Budget estimÃ© : <span class="money">${formatMoney(c.budget||0)}</span></div></div><div style="text-align:right">${getStatusBadge(c.statut)}${withScore?`<div style="margin-top:8px"><span class="score-pill ${scoreClass(sc)}">${scoreLabel(sc)} Â· ${sc}/100</span></div>`:''}</div></div></div>`}
+    function renderClubs(){let clubs=DB.clubs.slice();if(STATE.clubFilter!=='all')clubs=clubs.filter(c=>c.statut===STATE.clubFilter);clubs=clubs.filter(c=>matchesSearch([c.nom,c.sport,c.ville,c.contact,c.email,c.problematiques,c.objectifs,c.notes]));clubs.sort((a,b)=>scoreClub(b)-scoreClub(a));const el=document.getElementById('clubs-list');if(!clubs.length){el.innerHTML='<div class="empty">Aucun club trouvÃ©.</div>';return;}el.innerHTML=clubs.map(c=>{const sc=scoreClub(c);return `<div class="item"><div class="item-line"><div style="max-width:760px"><div class="item-title">${escapeHtml(c.nom)} <span class="muted">Â· ${escapeHtml(c.sport||'â')}</span></div><div class="item-sub">${escapeHtml(c.ville||'â')} Â· ${escapeHtml(c.niveau||'â')} Â· ${escapeHtml(c.contact||'â')} ${c.role?'Â· '+escapeHtml(c.role):''}</div><div class="item-sub">Besoin : ${escapeHtml(c.besoin||'â')} Â· Offre cible : ${escapeHtml(c.offre||'â')} Â· Budget : <span class="money">${formatMoney(c.budget||0)}</span></div><div class="item-sub">Objectifs : ${escapeHtml(c.objectifs||'Non renseignÃ©s')}</div><div class="item-sub">Freins : ${escapeHtml(c.freins||'Non renseignÃ©s')}</div><div class="item-sub">Prochaine action : ${escapeHtml(c.action||'Non renseignÃ©e')} ${c.relance?'Â· Relance '+escapeHtml(c.relance):''}</div></div><div style="text-align:right;min-width:210px">${getStatusBadge(c.statut)}<div style="margin-top:8px"><span class="score-pill ${scoreClass(sc)}">${scoreLabel(sc)} Â· ${sc}/100</span></div><div class="item-sub" style="margin-top:6px">ProbabilitÃ© : <strong>${escapeHtml(c.proba)}%</strong></div><div class="item-actions" style="margin-top:10px;justify-content:flex-end"><button class="btn btn-secondary btn-small" onclick="editClub(${c.id})">Ãditer</button><button class="btn btn-blue btn-small" onclick="duplicateClubToOffer(${c.id})">CrÃ©er offre</button><button class="btn btn-red btn-small" onclick="deleteClub(${c.id})">Supprimer</button></div><div class="item-actions" style="margin-top:8px;justify-content:flex-end"><button class="btn btn-small btn-secondary" onclick="quickStatus(${c.id},'ðµ Ã contacter')">Ã contacter</button><button class="btn btn-small btn-secondary" onclick="quickStatus(${c.id},'ð¡ En cours')">En cours</button><button class="btn btn-small btn-green" onclick="quickStatus(${c.id},'ð¢ Client')">Client</button></div></div></div></div>`}).join('')}
+    function renderPipeline(){const renderCol=(status,target)=>{const arr=DB.clubs.filter(c=>status==='ð¢ Client'?c.statut==='ð¢ Client':status==='ð¡ En cours'?c.statut==='ð¡ En cours':(c.statut==='ð´ Froid'||c.statut==='ðµ Ã contacter')).filter(c=>matchesSearch([c.nom,c.sport,c.contact]));document.getElementById(target).innerHTML=arr.length?arr.sort((a,b)=>scoreClub(b)-scoreClub(a)).map(c=>clubCardMini(c,true)).join(''):'<div class="empty">Aucun club.</div>'};renderCol('ð´ Froid','pipeline-froid');renderCol('ð¡ En cours','pipeline-encours');renderCol('ð¢ Client','pipeline-clients')}
+    function renderOffres(){document.getElementById('offres-kpi-total-ca').textContent=formatMoney(totalCA());document.getElementById('offres-kpi-total').textContent=DB.offres.length;document.getElementById('offres-kpi-open').textContent=formatMoney(DB.offres.filter(o=>o.statut==='En cours').reduce((s,o)=>s+Number(o.montant||0),0));document.getElementById('offres-kpi-renew').textContent=DB.offres.filter(o=>o.statut==='Renouvelable').length;let offres=DB.offres.slice();if(STATE.offreFilter!=='all')offres=offres.filter(o=>o.statut===STATE.offreFilter);offres=offres.filter(o=>{const c=getClubById(o.clubId);return matchesSearch([o.type,o.objectif,o.notes,o.date,c?c.nom:''])});offres.sort((a,b)=>String(b.date).localeCompare(String(a.date)));const el=document.getElementById('offres-list');if(!offres.length){el.innerHTML='<div class="empty">Aucune offre trouvÃ©e.</div>';return;}el.innerHTML=offres.map(o=>{const c=getClubById(o.clubId);return `<div class="item"><div class="item-line"><div><div class="item-title">${escapeHtml(c?c.nom:'Club')}</div><div class="item-sub">${escapeHtml(o.type)} Â· ${escapeHtml(o.date||'â')} Â· ${o.equipes||0} Ã©quipe(s)</div><div class="item-sub">Objectif : ${escapeHtml(o.objectif||'Non renseignÃ©')}</div><div class="item-sub">Notes : ${escapeHtml(o.notes||'Aucune')}</div></div><div style="text-align:right">${getOffreBadge(o.statut)}<div class="money" style="margin-top:8px">${formatMoney(o.montant)}</div><div class="item-actions" style="margin-top:10px;justify-content:flex-end"><button class="btn btn-secondary btn-small" onclick="editOffre(${o.id})">Ãditer</button><button class="btn btn-red btn-small" onclick="deleteOffre(${o.id})">Supprimer</button></div></div></div></div>`}).join('')}
+    function renderProspection(){const froid=DB.clubs.filter(c=>c.statut==='ð´ Froid').length;const enc=DB.clubs.filter(c=>c.statut==='ð¡ En cours').length;const cli=DB.clubs.filter(c=>c.statut==='ð¢ Client').length;document.getElementById('prospection-kpi-froid').textContent=froid;document.getElementById('prospection-kpi-encours').textContent=enc;document.getElementById('prospection-kpi-clients').textContent=cli;document.getElementById('prospection-kpi-conversion').textContent=conversionRate()+'%';const clubs=DB.clubs.slice().filter(c=>matchesSearch([c.nom,c.contact,c.ville,c.besoin,c.offre])).sort((a,b)=>scoreClub(b)-scoreClub(a));document.getElementById('prospection-list').innerHTML=clubs.length?`<table class="table"><thead><tr><th>Club</th><th>DÃ©cideur</th><th>Qualification</th><th>Action</th><th>Score</th></tr></thead><tbody>${clubs.map(c=>{const sc=scoreClub(c);return `<tr><td><div class="item-title">${escapeHtml(c.nom)}</div><div class="item-sub">${escapeHtml(c.sport||'â')} Â· ${escapeHtml(c.ville||'â')}</div></td><td>${escapeHtml(c.contact||'â')}<div class="item-sub">${escapeHtml(c.role||'â')}</div></td><td>${getStatusBadge(c.statut)}<div class="item-sub">${escapeHtml(c.besoin||'â')} Â· <span class="money">${formatMoney(c.budget||0)}</span></div></td><td>${escapeHtml(c.action||'â')}<div class="item-sub">Relance : ${escapeHtml(c.relance||'â')}</div></td><td><span class="score-pill ${scoreClass(sc)}">${sc}/100</span></td></tr>`}).join('')}</tbody></table>`:'<div class="empty">Aucun club.</div>'}
+    function chooseLiType(c){if(c.niveau==='Ãlite'||c.niveau==='National')return 'a';if(c.niveau==='Institutionnel')return 'c';return 'b'}
+    function buildEmailForClub(c){const subject=`Performance mentale - ${c.offre||'AcadÃ©mie A4P'} pour ${c.nom}`;const greeting=c.contact?`Bonjour ${c.contact},`:'Bonjour,';const body=`${greeting}\n\nJe me permets de vous contacter dans le cadre du dÃ©veloppement de lâAcadÃ©mie de Performances A4P.\n\nAu regard de votre contexte (${c.problematiques||'structuration mentale du club'}), je pense quâun Ã©change autour de ${c.offre||'notre accompagnement'} pourrait Ãªtre pertinent pour ${c.nom}.\n\nNous intervenons notamment sur :\n- la luciditÃ© sous pression\n- la rÃ©gulation Ã©motionnelle\n- la stabilitÃ© mentale des jeunes sportifs\n- la culture de performance du club\n\nSeriez-vous disponible pour un Ã©change rapide ?\n\nBien cordialement,\nAlexandre Griffet\nAcadÃ©mie de Performances A4P`;return {subject,body}}
+    function buildLinkedinForClub(c){const type=chooseLiType(c);const tpl=LI[type]||defaultLi[type];const prenom=c.contact||'Madame, Monsieur';return {subject:tpl.obj,body:tpl.msg.replace('[Prenom]',prenom).replace('[Club]',c.nom).replace('[Sport]',c.sport||'').replace('[Ville]',c.ville||'')}}
+    function renderEmailing(){const sport=val('emailing-filter-sport');const niveau=val('emailing-filter-niveau');const offre=val('emailing-filter-offre');let clubs=DB.clubs.slice();if(sport!=='all')clubs=clubs.filter(c=>c.sport===sport);if(niveau!=='all')clubs=clubs.filter(c=>c.niveau===niveau);if(offre!=='all')clubs=clubs.filter(c=>(c.offre||'').includes(offre)||(c.besoin||'').includes(offre));clubs=clubs.filter(c=>matchesSearch([c.nom,c.sport,c.ville,c.contact,c.email]));const el=document.getElementById('emailing-list');if(!clubs.length){el.innerHTML='<div class="empty">Aucun club ne correspond aux filtres.</div>';return;}el.innerHTML=clubs.sort((a,b)=>scoreClub(b)-scoreClub(a)).map(c=>`<div class="item"><div class="item-line"><div style="cursor:pointer" onclick="previewEmail(${c.id})"><div class="item-title">${escapeHtml(c.nom)}</div><div class="item-sub">${escapeHtml(c.sport||'â')} Â· ${escapeHtml(c.ville||'â')} Â· ${escapeHtml(c.contact||'â')}</div></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${c.email?'<span class="badge badge-green">email OK</span>':'<span class="badge badge-orange">sans email</span>'}<button class="btn btn-secondary btn-small" onclick="previewEmail(${c.id})">AperÃ§u</button></div></div></div>`).join('')}
+    function previewEmail(id){const c=getClubById(id);if(!c)return;const email=buildEmailForClub(c);const li=buildLinkedinForClub(c);const mailto=c.email?`mailto:${encodeURIComponent(c.email)}?subject=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(email.body)}`:'';document.getElementById('emailing-preview').innerHTML=`<div class="item"><div class="item-title">${escapeHtml(c.nom)}</div><div class="item-sub">${escapeHtml(c.sport||'â')} Â· ${escapeHtml(c.ville||'â')} Â· ${escapeHtml(c.contact||'â')}</div></div><div style="margin-top:14px"><div class="form-label" style="margin-bottom:6px">Objet email</div><div class="item">${escapeHtml(email.subject)}</div></div><div style="margin-top:14px"><div class="form-label" style="margin-bottom:6px">Email</div><div class="item" style="white-space:pre-wrap;line-height:1.6">${escapeHtml(email.body)}</div></div><div style="margin-top:14px"><div class="form-label" style="margin-bottom:6px">Message LinkedIn conseillÃ©</div><div class="item" style="white-space:pre-wrap;line-height:1.6">${escapeHtml(li.body)}</div></div><div class="item-actions" style="margin-top:14px">${mailto?`<a class="btn btn-primary" href="${mailto}">Ouvrir dans Mail</a>`:'<button class="btn btn-secondary" onclick="goView(\'clubs\')">Ajouter un email</button>'}<button class="btn btn-secondary" onclick="copyEmail(${id})">Copier email</button><button class="btn btn-blue" onclick="copyLinkedin(${id})">Copier LinkedIn</button></div>`}
+    function copyEmail(id){const c=getClubById(id);if(!c)return;const e=buildEmailForClub(c);navigator.clipboard.writeText('OBJET : '+e.subject+'\n\n'+e.body).then(()=>showToast('Email copiÃ©'))}
+    function copyLinkedin(id){const c=getClubById(id);if(!c)return;const li=buildLinkedinForClub(c);navigator.clipboard.writeText(li.subject+'\n\n'+li.body).then(()=>showToast('Message LinkedIn copiÃ©'))}
+    function renderJoueurs(){let joueurs=DB.joueurs.slice();if(STATE.joueurFilter!=='all')joueurs=joueurs.filter(j=>j.phase===STATE.joueurFilter);joueurs=joueurs.filter(j=>{const c=getClubById(j.clubId);return matchesSearch([j.nom,j.poste,j.axes,j.notes,c?c.nom:''])});joueurs.sort((a,b)=>a.nom.localeCompare(b.nom));const el=document.getElementById('joueurs-list');if(!joueurs.length){el.innerHTML='<div class="empty">Aucun joueur trouvÃ©.</div>';return;}el.innerHTML=joueurs.map(j=>{const c=getClubById(j.clubId);return `<div class="item"><div class="item-line"><div><div class="item-title">${escapeHtml(j.nom)}</div><div class="item-sub">${escapeHtml(c?c.nom:'Sans club')} Â· ${escapeHtml(j.poste||'â')} ${j.age?'Â· '+escapeHtml(j.age)+' ans':''}</div><div class="item-sub">Axes : ${escapeHtml(j.axes||'Non renseignÃ©s')}</div></div><div style="text-align:right">${getPhaseBadge(j.phase)}<div class="item-sub" style="margin-top:6px">Score : <strong>${j.score}/10</strong></div><div class="item-actions" style="margin-top:10px;justify-content:flex-end"><button class="btn btn-secondary btn-small" onclick="editJoueur(${j.id})">Ãditer</button><button class="btn btn-red btn-small" onclick="deleteJoueur(${j.id})">Supprimer</button></div></div></div></div>`}).join('')}
+    function renderReporting(){const besoins={},niveaux={};DB.clubs.forEach(c=>{besoins[c.besoin||'â']=(besoins[c.besoin||'â']||0)+1;niveaux[c.niveau||'â']=(niveaux[c.niveau||'â']||0)+1});document.getElementById('reporting-besoins').innerHTML=Object.keys(besoins).length?Object.entries(besoins).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="metric"><span>${escapeHtml(k)}</span><strong>${v}</strong></div>`).join(''):'<div class="empty">Aucune donnÃ©e.</div>';document.getElementById('reporting-niveaux').innerHTML=Object.keys(niveaux).length?Object.entries(niveaux).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="metric"><span>${escapeHtml(k)}</span><strong>${v}</strong></div>`).join(''):'<div class="empty">Aucune donnÃ©e.</div>';document.getElementById('reporting-budget-total').textContent=formatMoney(DB.clubs.reduce((s,c)=>s+(Number(c.budget)||0),0));document.getElementById('reporting-weighted-pipeline').textContent=formatMoney(weightedPipeline())}
+    function duplicateClubToOffer(id){const c=getClubById(id);if(!c)return;startNewOffre();populateClubSelect('offre-club');setVal('offre-club',String(c.id));setVal('offre-type',c.offre||'Sur mesure');setVal('offre-montant',String(c.budget||''));setVal('offre-objectif',c.objectifs||'');openModal('modal-offre')}
+    function exportProspectsCSV(){const rows=[['Nom','Sport','Ville','Niveau','Contact','Email','Statut','Potentiel','Budget','ProbabilitÃ©','Besoin','Offre','Relance','Action']];DB.clubs.forEach(c=>rows.push([c.nom||'',c.sport||'',c.ville||'',c.niveau||'',c.contact||'',c.email||'',c.statut||'',c.potentiel||'',c.budget||'',c.proba||'',c.besoin||'',c.offre||'',c.relance||'',c.action||'']));const csv='\uFEFF'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='A4P_Prospects_'+new Date().toISOString().slice(0,10)+'.csv';a.click();showToast('Export CSV gÃ©nÃ©rÃ©')}
+    function exportData(){const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='A4P_CRM_'+new Date().toISOString().slice(0,10)+'.json';a.click();showToast('Export JSON tÃ©lÃ©chargÃ©')}
+    function importData(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const p=JSON.parse(e.target.result);if(!p||typeof p!=='object')throw new Error('invalid');DB=p;if(!Array.isArray(DB.clubs))DB.clubs=[];if(!Array.isArray(DB.offres))DB.offres=[];if(!Array.isArray(DB.joueurs))DB.joueurs=[];if(!DB._id)DB._id=1000;saveDB();render();showToast('DonnÃ©es importÃ©es')}catch(err){alert('Fichier JSON invalide.')}};reader.readAsText(file);event.target.value=''}
+    function render(){updateNavCounts();renderDashboard();renderClubs();renderPipeline();renderOffres();renderProspection();renderEmailing();renderJoueurs();renderReporting();populateClubSelect('offre-club');populateClubSelect('joueur-club')}
+    function init(){loadDB();bindModalOverlayClose();loadLinkedinFields();updateTopAddButton();setActiveNav('dashboard');render()}
+    window.addEventListener('load',init);
+  </script>
 </body>
 </html>
