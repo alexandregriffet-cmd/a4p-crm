@@ -3,278 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A4P CRM Pro</title>
+<title>A4P CRM PREMIUM</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-:root{
---marine:#09151F;
---m2:#0f1e2d;
---m3:#162638;
---m4:#1d3247;
---or:#C8A45A;
---or2:#e2c07a;
---orD:rgba(200,164,90,0.12);
---gris:#8A9CB5;
---grisD:rgba(138,156,181,0.1);
---vert:#3DD68C;
---bleu:#4EA8DE;
---rouge:#F05252;
---r:10px;
-}
-
-*{margin:0;padding:0;box-sizing:border-box}
-
 body{
-font-family:'Outfit',sans-serif;
-background:var(--marine);
-color:white;
-display:flex;
-height:100vh;
+  margin:0;
+  font-family:'Outfit',sans-serif;
+  background:#0b1622;
+  color:white;
 }
 
-/* SIDEBAR */
-.sb{
-width:230px;
-background:var(--m2);
-padding:20px;
+.sidebar{
+  width:240px;
+  background:#101f2f;
+  height:100vh;
+  position:fixed;
+  padding:20px;
 }
 
-.logo{
-font-size:20px;
-font-weight:700;
-color:var(--or);
-margin-bottom:20px;
+.sidebar h2{
+  color:#d4af37;
 }
 
-.ni{
-padding:10px;
-cursor:pointer;
-border-radius:6px;
-color:var(--gris);
+.nav{
+  margin-top:20px;
 }
 
-.ni:hover{background:var(--grisD);color:white}
-.ni.on{background:var(--orD);color:var(--or)}
+.nav div{
+  padding:10px;
+  cursor:pointer;
+  color:#9fb3c8;
+}
 
-/* MAIN */
+.nav div:hover{
+  background:#1c2e42;
+  color:white;
+}
+
 .main{
-flex:1;
-display:flex;
-flex-direction:column;
-}
-
-.topbar{
-height:60px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 20px;
-background:var(--m2);
-}
-
-.content{
-flex:1;
-overflow:auto;
-padding:20px;
+  margin-left:240px;
+  padding:20px;
 }
 
 .card{
-background:var(--m2);
-border-radius:var(--r);
-padding:20px;
-margin-bottom:20px;
-}
-
-.btn{
-background:linear-gradient(135deg,var(--or),var(--or2));
-color:black;
-border:none;
-padding:8px 14px;
-border-radius:8px;
-cursor:pointer;
-font-weight:600;
+  background:#122436;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:15px;
 }
 
 input, select, textarea{
-width:100%;
-padding:8px;
-margin-top:5px;
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
-color:white;
-border-radius:6px;
+  width:100%;
+  padding:10px;
+  margin-top:5px;
+  margin-bottom:10px;
+  border:none;
+  border-radius:8px;
+  background:#1c2e42;
+  color:white;
 }
+
+button{
+  background:#d4af37;
+  border:none;
+  padding:10px 15px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  opacity:0.8;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.tag{
+  padding:5px 10px;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.hot{background:#e74c3c;}
+.warm{background:#f39c12;}
+.cold{background:#3498db;}
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sb">
-<div class="logo">A4P CRM</div>
-
-<div class="ni on" onclick="setView('dashboard')">Dashboard</div>
-<div class="ni" onclick="setView('clubs')">Clubs</div>
-<div class="ni" onclick="setView('joueurs')">Joueurs</div>
-<div class="ni" onclick="setView('offres')">Offres</div>
-
-<br>
-
-<button class="btn" onclick="exportData()">Exporter</button>
-<input type="file" onchange="importData(event)">
+<div class="sidebar">
+  <h2>A4P CRM</h2>
+  <div class="nav">
+    <div onclick="showView('dashboard')">Dashboard</div>
+    <div onclick="showView('clubs')">Clubs</div>
+    <div onclick="showView('prospection')">Prospection</div>
+  </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-<div class="topbar">
-<div id="title">Dashboard</div>
-<button class="btn" onclick="openAdd()">+ Ajouter</button>
+<!-- DASHBOARD -->
+<div id="dashboard" class="view">
+  <h1>Dashboard</h1>
+  <div class="grid">
+    <div class="card"><h2 id="totalClubs">0</h2><p>Clubs</p></div>
+    <div class="card"><h2 id="hotLeads">0</h2><p>🔥 Chaud</p></div>
+    <div class="card"><h2 id="ca">0€</h2><p>CA potentiel</p></div>
+  </div>
 </div>
 
-<div class="content" id="app">
-  <!-- DASHBOARD -->
-<div id="view-dashboard" class="view">
-<div class="card">
-<h2>Dashboard</h2>
-<p id="stats"></p>
-</div>
+<!-- CLUB -->
+<div id="clubs" class="view" style="display:none;">
+  <h1>Ajout club</h1>
+
+  <div class="card">
+    <input id="name" placeholder="Nom du club">
+    <input id="sport" placeholder="Sport">
+    <input id="contact" placeholder="Contact">
+    <input id="budget" placeholder="Budget estimé (€)">
+    
+    <select id="niveau">
+      <option>Départemental</option>
+      <option>Régional</option>
+      <option>National</option>
+      <option>Élite</option>
+    </select>
+
+    <select id="besoin">
+      <option>Découverte</option>
+      <option>Atelier</option>
+      <option>Suivi</option>
+    </select>
+
+    <textarea id="notes" placeholder="Notes..."></textarea>
+
+    <button onclick="addClub()">Ajouter</button>
+  </div>
+
+  <div id="clubList"></div>
 </div>
 
-<!-- CLUBS -->
-<div id="view-clubs" class="view" style="display:none">
-<div class="card">
-<h2>Clubs</h2>
-<div id="clubs-list"></div>
-</div>
+<!-- PROSPECTION -->
+<div id="prospection" class="view" style="display:none;">
+  <h1>Prospection intelligente</h1>
+
+  <div class="card">
+    <button onclick="exportCSV()">Exporter CSV</button>
+  </div>
+
+  <div id="prospectList"></div>
 </div>
 
-<!-- JOUEURS -->
-<div id="view-joueurs" class="view" style="display:none">
-<div class="card">
-<h2>Joueurs</h2>
-<div id="joueurs-list"></div>
-</div>
 </div>
 
-<!-- OFFRES -->
-<div id="view-offres" class="view" style="display:none">
-<div class="card">
-<h2>Offres</h2>
-<div id="offres-list"></div>
-</div>
-</div>
 <script>
+let clubs = JSON.parse(localStorage.getItem("clubs") || "[]")
 
-// ================= DATA =================
-const KEY = "a4p_crm_v4";
-
-let DB = {
-clubs: [],
-joueurs: [],
-offres: []
-};
-
-// ================= STORAGE =================
 function save(){
-localStorage.setItem(KEY, JSON.stringify(DB));
+  localStorage.setItem("clubs", JSON.stringify(clubs))
+  render()
 }
 
-function load(){
-const data = localStorage.getItem(KEY);
-if(data) DB = JSON.parse(data);
+function showView(view){
+  document.querySelectorAll('.view').forEach(v=>v.style.display='none')
+  document.getElementById(view).style.display='block'
 }
 
-// ================= VIEWS =================
-function setView(v){
-document.querySelectorAll('.view').forEach(e=>e.style.display='none');
-document.getElementById('view-'+v).style.display='block';
-document.getElementById('title').innerText = v.toUpperCase();
-render();
+function addClub(){
+  let club = {
+    name:document.getElementById("name").value,
+    sport:document.getElementById("sport").value,
+    contact:document.getElementById("contact").value,
+    budget:parseInt(document.getElementById("budget").value)||0,
+    niveau:document.getElementById("niveau").value,
+    besoin:document.getElementById("besoin").value,
+    notes:document.getElementById("notes").value
+  }
+
+  clubs.push(club)
+  save()
 }
 
-// ================= RENDER =================
+function score(club){
+  let s=0
+  if(club.budget>5000) s+=3
+  if(club.niveau==="National"||club.niveau==="Élite") s+=3
+  if(club.besoin==="Suivi") s+=4
+  return s
+}
+
 function render(){
+  document.getElementById("totalClubs").innerText=clubs.length
 
-document.getElementById("stats").innerHTML =
-"Clubs: "+DB.clubs.length+" | Joueurs: "+DB.joueurs.length+" | Offres: "+DB.offres.length;
+  let hot=0
+  let ca=0
 
-// CLUBS
-let chtml = "";
-DB.clubs.forEach(c=>{
-chtml += `<div class="card">${c.nom}</div>`;
-});
-document.getElementById("clubs-list").innerHTML = chtml;
+  let html=""
+  clubs.forEach((c,i)=>{
+    let s=score(c)
 
-// JOUEURS
-let jhtml = "";
-DB.joueurs.forEach(j=>{
-jhtml += `<div class="card">${j.nom}</div>`;
-});
-document.getElementById("joueurs-list").innerHTML = jhtml;
+    let tag="cold"
+    if(s>=7){tag="hot";hot++;ca+=c.budget}
+    else if(s>=4) tag="warm"
 
-// OFFRES
-let ohtml = "";
-DB.offres.forEach(o=>{
-ohtml += `<div class="card">${o.nom} - ${o.montant}€</div>`;
-});
-document.getElementById("offres-list").innerHTML = ohtml;
+    html+=`
+    <div class="card">
+      <b>${c.name}</b> (${c.sport})<br>
+      ${c.niveau} - ${c.besoin}<br>
+      ${c.budget}€<br>
+      <span class="tag ${tag}">${tag}</span>
+      <br><br>
+      <button onclick="deleteClub(${i})">Supprimer</button>
+    </div>
+    `
+  })
 
+  document.getElementById("clubList").innerHTML=html
+  document.getElementById("hotLeads").innerText=hot
+  document.getElementById("ca").innerText=ca+"€"
+
+  document.getElementById("prospectList").innerHTML=html
 }
 
-// ================= ADD =================
-function openAdd(){
-const type = prompt("Type: club / joueur / offre");
-
-if(type==="club"){
-const nom = prompt("Nom club");
-DB.clubs.push({nom});
+function deleteClub(i){
+  clubs.splice(i,1)
+  save()
 }
 
-if(type==="joueur"){
-const nom = prompt("Nom joueur");
-DB.joueurs.push({nom});
+function exportCSV(){
+  let csv="Nom,Sport,Budget\n"
+  clubs.forEach(c=>{
+    csv+=`${c.name},${c.sport},${c.budget}\n`
+  })
+
+  let blob=new Blob([csv])
+  let a=document.createElement("a")
+  a.href=URL.createObjectURL(blob)
+  a.download="prospects.csv"
+  a.click()
 }
 
-if(type==="offre"){
-const nom = prompt("Nom offre");
-const montant = prompt("Montant");
-DB.offres.push({nom, montant});
-}
-
-save();
-render();
-}
-
-// ================= EXPORT =================
-function exportData(){
-const blob = new Blob([JSON.stringify(DB)], {type:'application/json'});
-const a = document.createElement('a');
-a.href = URL.createObjectURL(blob);
-a.download = "crm.json";
-a.click();
-}
-
-// ================= IMPORT =================
-function importData(e){
-const file = e.target.files[0];
-const reader = new FileReader();
-reader.onload = ()=>{
-DB = JSON.parse(reader.result);
-save();
-render();
-};
-reader.readAsText(file);
-}
-
-// ================= INIT =================
-load();
-render();
-
+render()
 </script>
-</div>
-</div>
+
 </body>
 </html>
